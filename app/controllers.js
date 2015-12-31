@@ -1,21 +1,28 @@
 var Controllers = angular.module('onog.controllers', [])
-  .controller('menuCtrl', function($scope, $state) {
+  .controller('MenuController', function($scope, $state) {
       $scope.logout = function () {
         Parse.User.logOut();
         $state.go('login');
       }
   })
-  .controller('viewTournamentsCtrl', function($scope, Parse, Bracket) {
+  .controller('ViewTournamentsController', function($scope, Parse, Bracket) {
+    $scope.list = [];
     new Parse.Query(Bracket)
       .find()
       .then(function(brackets) {
-        $scope.brackets = brackets;
+        $scope.list = brackets;
       })
       .catch(function(err) {
         $scope.error = err;
       });
   })
-  .controller('createBracketCtrl', function($scope, Parse, Bracket) {
+  .controller('BracketsController', function($scope, Parse, Bracket, $stateParams) {
+    console.log($stateParams)
+  })
+  .controller('BracketDetailController', function($scope, Parse, Bracket, $stateParams) {
+    console.log($stateParams);
+  })
+  .controller('CreateBracketController', function($scope, Parse, Bracket) {
     $scope.bracket = new Bracket();
     $scope.createBracket = function () {
       $scope.bracket.set('openSlots', 0)
@@ -25,7 +32,7 @@ var Controllers = angular.module('onog.controllers', [])
     }
 
   })
-  .controller('userCtrl', function($scope, $state, Parse) {
+  .controller('UserController', function($scope, $state, Parse) {
 
     $scope.login = function (user) {
       Parse.User.logIn(user.username, user.password, {

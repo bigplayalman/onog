@@ -2,11 +2,11 @@
 <hr>
 <h3>Active Brackets</h3>
 <ul class="list-group">
-    <li class="list-group-item" ng-repeat="bracket in brackets | orderBy: 'bracket.createdAt'">
-        <h4 class="list-group-item-heading">{{bracket.name}}</h4>
+    <a ui-sref="bracket-detail({id:model.id})" class="list-group-item" ng-repeat="model in list | orderBy: 'model.createdAt'">
+        <h4 class="list-group-item-heading">{{model.name}}</h4>
         <p class="list-group-item-text">
-            <strong>Game: </strong>{{bracket.game}} | <strong>Type: </strong> {{bracket.type}}<br>
-            <strong>Available Slots: </strong> {{bracket.openSlots}} | <strong>Total Slots: </strong> {{bracket.totalSlots}}
+            <strong>Game: </strong>{{model.game}} | <strong>Type: </strong> {{model.type}}<br>
+            <strong>Available Slots: </strong> {{model.openSlots}} | <strong>Total Slots: </strong> {{model.totalSlots}}
         </p>
-    </li>
+    </a>
 </ul>
