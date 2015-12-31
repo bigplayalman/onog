@@ -5,6 +5,16 @@ var Controllers = angular.module('onog.controllers', [])
         $state.go('login');
       }
   })
+  .controller('viewTournamentsCtrl', function($scope, Parse, Bracket) {
+    new Parse.Query(Bracket)
+      .find()
+      .then(function(brackets) {
+        $scope.brackets = brackets;
+      })
+      .catch(function(err) {
+        $scope.error = err;
+      });
+  })
   .controller('createBracketCtrl', function($scope, Parse, Bracket) {
     $scope.bracket = new Bracket();
     $scope.createBracket = function () {

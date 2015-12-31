@@ -15,8 +15,8 @@ angular.module('onog.services', []).run(function ($http) {
     };
   })
   .factory('Bracket', ['Parse', function (Parse) {
-    "use strict";
     var Bracket = Parse.Object.extend('Bracket');
-    Parse.defineAttributes(Bracket, ['name', 'type', 'game', 'totalSlots']);
+    Parse.defineAttributes(Bracket, ['name', 'type', 'game', 'totalSlots', 'openSlots']);
+
     return Bracket;
   }])

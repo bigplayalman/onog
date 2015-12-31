@@ -20,6 +20,11 @@ angular.module('onog.routes', [])
         controller: 'userCtrl'
 
       })
+      .state('viewTournaments', {
+        url: '/view-tournaments',
+        templateUrl: 'templates/pages/view-tournaments.html',
+        controller: 'viewTournamentsCtrl'
+      })
       .state('createBracket', {
         url: '/create-bracket',
         templateUrl: 'templates/pages/create-bracket.html',
@@ -29,6 +34,5 @@ angular.module('onog.routes', [])
             $state.go('login');
           }
         }
-
       })
   });

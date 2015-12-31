@@ -1,0 +1,12 @@
+<h2>View Tournaments</h2>
+<hr>
+<h3>Active Brackets</h3>
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="bracket in brackets | orderBy: 'bracket.createdAt'">
+        <h4 class="list-group-item-heading">{{bracket.name}}</h4>
+        <p class="list-group-item-text">
+            <strong>Game: </strong>{{bracket.game}} | <strong>Type: </strong> {{bracket.type}}<br>
+            <strong>Available Slots: </strong> {{bracket.openSlots}} | <strong>Total Slots: </strong> {{bracket.totalSlots}}
+        </p>
+    </li>
+</ul>
