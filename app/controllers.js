@@ -1,9 +1,22 @@
 var Controllers = angular.module('onog.controllers', [])
-  .controller('AppCtrl', function($scope) {
-      
+  .controller('menuCtrl', function($scope, $state) {
+      $scope.logout = function () {
+        Parse.User.logOut();
+        $state.go('login');
+      }
+  })
+  .controller('createBracketCtrl', function($scope, Parse, Bracket) {
+    $scope.bracket = new Bracket();
+    $scope.createBracket = function () {
+      $scope.bracket.set('openSlots', 0)
+      $scope.bracket.save().then(function () {
+        $scope.bracket = new Bracket();
+      });
+    }
+
   })
   .controller('userCtrl', function($scope, $state, Parse) {
-    Parse.User.logOut();
+
     $scope.login = function (user) {
       Parse.User.logIn(user.username, user.password, {
         success: function(user) {
