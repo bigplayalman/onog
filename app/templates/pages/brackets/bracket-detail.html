@@ -1,1 +1,5 @@
-<h3>Bracket Details</h3>
+<div class="well" ng-show="bracket.name">
+    <h3>Bracket Details</h3>
+    <strong>Game: </strong>{{bracket.game}} | <strong>Type: </strong> {{bracket.type}}<br>
+    <strong>Players: </strong> {{bracket.registeredSlots}} / {{bracket.totalSlots}}
+</div>

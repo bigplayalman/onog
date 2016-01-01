@@ -1,12 +1,27 @@
 <h2>View Tournaments</h2>
 <hr>
-<h3>Active Brackets</h3>
+<h3>Available Brackets</h3>
 <ul class="list-group">
-    <a ui-sref="bracket-detail({id:model.id})" class="list-group-item" ng-repeat="model in list | orderBy: 'model.createdAt'">
+    <li class="list-group-item" ng-repeat="model in availableList | orderBy: 'model.createdAt'">
         <h4 class="list-group-item-heading">{{model.name}}</h4>
         <p class="list-group-item-text">
             <strong>Game: </strong>{{model.game}} | <strong>Type: </strong> {{model.type}}<br>
-            <strong>Available Slots: </strong> {{model.openSlots}} | <strong>Total Slots: </strong> {{model.totalSlots}}
+            <strong>Players: </strong> {{model.registeredSlots}} / {{model.totalSlots}} <br>
+            <button class="btn btn-primary" ng-click="signUp(model)">Sign Up</button>
+            <a ui-sref="bracket-detail({id:model.id})" class="btn btn-success">See Details</a>
         </p>
-    </a>
+    </li>
+</ul>
+
+<h3>Registered Brackets</h3>
+<ul class="list-group">
+    <li class="list-group-item" ng-repeat="model in registeredList | orderBy: 'model.createdAt'">
+        <h4 class="list-group-item-heading">{{model.name}}</h4>
+        <p class="list-group-item-text">
+            <strong>Game: </strong>{{model.game}} | <strong>Type: </strong> {{model.type}}<br>
+            <strong>Players: </strong> {{model.registeredSlots}} / {{model.totalSlots}}<br>
+            <button class="btn btn-primary" ng-click="cancel(model)">Cancel</button>
+            <a ui-sref="bracket-detail({id:model.id})" class="btn btn-success">See Details</a>
+        </p>
+    </li>
 </ul>

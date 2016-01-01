@@ -38,8 +38,6 @@ angular.module('onog.routes', [])
       .state('bracket-detail', {
         url: '/bracket/:id',
         templateUrl: '/templates/pages/brackets/bracket-detail.html',
-        controller: function($scope, $stateParams) {
-          console.log($stateParams);
-        }
+        controller: 'BracketDetailController'
       })
   });
