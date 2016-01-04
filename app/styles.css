@@ -83,3 +83,10 @@ body {
 
 .thumbnail {
   margin-top: 20px; }
+
+.item-round-last {
+  align-self: flex-start; }
+
+.item-round {
+  float: left;
+  padding: 10px; }

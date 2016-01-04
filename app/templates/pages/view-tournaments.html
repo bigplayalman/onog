@@ -7,7 +7,7 @@
         <p class="list-group-item-text">
             <strong>Game: </strong>{{model.game}} | <strong>Type: </strong> {{model.type}}<br>
             <strong>Players: </strong> {{model.registeredSlots}} / {{model.totalSlots}} <br>
-            <button class="btn btn-primary" ng-click="signUp(model)">Sign Up</button>
+            <button class="btn btn-primary" ng-click="signUp(model)" >Sign Up</button>
             <a ui-sref="bracket-detail({id:model.id})" class="btn btn-success">See Details</a>
         </p>
     </li>

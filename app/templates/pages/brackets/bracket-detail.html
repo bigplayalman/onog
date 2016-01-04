@@ -1,5 +1,21 @@
 <div class="well" ng-show="bracket.name">
     <h3>Bracket Details</h3>
     <strong>Game: </strong>{{bracket.game}} | <strong>Type: </strong> {{bracket.type}}<br>
-    <strong>Players: </strong> {{bracket.registeredSlots}} / {{bracket.totalSlots}}
+    <strong>Players: </strong> {{bracket.registeredSlots}} / {{bracket.totalSlots}}<br>
+    <button class="btn btn-primary" ng-click="generateBracket()">Generate Bracket</button>
+
+    <div class="bracket-list" style="width: calc(200px * {{rounds.length}})">
+        <div class="item-round" ng-repeat="round in rounds" style="width: calc(100% / {{rounds.length}});">
+            <h3>{{round.name}}</h3>
+            <div class="panel panel-primary" ng-repeat="match in round.matches">
+                <div class="panel-body">
+                    {{match.playerOne.username || 'n/a'}}
+                </div>
+                <div class="panel-footer">
+                    {{match.playerTwo.username || 'n/a'}}
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

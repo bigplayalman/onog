@@ -87,3 +87,18 @@ body {
 //menu
 
 //menu end
+
+//bracket
+.bracket-list {
+  //display: flex;
+  //align-items: center;
+  //justify-content: center;
+}
+.item-round-last {
+  align-self: flex-start;
+}
+.item-round {
+  float: left;
+  padding: 10px;
+}
+//bracket end
