@@ -89,16 +89,13 @@ body {
 //menu end
 
 //bracket
-.bracket-list {
-  //display: flex;
-  //align-items: center;
-  //justify-content: center;
-}
-.item-round-last {
-  align-self: flex-start;
-}
-.item-round {
+.round {
   float: left;
   padding: 10px;
+}
+.matches{
+  .panel:hover {
+    border: 1px solid greenyellow;
+  }
 }
 //bracket end
