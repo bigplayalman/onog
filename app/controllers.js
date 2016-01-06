@@ -76,19 +76,15 @@ var Controllers = angular.module('onog.controllers', [])
           Match.setNextMatch(matches).then(function(matches) {
             var games = $filter('orderBy')(matches, 'gameNum');
             Match.setPlayers($scope.players, games).then(function (matches) {
-              console.log(matches);
-              //var query = new Parse.Query(Match.Match);
-              //query.set('bracket', $scope.bracket);
-              //query.ascending("gameNum");
-              //query.find().then(function(games) {
-              //  console.log(games);
-              //})
-            })
-            //Round.deleteRounds($scope.bracket).then(function () {
-            //  Round.createRounds($scope.bracket, games, $scope.players).then(function (rounds) {
-            //    console.log(rounds);
-            //  });
-            //});
+              var games = $filter('orderBy')(matches, 'gameNum');
+              Round.deleteRounds($scope.bracket).then(function () {
+                Round.createRounds($scope.bracket, games.length, $scope.players).then(function (rounds) {
+                  Match.setRounds(rounds, games). then(function(matches){
+                    console.log(matches);
+                  });
+                });
+              });
+            });
           });
         });
       });

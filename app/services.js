@@ -14,99 +14,6 @@ angular.module('onog.services', []).run(function ($http) {
       getNewUser : getNewUser
     };
   })
-  .service('BracketRounds', function (Parse, Round, Match) {
-    var getRounds = function (length) {
-      var rounds = 0;
-      var remainder = 4 - (length % 4);
-      var players = length + remainder
-      for(var i = 0; i <= players; i += 4) {
-        rounds++;
-      }
-      return rounds;
-    }
-    var updateRounds = function (matches) {
-      var rounds = [];
-      matches.forEach(function(match) {
-        var game = new Match();
-        game.id = match.id;
-        var round = new Round();
-        round.id = match.parent.id;
-        round.add('matches', game);
-        rounds.push(round);
-      });
-      return Parse.Object.saveAll(rounds);
-    }
-    var deleteRounds = function (bracket) {
-      var query = new Parse.Query(Round);
-      query.equalTo('parent', bracket);
-      return query.find({
-        success: function (rounds) {
-          Parse.Object.destroyAll(rounds);
-        }});
-    }
-
-    var getRoundName = function (roundNum) {
-      switch(roundNum) {
-        case 1:
-          return 'Finals';
-          break;
-        case 2:
-          return 'Semifinals';
-          break;
-        case 3:
-          return 'Quarterfinals';
-          break;
-        default: return  'Round of ' + roundNum;
-      }
-    }
-
-    var createRounds = function (players, bracket) {
-      var numRounds = getRounds(players);
-      var rounds  = [];
-      for(var i = numRounds; i >= 1; i--) {
-        var round = new Round();
-        var name = '';
-        var numGames = 0;
-        var remainder = 0;
-        if(players % 4 !== 0 && players > 4) {
-          remainder = 4 - (players % 4);
-        }
-        if(remainder === 2 && players > 4) {
-          numGames = 2;
-          name = 'Balance Round'
-          players = players + remainder;
-        } else if(remainder === 3 && players > 4) {
-          numGames = 1;
-          name = 'Balance Round'
-          players = players + remainder;
-        } else {
-          players = (players + remainder);
-          numGames = players/2;
-          name = getRoundName(i);
-        }
-
-        if(players === 2) {
-          numGames = 1;
-          name = 'Finals';
-        }
-
-        round.set('name', name);
-        round.set('numGames', numGames);
-        round.set('roundNum', i);
-        round.set('parent', bracket);
-        players = players/2;
-        rounds.push(round);
-      }
-      return Parse.Object.saveAll(rounds);
-    }
-    return {
-      createRounds: createRounds,
-      deleteRounds: deleteRounds,
-      updateRounds: updateRounds,
-      getRounds : getRounds,
-      getRoundName: getRoundName
-    }
-  })
   .service('Shuffle', function () {
     var shufflePlayers = function (array) {
       var m = array.length, t, i;
@@ -140,18 +47,15 @@ angular.module('onog.services', []).run(function ($http) {
       });
     }
 
-    var createRounds = function(bracket, matches, players) {
-      var games = matches.slice()
+    var createRounds = function(bracket, numGames, players) {
       var rounds =[];
       var roundCount = 0;
 
       while(players.length > Math.pow(2,roundCount)) {
         roundCount++;
-        var matches = games.splice(0,roundCount)
         var round = new Round();
-        var relation = round.relation('matches');
-        relation.add(matches);
-        round.set('parent', bracket)
+        round.set('parent', bracket);
+        round.set('roundNum', roundCount);
         switch(roundCount) {
           case 1:
             round.set('name', 'Finals');
@@ -160,8 +64,8 @@ angular.module('onog.services', []).run(function ($http) {
             round.set('name', 'Semifinals');
             break;
           default:
-            if(matches.length === Math.pow(2,roundCount)) {
-              round.set('name', 'Round of' + Math.pow(2,roundCount))
+            if(numGames === Math.pow(2,roundCount)) {
+              round.set('name', 'Round of ' + Math.pow(2,roundCount))
             } else {
               round.set('name', 'Balance Round');
             }
@@ -179,7 +83,7 @@ angular.module('onog.services', []).run(function ($http) {
   }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
-    var attributes = ['bracket', 'gameNum', 'players', 'games', 'winner', 'loser', 'nextMatch']
+    var attributes = ['bracket', 'gameNum', 'players', 'round', 'games', 'winner', 'loser', 'nextMatch']
     Parse.defineAttributes(Match, attributes);
 
     var deleteMatches = function (bracket) {
@@ -221,15 +125,38 @@ angular.module('onog.services', []).run(function ($http) {
       var matchIndex = games.length -1;
       var matches =[];
       while(gamers.length > 0){
-        //var match = new Match();
-        //var players = match.relation('players');
-        //match.id = games[matchIndex].id;
-        //players.add(gamers.splice(0,2));
         games[matchIndex].relation('players').add(gamers.splice(0,2));
         matchIndex--;
-        //matches.push(match);
       }
       return Parse.Object.saveAll(games);
+    }
+
+    var setRounds = function (rounds, games) {
+      var matches = [];
+      var roundIndex = 0;
+      var gamesIndex = 1;
+
+      while(gamesIndex <= games.length){
+        if(gamesIndex >= Math.pow(2,roundIndex)) {
+          roundIndex++
+        }
+        games[gamesIndex-1].set('round', rounds[roundIndex-1]);
+        console.log('game: ' + gamesIndex + 'round: ' + roundIndex);
+        gamesIndex++;
+
+
+      }
+
+      while(roundIndex < rounds.length) {
+        var roundGames = Math.pow(2,roundIndex);
+        while(gamesIndex < roundGames) {
+          games[gamesIndex].set('round', rounds[roundIndex]);
+          gamesIndex++;
+          console.log('game: ' + gamesIndex + 'round: ' + roundIndex);
+        }
+        roundIndex++;
+      }
+      return Parse.Object.saveAll(games);;
     }
 
     return {
@@ -237,7 +164,8 @@ angular.module('onog.services', []).run(function ($http) {
       deleteMatches: deleteMatches,
       createMatches: createMatches,
       setNextMatch: setNextMatch,
-      setPlayers: setPlayers
+      setPlayers: setPlayers,
+      setRounds: setRounds
     };
   }])
   .factory('Bracket', ['Parse', function (Parse) {
