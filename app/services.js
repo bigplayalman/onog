@@ -130,11 +130,56 @@ angular.module('onog.services', []).run(function ($http) {
     var Round = Parse.Object.extend('Round');
     Parse.defineAttributes(Round, ['matches', 'name', 'parent', 'roundNum']);
 
-    return Round;
+    var deleteRounds = function (bracket) {
+      var query = new Parse.Query(Round);
+      query.equalTo('parent', bracket);
+      return query.find({
+        success: function (rounds) {
+          Parse.Object.destroyAll(rounds);
+        }
+      });
+    }
+
+    var createRounds = function(bracket, matches, players) {
+      var games = matches.slice()
+      var rounds =[];
+      var roundCount = 0;
+
+      while(players.length > Math.pow(2,roundCount)) {
+        roundCount++;
+        var matches = games.splice(0,roundCount)
+        var round = new Round();
+        var relation = round.relation('matches');
+        relation.add(matches);
+        round.set('parent', bracket)
+        switch(roundCount) {
+          case 1:
+            round.set('name', 'Finals');
+            break;
+          case 2:
+            round.set('name', 'Semifinals');
+            break;
+          default:
+            if(matches.length === Math.pow(2,roundCount)) {
+              round.set('name', 'Round of' + Math.pow(2,roundCount))
+            } else {
+              round.set('name', 'Balance Round');
+            }
+        }
+        rounds.push(round);
+      }
+      return Parse.Object.saveAll(rounds);
+    }
+
+    return {
+      Round: Round,
+      createRounds: createRounds,
+      deleteRounds: deleteRounds
+    };
   }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
-    var attributes = ['bracket', 'gameNum', 'playerOne', 'playerTwo', 'scoreOne', 'scoreTwo', 'winner', 'loser', 'nextMatch', 'previousMatchOne', 'previousMatchTwo']
+    var attributes = ['bracket', 'gameNum', 'players', 'games', 'winner', 'loser', 'nextMatch']
     Parse.defineAttributes(Match, attributes);
 
     var deleteMatches = function (bracket) {
@@ -171,11 +216,28 @@ angular.module('onog.services', []).run(function ($http) {
       return Parse.Object.saveAll(matches);
     }
 
+    var setPlayers = function (players, games) {
+      var gamers = players.slice();
+      var matchIndex = games.length -1;
+      var matches =[];
+      while(gamers.length > 0){
+        //var match = new Match();
+        //var players = match.relation('players');
+        //match.id = games[matchIndex].id;
+        //players.add(gamers.splice(0,2));
+        games[matchIndex].relation('players').add(gamers.splice(0,2));
+        matchIndex--;
+        //matches.push(match);
+      }
+      return Parse.Object.saveAll(games);
+    }
+
     return {
       Match: Match,
       deleteMatches: deleteMatches,
       createMatches: createMatches,
-      setNextMatch: setNextMatch
+      setNextMatch: setNextMatch,
+      setPlayers: setPlayers
     };
   }])
   .factory('Bracket', ['Parse', function (Parse) {

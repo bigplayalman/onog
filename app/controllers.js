@@ -55,7 +55,7 @@ var Controllers = angular.module('onog.controllers', [])
       $uibModalInstance.close($scope.match);
     };
   })
-  .controller('BracketDetailController', function($scope, $state, $stateParams, $uibModal, Parse, Bracket, Match) {
+  .controller('BracketDetailController', function($scope, $state, $stateParams, $uibModal, $filter, Parse, Bracket, Round, Match) {
     $scope.bracket = new Bracket();
     $scope.players = [];
     $scope.bracket.id = $stateParams.id;
@@ -74,9 +74,23 @@ var Controllers = angular.module('onog.controllers', [])
       Match.deleteMatches($scope.bracket).then(function () {
         Match.createMatches($scope.players.length -1, $scope.bracket).then(function (matches) {
           Match.setNextMatch(matches).then(function(matches) {
-            console.log(matches);
+            var games = $filter('orderBy')(matches, 'gameNum');
+            Match.setPlayers($scope.players, games).then(function (matches) {
+              console.log(matches);
+              //var query = new Parse.Query(Match.Match);
+              //query.set('bracket', $scope.bracket);
+              //query.ascending("gameNum");
+              //query.find().then(function(games) {
+              //  console.log(games);
+              //})
+            })
+            //Round.deleteRounds($scope.bracket).then(function () {
+            //  Round.createRounds($scope.bracket, games, $scope.players).then(function (rounds) {
+            //    console.log(rounds);
+            //  });
+            //});
           });
-        })
+        });
       });
     }
   })
