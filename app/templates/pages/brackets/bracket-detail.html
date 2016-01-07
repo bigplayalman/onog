@@ -4,23 +4,54 @@
     <strong>Players: </strong> {{bracket.registeredSlots}} / {{bracket.totalSlots}}<br>
     <button class="btn btn-primary" ng-click="generateBracket()">Generate Bracket</button>
 
-    <div class="bracket-list" style="width: 100%">
-        <div class="round" ng-repeat="round in rounds" style="width: calc(100% / {{rounds.length}});">
-            <h3>{{round.name}}</h3>
-            <div class="matches">
-                <div class="panel panel-primary" ng-repeat="match in round.matches" ng-click="updateMatch(match)">
-                    <div class="panel-body">
-                        <span> {{match.playerOne.username || 'n/a'}}</span>
-                        <p class="pull-right text-right">{{match.playerOneScore}}</p>
+    <div class="tournament-title" ng-show="balance">
+        <h1 class="title">{{bracket.name}} -- Balance Round</h1>
+    </div>
 
-                    </div>
-                    <div class="panel-footer">
-                        <span> {{match.playerTwo.username || 'n/a'}}</span>
-                        <p class="pull-right text-right">{{match.playerTwoScore}}</p>
-                    </div>
+    <div class="tournament-bracket" ng-show="balance">
+        <div class="round"
+             ng-repeat="round in balance"
+             style="width: calc(100% / {{balance.length}});">
+
+            <div class="matches">
+                <div class="single-match"
+                     ng-repeat="match in round.matches"
+                     ng-click="updateMatch(match)">
+
+                    <p>{{match.player1.username || 'tbd'}}</p>
+                    <p>{{match.player2.username || 'tbd'}}</p>
+
                 </div>
             </div>
-        </div>
 
+        </div>
+    </div>
+
+    <div class="tournament-title">
+        <h1 class="title">{{bracket.name}} -- Main Event</h1>
+        <div class="round-name"
+             ng-repeat="round in rounds"
+             style="width: calc(100% / {{rounds.length}});">
+            <h3>{{round.name}}</h3>
+        </div>
+    </div>
+
+    <div class="tournament-bracket">
+        <div class="round"
+             ng-repeat="round in rounds"
+             style="width: calc(100% / {{rounds.length}});">
+
+            <div class="matches">
+                <div class="single-match"
+                     ng-repeat="match in round.matches"
+                     ng-click="updateMatch(match)">
+
+                    <p>{{match.player1.username || 'tbd'}}</p>
+                    <p>{{match.player2.username || 'tbd'}}</p>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>

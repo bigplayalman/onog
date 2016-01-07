@@ -84,9 +84,26 @@ body {
 .thumbnail {
   margin-top: 20px; }
 
-.round {
+.round-name {
   float: left;
-  padding: 10px; }
+  text-align: center; }
 
-.matches .panel:hover {
-  border: 1px solid greenyellow; }
+.round {
+  max-width: 50%;
+  display: block;
+  text-align: center; }
+  .round .single-match {
+    border: 1px solid black;
+    border-radius: 25px;
+    padding: 10px;
+    margin: 10px; }
+
+.tournament-title {
+  display: inline-block;
+  width: 100%; }
+
+.tournament-bracket {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid; }

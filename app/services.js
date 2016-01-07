@@ -83,7 +83,7 @@ angular.module('onog.services', []).run(function ($http) {
   }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
-    var attributes = ['bracket', 'gameNum', 'players', 'round', 'games', 'winner', 'loser', 'nextMatch']
+    var attributes = ['bracket', 'gameNum', 'player1', 'player2', 'round', 'games', 'winner', 'loser', 'nextMatch']
     Parse.defineAttributes(Match, attributes);
 
     var deleteMatches = function (bracket) {
@@ -125,8 +125,19 @@ angular.module('onog.services', []).run(function ($http) {
       var matchIndex = games.length -1;
       var matches =[];
       while(gamers.length > 0){
-        games[matchIndex].relation('players').add(gamers.splice(0,2));
+        if(gamers.length > 0) {
+          var player = gamers[0];
+          games[matchIndex].set('player1', player)
+          gamers.splice(0,1);
+        }
+        if (gamers.length > 0) {
+          var player = gamers[0];
+          games[matchIndex].set('player2', player)
+          gamers.splice(0,1);
+        }
+
         matchIndex--;
+
       }
       return Parse.Object.saveAll(games);
     }
@@ -143,8 +154,6 @@ angular.module('onog.services', []).run(function ($http) {
         games[gamesIndex-1].set('round', rounds[roundIndex-1]);
         console.log('game: ' + gamesIndex + 'round: ' + roundIndex);
         gamesIndex++;
-
-
       }
 
       while(roundIndex < rounds.length) {

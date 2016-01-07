@@ -68,7 +68,38 @@ var Controllers = angular.module('onog.controllers', [])
       });
     }).catch(function(err) {
       $state.go('viewTournaments');
+    }).then(function () {
+      var query = new Parse.Query(Match.Match);
+      query.equalTo('bracket', $scope.bracket);
+      query.include('nextMatch');
+      query.include('player1');
+      query.include('player2');
+      query.include('round');
+      query.ascending('gameNum');
+      query.find().then(function(matches) {
+        $scope.displayBracket(matches);
+      })
     });
+
+    $scope.displayBracket = function (matches) {
+      var rounds = [];
+      var balance =[];
+      var roundCount = 1;
+      while($filter('filter')(matches, {round:{roundNum:roundCount}}).length > 0) {
+        var round = {};
+        var games = $filter('filter')(matches, {round:{roundNum:roundCount}});
+        round.name = games[0].round.name;
+        round.matches = games;
+        roundCount++;
+        if(round.name === 'Balance Round') {
+          balance.push(round);
+        } else {
+          rounds.push(round);
+        }
+      }
+      $scope.balance = balance;
+      $scope.rounds = rounds.reverse();
+    }
 
     $scope.generateBracket = function () {
       Match.deleteMatches($scope.bracket).then(function () {
@@ -80,7 +111,7 @@ var Controllers = angular.module('onog.controllers', [])
               Round.deleteRounds($scope.bracket).then(function () {
                 Round.createRounds($scope.bracket, games.length, $scope.players).then(function (rounds) {
                   Match.setRounds(rounds, games). then(function(matches){
-                    console.log(matches);
+                    $scope.displayBracket(matches);
                   });
                 });
               });
