@@ -96,7 +96,9 @@ body {
     border: 1px solid black;
     border-radius: 25px;
     padding: 10px;
-    margin: 10px; }
+    margin: 10px;
+    display: block;
+    text-decoration: none; }
 
 .tournament-title {
   display: inline-block;
@@ -106,4 +108,4 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid; }
+  border-bottom: 1px solid black; }

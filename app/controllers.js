@@ -37,7 +37,7 @@ var Controllers = angular.module('onog.controllers', [])
       bracket.save();
     }
   })
-  .controller('MatchResultsController', function($scope, $uibModalInstance, match) {
+  .controller('MatchResultsController', function($scope, $uibModalInstance, match, Match) {
     $scope.match = match;
 
     $scope.cancel = function () {
@@ -45,14 +45,9 @@ var Controllers = angular.module('onog.controllers', [])
     };
 
     $scope.submit = function () {
-      if($scope.match.playerOneScore > $scope.match.playerTwoScore) {
-        $scope.match.set('winner', $scope.match.playerOne);
-        $scope.match.set('loser', $scope.match.playerTwo);
-      } else {
-        $scope.match.set('winner', $scope.match.playerTwo);
-        $scope.match.set('loser', $scope.match.playerOne);
-      }
-      $uibModalInstance.close($scope.match);
+      Match.submitMatch($scope.match).then(function (data) {
+        $uibModalInstance.close($scope.match);
+      });
     };
   })
   .controller('BracketDetailController', function($scope, $state, $stateParams, $uibModal, $filter, Parse, Bracket, Round, Match) {
@@ -61,7 +56,9 @@ var Controllers = angular.module('onog.controllers', [])
     $scope.bracket.id = $stateParams.id;
     $scope.bracket.fetch().then(function (bracket) {
       $scope.bracket = bracket;
-      bracket.relation('players').query().find({
+      var query = bracket.relation('players').query();
+      query.descending('username');
+      query.find({
         success: function(players) {
           $scope.players = players;
         }
@@ -121,24 +118,6 @@ var Controllers = angular.module('onog.controllers', [])
       });
     }
   })
-  .controller('SingleMatchController', function($scope, $uibModal) {
-    $scope.updateMatch = function (match) {
-      $scope.match = match;
-      var modalInstance = $uibModal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: 'templates/modals/matchResultsModal.html',
-        controller: 'MatchResultsController',
-        resolve: {
-          match: function () {
-            return match;
-          }
-        }
-      });
-      modalInstance.result.then(function (match) {
-        console.log(match);
-      });
-    }
-  })
   .controller('CreateBracketController', function($scope, Parse, Bracket) {
     $scope.bracket = new Bracket();
     $scope.createBracket = function () {
@@ -148,6 +127,49 @@ var Controllers = angular.module('onog.controllers', [])
       });
     }
 
+  })
+  .controller('MatchController', function($scope, $stateParams, Parse, Match) {
+    var query = new Parse.Query(Match.Match);
+    query.include('nextMatch');
+    query.include('player1');
+    query.include('player2');
+    query.include('winner1');
+    query.include('winner2');
+    query.include('round');
+    query.get($stateParams.id, {
+      success: function(match) {
+        $scope.match = match;
+      },
+      error: function(object, error) {
+        // The object was not retrieved successfully.
+        // error is a Parse.Error with an error code and message.
+      }
+    });
+    $scope.submitMatch = function () {
+
+      var winner = null;
+      $scope.winner === $scope.match.player1.id ? winner = $scope.match.player1  : winner = $scope.match.player2
+      $scope.match.set('winner', winner);
+
+      if($scope.match.round.name === 'Balance Round') {
+        if($scope.match.gameNum % 2 === 0) {
+          $scope.match.nextMatch.set('player1', winner)
+        } else {
+          $scope.match.nextMatch.set('player2', winner);
+        }
+      } else {
+        if($scope.match.gameNum % 2 === 0) {
+          $scope.match.nextMatch.set('player2', winner)
+        } else {
+          $scope.match.nextMatch.set('player1', winner);
+        }
+      }
+
+      $scope.match.save().then(function (match) {
+        console.log(match);
+      })
+
+    }
   })
   .controller('UserController', function($scope, $state, Parse) {
 

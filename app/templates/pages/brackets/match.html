@@ -1,0 +1,27 @@
+<div class="well">
+    <h3>Match Details # {{match.gameNum}}</h3>
+    <div class="row">
+        <div class="col-xs-5">
+            {{match.player1.username}}
+        </div>
+        <div class="col-xs-2">
+            vs.
+        </div>
+        <div class="col-xs-5">
+            {{match.player2.username}}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            Winner
+            <select ng-model="winner">
+                <option ng-value="match.player1.id">{{match.player1.username}}</option>
+                <option ng-value="match.player2.id">{{match.player2.username}}</option>
+            </select>
+        </div>
+        <div class="col-xs-12">
+            <button class="btn btn-primary" ng-click="submitMatch()">Update Match</button>
+            <a ui-sref="bracket-detail({id:match.bracket.id})" class="btn btn-success">Back to Bracket</a>
+        </div>
+    </div>
+</div>

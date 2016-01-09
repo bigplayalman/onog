@@ -14,14 +14,14 @@
              style="width: calc(100% / {{balance.length}});">
 
             <div class="matches">
-                <div class="single-match"
-                     ng-repeat="match in round.matches"
-                     ng-click="updateMatch(match)">
+                <a class="single-match"
+                   ng-repeat="match in round.matches"
+                   ui-sref="single-match({id:match.id})">
 
                     <p>{{match.player1.username || 'tbd'}}</p>
                     <p>{{match.player2.username || 'tbd'}}</p>
 
-                </div>
+                </a>
             </div>
 
         </div>
@@ -42,14 +42,13 @@
              style="width: calc(100% / {{rounds.length}});">
 
             <div class="matches">
-                <div class="single-match"
-                     ng-repeat="match in round.matches"
-                     ng-click="updateMatch(match)">
-
+                <a class="single-match"
+                   ng-repeat="match in round.matches"
+                   ng-click="updateMatch(match)"
+                   ui-sref="single-match({id:match.id})">
                     <p>{{match.player1.username || 'tbd'}}</p>
                     <p>{{match.player2.username || 'tbd'}}</p>
-
-                </div>
+                </a>
             </div>
 
         </div>

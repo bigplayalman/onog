@@ -37,7 +37,12 @@ angular.module('onog.routes', [])
       })
       .state('bracket-detail', {
         url: '/bracket/:id',
-        templateUrl: '/templates/pages/brackets/bracket-detail.html',
+        templateUrl: 'templates/pages/brackets/bracket-detail.html',
         controller: 'BracketDetailController'
+      })
+      .state('single-match', {
+        url: '/match/:id',
+        templateUrl: 'templates/pages/brackets/match.html',
+        controller: 'MatchController'
       })
   });

@@ -83,7 +83,7 @@ angular.module('onog.services', []).run(function ($http) {
   }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
-    var attributes = ['bracket', 'gameNum', 'player1', 'player2', 'round', 'games', 'winner', 'loser', 'nextMatch']
+    var attributes = ['bracket', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason']
     Parse.defineAttributes(Match, attributes);
 
     var deleteMatches = function (bracket) {
@@ -101,6 +101,7 @@ angular.module('onog.services', []).run(function ($http) {
       while(gameCount < numGames) {
         var match = new Match();
         match.set('gameNum', gameCount);
+        match.set('isValid', true);
         match.set('bracket', bracket);
         matches.push(match);
         gameCount++;
@@ -127,7 +128,8 @@ angular.module('onog.services', []).run(function ($http) {
       while(gamers.length > 0){
         if(gamers.length > 0) {
           var player = gamers[0];
-          games[matchIndex].set('player1', player)
+          games[matchIndex].set('player1', player);
+          games[matchIndex].set('score1', 0);
           gamers.splice(0,1);
         }
         if (gamers.length > 0) {
@@ -165,7 +167,16 @@ angular.module('onog.services', []).run(function ($http) {
         }
         roundIndex++;
       }
-      return Parse.Object.saveAll(games);;
+      return Parse.Object.saveAll(games);
+    }
+    var submitMatch = function (match) {
+      if(match.score1 > match.score2) {
+        match.set('winner', match.player1);
+        match.set('loser', match.player2);
+      } else {
+        match.set('winner', match.player2);
+        match.set('loser', match.player1);
+      }
     }
 
     return {
@@ -174,7 +185,8 @@ angular.module('onog.services', []).run(function ($http) {
       createMatches: createMatches,
       setNextMatch: setNextMatch,
       setPlayers: setPlayers,
-      setRounds: setRounds
+      setRounds: setRounds,
+      submitMatch: submitMatch
     };
   }])
   .factory('Bracket', ['Parse', function (Parse) {
