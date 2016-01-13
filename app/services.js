@@ -195,6 +195,31 @@ angular.module('onog.services', []).run(function ($http) {
 
     return Bracket;
   }])
+  .service('Admin', function(Parse) {
+    var admin = null;
+    var returnRole = function () {
+      return admin;
+    }
+    var getRole = function (usr) {
+      var adminRoleQuery = new Parse.Query(Parse.Role);
+      adminRoleQuery.equalTo('name', 'Administrators');
+      adminRoleQuery.equalTo('users', usr);
+
+      return adminRoleQuery.first();
+    }
+    var setRole = function (roles) {
+      if(roles) {
+        admin = true;
+      } else {
+        admin = false;
+      }
+    }
+    return {
+      returnRole: returnRole,
+      getRole: getRole,
+      setRole: setRole
+    }
+  })
   .service('BracketList', function(Parse, Bracket) {
     var getAvailableList = function() {
       var query = new Parse.Query(Bracket);

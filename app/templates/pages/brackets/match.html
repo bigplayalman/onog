@@ -12,6 +12,15 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-xs-6">
+            <button class="btn btn-primary" ng-click="updateMatch(true)">Win</button>
+        </div>
+        <div class="col-xs-6">
+            <button class="btn btn-primary" ng-click="updateMatch(false)">Loss</button>
+        </div>
+    </div>
+    <div class="row">
+
         <div class="col-xs-12">
             Winner
             <select ng-model="winner">

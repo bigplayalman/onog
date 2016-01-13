@@ -4,8 +4,33 @@ angular.module('onog.routes', [])
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/home');
     $stateProvider
+
+      .state('admin', {
+        abstract: true,
+        url: '/admin',
+        data: {
+          requireLogin: true,
+          requireAdmin: true
+        },
+        template: '<div ui-view="menu"></div><div ui-view="content"></div>'
+      })
+      .state('admin.dashboard', {
+        url: '',
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/admin-menu.html',
+          },
+          'content': {
+            templateUrl: 'templates/admin/admin-home.html',
+            controller: 'AdminController'
+          }
+        }
+      })
       .state('login' , {
         url: '/login',
+        data: {
+          requireLogin: false,
+        },
         templateUrl: 'templates/pages/login.html',
         controller: 'UserController'
       })
@@ -16,6 +41,9 @@ angular.module('onog.routes', [])
       })
       .state('home', {
         url: '/home',
+        data: {
+          requireLogin: false,
+        },
         templateUrl: 'templates/pages/home.html',
         controller: 'UserController'
 

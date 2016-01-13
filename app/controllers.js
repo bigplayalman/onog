@@ -1,4 +1,4 @@
-var Controllers = angular.module('onog.controllers', [])
+var Controllers = angular.module('onog.controllers', ['AdminControllersModule'])
   .controller('MenuController', function($scope, $state) {
       $scope.logout = function () {
         Parse.User.logOut();
@@ -23,7 +23,11 @@ var Controllers = angular.module('onog.controllers', [])
       $scope.availableList.push(bracket);
       $scope.registeredList.splice(index, 1);
       bracket.set('registeredSlots', registered);
-      bracket.save();
+      bracket.save().then(function () {
+        var num = Parse.User.current().get('numOfTourneys') - 1;
+        Parse.User.current().set('numOfTourneys', num);
+        Parse.User.current().save();
+      });
     }
 
     $scope.signUp = function (bracket) {
@@ -34,21 +38,11 @@ var Controllers = angular.module('onog.controllers', [])
       $scope.registeredList.push(bracket);
       $scope.availableList.splice(index, 1);
       bracket.set('registeredSlots', registered);
-      bracket.save();
-    }
-  })
-  .controller('MatchResultsController', function($scope, $uibModalInstance, match, Match) {
-    $scope.match = match;
-
-    $scope.cancel = function () {
-      $uibModalInstance.dismiss('cancel');
-    };
-
-    $scope.submit = function () {
-      Match.submitMatch($scope.match).then(function (data) {
-        $uibModalInstance.close($scope.match);
+      bracket.save().then(function () {
+        Parse.User.current().increment('numOfTourneys');
+        Parse.User.current().save();
       });
-    };
+    }
   })
   .controller('BracketDetailController', function($scope, $state, $stateParams, $uibModal, $filter, Parse, Bracket, Round, Match) {
     $scope.bracket = new Bracket();
@@ -145,6 +139,8 @@ var Controllers = angular.module('onog.controllers', [])
         // error is a Parse.Error with an error code and message.
       }
     });
+
+
     $scope.submitMatch = function () {
 
       var winner = null;
