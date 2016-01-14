@@ -7,36 +7,23 @@ var onog = angular.module('onog', ['ngParse', 'ui.bootstrap', 'ui.router', 'onog
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
       var requireLogin = toState.data.requireLogin;
+      var requireAdmin = toState.data.requireAdmin;
+      var name = toState.name;
 
       if (requireLogin && Parse.User.current() === null) {
         event.preventDefault();
         $state.go('login');
-        // get me a login modal!
-      } else {
-        var requireAdmin = toState.data.requireAdmin;
-
-        if (requireAdmin) {
-          if (!Admin.returnRole()) {
-            Admin.getRole(Parse.User.current())
-              .then(function (roles) {
-                Admin.setRole(roles);
-                if (!Admin.returnRole()) {
-                  event.preventDefault();
-                  $state.go('home');
-                }
-              });
+      } else if(requireAdmin && !Admin.returnRole()) {
+        event.preventDefault();
+        Admin.getRole(Parse.User.current()).then(function (role) {
+          if(role){
+            Admin.setRole(role);
+            $state.go(name);
           } else {
-            event.preventDefault();
             $state.go('home');
           }
-        }
-
-
+        });
       }
-
-
-
     });
-
   });
 

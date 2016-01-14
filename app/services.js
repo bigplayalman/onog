@@ -208,11 +208,7 @@ angular.module('onog.services', []).run(function ($http) {
       return adminRoleQuery.first();
     }
     var setRole = function (roles) {
-      if(roles) {
-        admin = true;
-      } else {
-        admin = false;
-      }
+      admin = roles
     }
     return {
       returnRole: returnRole,

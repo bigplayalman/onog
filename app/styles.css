@@ -2,9 +2,18 @@ html {
   height: 100%;
   overflow: hidden; }
 
-body {
+body, .main, .container-fluid {
   height: 100%;
   overflow: scroll; }
+
+.menu {
+  background: #FFFDAA; }
+
+.content {
+  background: #CAEA9C; }
+
+.fa-fw {
+  width: 2em; }
 
 .top-margin-20 {
   margin-top: 20px; }
