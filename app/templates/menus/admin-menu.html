@@ -2,6 +2,16 @@
     <h3>ONOG Admin</h3>
 </div>
 <ul class="nav nav-pills nav-stacked">
-    <li class="active"><a ui-sref="admin.dashboard"><i class="fa fa-home fa-fw"></i>Home</a></li>
-    <li><a ui-sref="login" ng-click="logout()"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+    <li ng-repeat="item in menuItems" ng-class="{'active':active.path == item.name}">
+        <a ui-sref="{{item.name}}">
+            <i class="fa fa-fw {{item.icon}}"></i>
+            {{item.title}}
+        </a>
+    </li>
+    <li>
+        <a ui-sref="login" ng-click="logout()">
+            <i class="fa fa-sign-out fa-fw"></i>
+            Logout
+        </a>
+    </li>
 </ul>

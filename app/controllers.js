@@ -5,6 +5,7 @@ var Controllers = angular.module('onog.controllers', ['AdminControllersModule'])
         $state.go('login');
       }
   })
+
   .controller('ViewTournamentsController', function($scope, Parse, BracketList) {
 
     BracketList.getAvailableList().then(function (brackets) {

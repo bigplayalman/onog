@@ -6,12 +6,6 @@ body, .main, .container-fluid {
   height: 100%;
   overflow: scroll; }
 
-.menu {
-  background: #FFFDAA; }
-
-.content {
-  background: #CAEA9C; }
-
 .fa-fw {
   width: 2em; }
 

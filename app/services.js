@@ -189,6 +189,28 @@ angular.module('onog.services', []).run(function ($http) {
       submitMatch: submitMatch
     };
   }])
+  .factory('Tournament', ['Parse', function(Parse) {
+    var Model = Parse.Object.extend('Tournament');
+    Parse.defineAttributes(Model, ['name', 'type', 'game', 'max', 'current', 'status', 'details']);
+
+    var setTournament = function (attributes) {
+      var tourney = new Model();
+      tourney.set(attributes);
+      return tourney.save();
+    }
+
+    var getActiveTournaments = function () {
+      var query = new Parse.Query(Model);
+      query.equalTo('status', 'active');
+      return query.find();
+    }
+
+    return {
+      Model: Model,
+      getActiveTournaments: getActiveTournaments,
+      setTournament: setTournament
+    };
+  }])
   .factory('Bracket', ['Parse', function (Parse) {
     var Bracket = Parse.Object.extend('Bracket');
     Parse.defineAttributes(Bracket, ['name', 'type', 'game', 'totalSlots', 'registeredSlots']);

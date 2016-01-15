@@ -19,11 +19,55 @@ angular.module('onog.routes', [])
         views: {
           'menu': {
             templateUrl: 'templates/menus/admin-menu.html',
-            controller: 'AdminController'
+            controller: 'AdminMenuController'
           },
           'content': {
             templateUrl: 'templates/admin/admin-home.html',
             controller: 'AdminController'
+          }
+        }
+      })
+      .state('admin.tournament', {
+        url: '/tournament',
+        abstract: true,
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/admin-menu.html',
+            controller: 'AdminMenuController'
+          },
+          'content': {
+            template: '<div ui-view="tourney"></div>'
+          }
+        }
+      })
+      .state('admin.tournament.create', {
+        url: '/create',
+        views: {
+          'tourney': {
+            templateUrl: 'templates/tournaments/tourney.html',
+            controller: 'TourneyController'
+          }
+        }
+      })
+      .state('admin.tournaments', {
+        url: '/tournaments',
+        abstract: true,
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/admin-menu.html',
+            controller: 'AdminMenuController'
+          },
+          'content': {
+            template: '<div ui-view="tourneyList"></div>'
+          }
+        }
+      })
+      .state('admin.tournaments.active', {
+        url: '/active',
+        views: {
+          'tourneyList': {
+            templateUrl: 'templates/tournaments/active-tournaments.html',
+            controller: 'TournamentsController'
           }
         }
       })
@@ -37,6 +81,9 @@ angular.module('onog.routes', [])
       })
       .state('register' , {
         url: '/register',
+        data: {
+          requireLogin: false,
+        },
         templateUrl: 'templates/pages/register.html',
         controller: 'UserController'
       })
@@ -51,11 +98,17 @@ angular.module('onog.routes', [])
       })
       .state('viewTournaments', {
         url: '/view-tournaments',
+        data: {
+          requireLogin: false,
+        },
         templateUrl: 'templates/pages/view-tournaments.html',
         controller: 'ViewTournamentsController'
       })
       .state('createBracket', {
         url: '/create-bracket',
+        data: {
+          requireLogin: true,
+        },
         templateUrl: 'templates/pages/create-bracket.html',
         controller: 'CreateBracketController'
       })
