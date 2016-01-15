@@ -12,7 +12,7 @@ angular.module('onog.routes', [])
           requireLogin: true,
           requireAdmin: true
         },
-        template: '<div ui-view="menu" class="menu col-sm-3"></div><div ui-view="content" class="content col-sm-9"></div>',
+        template: '<div ui-view="menu" class="menu col-md-3"></div><div ui-view="content" class="content col-md-9"></div>',
       })
       .state('admin.dashboard', {
         url: '',
