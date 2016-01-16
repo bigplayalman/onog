@@ -1,13 +1,32 @@
 {
-  "name": "onog",
-  "version": "0.0.1",
-  "license": "MIT License",
-  "repository": "",
+  "name": "onog-web",
+  "version": "1.0.0",
+  "description": "onog for browsers and mobile",
   "dependencies": {
-    "gulp": "^3.9.0",
-    "gulp-connect": "^2.2.0"
+    "angular": "1.4.8",
+    "angular-animate": "1.4.8",
+    "angular-parse": "^0.2.2",
+    "angular-ui-router": "0.2.15",
+    "bootswatch": "^3.3.6",
+    "parse": "^1.6.14"
   },
   "devDependencies": {
-    "gulp-build": "^0.5.3"
+    "del": "2.2.0",
+    "gulp": "3.9.0",
+    "gulp-autoprefixer": "3.1.0",
+    "gulp-sass": "2.1.1",
+    "gulp-uglify": "1.5.1",
+    "gulp-if": "2.0.0",
+    "gulp-insert": "0.5.0",
+    "gulp-concat": "2.6.0",
+    "gulp-rename": "1.2.0",
+    "gulp-minify-css": "1.2.3",
+    "gulp-angular-templatecache": "1.8.0",
+    "gulp-connect": "2.3.1",
+    "merge-stream": "1.0.0",
+    "yargs": "3.31.0"
+  },
+  "scripts": {
+    "start": "gulp --dev"
   }
 }

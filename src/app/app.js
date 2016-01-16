@@ -1,4 +1,12 @@
-var onog = angular.module('onog', ['ngParse', 'ui.bootstrap', 'ui.router', 'onog.routes', 'onog.controllers', 'onog.services', 'onog.directives'])
+angular.module('onog', [
+  'ngParse',
+  'ui.router',
+  'onog.templates',
+  'onog.routes',
+  'onog.controllers',
+  'onog.services',
+  'onog.directives'
+])
 
   .config(function(ParseProvider) {
   ParseProvider.initialize('nYsB6tmBMYKYMzM5iV9BUcBvHWX89ItPX5GfbN6Q', 'zrin8GEBDVGbkl1ioGEwnHuP70FdG6HhzTS8uGjz');
@@ -25,5 +33,5 @@ var onog = angular.module('onog', ['ngParse', 'ui.bootstrap', 'ui.router', 'onog
         });
       }
     });
-  });
+  })
 

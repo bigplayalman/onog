@@ -1,4 +1,4 @@
-angular.module('AdminControllersModule', [])
+angular.module('onog.controllers.admin', [])
   .controller('AdminController', function($scope, Parse, Admin) {
 
   })

@@ -1,11 +1,10 @@
-var Controllers = angular.module('onog.controllers', ['AdminControllersModule'])
+angular.module('onog.controllers', ['onog.controllers.admin'])
   .controller('MenuController', function($scope, $state) {
       $scope.logout = function () {
         Parse.User.logOut();
         $state.go('login');
       }
   })
-
   .controller('ViewTournamentsController', function($scope, Parse, BracketList) {
 
     BracketList.getAvailableList().then(function (brackets) {
