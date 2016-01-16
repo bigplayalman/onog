@@ -1,4 +1,4 @@
-angular.module('onog.controllers', ['onog.controllers.admin'])
+angular.module('onog.controllers', ['onog.controllers.admin', 'onog.controllers.tournaments'])
   .controller('MenuController', function($scope, $state) {
       $scope.logout = function () {
         Parse.User.logOut();

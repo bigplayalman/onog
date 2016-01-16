@@ -40,6 +40,26 @@ angular.module('onog.routes', [])
           }
         }
       })
+      .state('admin.tournament.id', {
+        url: '/:id',
+        abstract: true,
+        views: {
+          'tourney': {
+            template: '<div ui-view="tourney-info"></div>',
+            controller: 'TourneyDetailsController'
+          }
+        }
+      })
+
+      .state('admin.tournament.id.details', {
+        url: '/details',
+        views: {
+          'tourney-info': {
+            templateUrl: 'templates/tournaments/tourney.html',
+            controller: 'TourneyDetailsController'
+          }
+        }
+      })
       .state('admin.tournament.create', {
         url: '/create',
         views: {
@@ -67,7 +87,7 @@ angular.module('onog.routes', [])
         views: {
           'tourneyList': {
             templateUrl: 'templates/tournaments/active-tournaments.html',
-            controller: 'TournamentsController'
+            controller: 'ActiveTourneysController'
           }
         }
       })

@@ -22,11 +22,9 @@ angular.module('onog', [
         event.preventDefault();
         $state.go('login');
       } else if(requireAdmin && !Admin.returnRole()) {
-        event.preventDefault();
         Admin.getRole(Parse.User.current()).then(function (role) {
           if(role){
             Admin.setRole(role);
-            $state.go(name);
           } else {
             $state.go('home');
           }

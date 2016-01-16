@@ -1,1 +1,16 @@
-active tournaments
+<div class="row top-margin-20">
+    <a class="col-sm-6" ng-repeat="tourney in tournaments" ui-sref="admin.tournament.id.details({id: tourney.id})">
+        <div class="panel" ng-class="{
+        'panel-danger': tourney.current <= (tourney.max/4),
+        'panel-info': tourney.current <= (tourney.max/2),
+        'panel-success': tourney.current > (tourney.max/2)
+        }">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{tourney.name}}</h3>
+            </div>
+            <div class="panel-body">
+                Registered Slots: {{tourney.current}}/{{tourney.max}}
+            </div>
+        </div>
+    </a>
+</div>
