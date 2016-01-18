@@ -16,6 +16,9 @@ module.exports = {
     scripts: ['app/**/*.js'],
     assets: ['**', '!{app,app/**,sass,sass/**}'],
   },
+  fonts: {
+    awesome: 'font-awesome/'
+  },
   libs: {
     dev: [
       'angular/angular.js',
@@ -23,14 +26,17 @@ module.exports = {
       'angular-ui-router/build/angular-ui-router.js',
       'parse/dist/parse-latest.min.js',
       'angular-parse/angular-parse.js',
-      'bootswatch/superhero/bootstrap.css'
+      'bootswatch/superhero/bootstrap.css',
+      'font-awesome/css/font-awesome.min.css'
     ],
     prod: [
       'angular/angular.min.js',
       'angular-animate/angular-animate.min.js',
       'angular-ui-router/build/angular-ui-router.min.js',
       'parse/dist/parse-latest.min.js',
-      'angular-parse/angular-parse.js'
+      'angular-parse/angular-parse.js',
+      'bootswatch/superhero/bootstrap.min.css',
+      'font-awesome/css/font-awesome.min.css'
     ]
   }
 };

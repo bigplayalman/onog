@@ -20,13 +20,16 @@ gulp.task('clean', function() {
 });
 
 gulp.task('copy', ['clean'], function() {
+  var fonts = gulp.src(config.fonts.awesome + 'fonts/**.*', {cwd: './node_modules/'})
+    .pipe(gulp.dest(config.dest + 'fonts/'));
+
   var lib = gulp.src(config.libs[config.target], {cwd: './node_modules/'})
     .pipe(gulp.dest(config.dest + 'lib/'));
 
   var assets = gulp.src(config.globs.assets, {cwd: config.src})
     .pipe(gulp.dest(config.dest));
 
-  return merge(lib, assets);
+  return merge(fonts, lib, assets);
 });
 
 gulp.task('build-sass', ['clean'], function() {

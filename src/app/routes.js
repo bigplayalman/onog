@@ -99,6 +99,8 @@ angular.module('onog.routes', [])
           }
         }
       })
+
+
       .state('login' , {
         url: '/login',
         data: {
@@ -115,6 +117,7 @@ angular.module('onog.routes', [])
         templateUrl: 'templates/pages/register.html',
         controller: 'UserController'
       })
+
       .state('home', {
         url: '/home',
         data: {

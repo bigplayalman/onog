@@ -8,7 +8,7 @@ angular.module('onog.controllers.admin', [])
     }
     $scope.menuItems = [
       {
-        title: 'Home',
+        title: 'Admin Home',
         icon: 'fa-home',
         name: 'admin.dashboard'
       },
@@ -21,6 +21,11 @@ angular.module('onog.controllers.admin', [])
         title: 'Create a Tournament',
         icon: 'fa-fort-awesome',
         name: 'admin.tournament.create'
+      },
+      {
+        title: 'Back to Homepage',
+        icon: 'fa-home',
+        name: 'home'
       }
     ];
 
