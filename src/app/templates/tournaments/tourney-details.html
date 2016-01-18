@@ -1,0 +1,28 @@
+<div class="row">
+    <div class="col-xs-6">
+        <h3>Tournament Details</h3>
+    </div>
+    <div class="col-xs-6">
+        <h3 class="text-right">Current Status:
+            <span class="text-capitalize"
+                  ng-class="{'text-success': tourney.status ==='active','text-warning': tourney.status ==='on hold','text-info': tourney.status ==='completed'}">
+                {{tourney.status}}
+            </span>
+        </h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <h4><strong>Tournament Name: </strong>{{tourney.name}}</h4>
+        <strong>Tournament Type: </strong>{{tourney.type}}
+        <br>
+        <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
+    </div>
+    <div class="col-xs-6">
+        <button class="btn btn-danger pull-right" ng-click="delete()">Delete</button>
+        <button class="btn btn-primary pull-right" ng-click="edit()">Edit</button>
+    </div>
+</div>
+<div class="row">
+
+</div>

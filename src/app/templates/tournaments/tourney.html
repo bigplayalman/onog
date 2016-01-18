@@ -1,6 +1,14 @@
 <form class="form-horizontal" novalidate ng-submit="submitTourney()">
     <fieldset>
         <legend>Tourney Detail</legend>
+        <div class="form-group" ng-show="status">
+            <label class="col-lg-2 control-label">Tournament Status</label>
+            <div class="col-lg-10">
+                <select class="form-control" ng-model="tourney.status"
+                        ng-options="option.value as option.name for option in options">
+                </select>
+            </div>
+        </div>
         <div class="form-group">
             <label class="col-lg-2 control-label">Tournament Name</label>
             <div class="col-lg-10">

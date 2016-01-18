@@ -86,6 +86,17 @@ angular.module('onog.services', []).run(function ($http) {
     var attributes = ['bracket', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason']
     Parse.defineAttributes(Match, attributes);
 
+    var getMatches = function (tourney) {
+      var query = new Parse.Query(Match);
+      query.equalTo('tournament', tourney);
+      query.include('nextMatch');
+      query.include('player1');
+      query.include('player2');
+      query.include('round');
+      query.ascending('gameNum');
+      return query.find();
+    }
+
     var deleteMatches = function (bracket) {
       var query = new Parse.Query(Match);
       query.equalTo('bracket', bracket);
@@ -186,7 +197,8 @@ angular.module('onog.services', []).run(function ($http) {
       setNextMatch: setNextMatch,
       setPlayers: setPlayers,
       setRounds: setRounds,
-      submitMatch: submitMatch
+      submitMatch: submitMatch,
+      getMatches: getMatches
     };
   }])
   .factory('Tournament', ['Parse', function(Parse) {
