@@ -2,7 +2,7 @@ angular.module('onog.routes', [])
 
   .config(function($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/home');
+    $urlRouterProvider.otherwise('/');
     $stateProvider
 
       .state('admin', {
@@ -118,14 +118,27 @@ angular.module('onog.routes', [])
         controller: 'UserController'
       })
 
+
       .state('home', {
-        url: '/home',
+        url: '/',
+        abstract: true,
         data: {
           requireLogin: false,
         },
-        templateUrl: 'templates/pages/home.html',
-        controller: 'UserController'
-
+        template: '<div ui-view="menu" class="navbar navbar-inverse"></div><div ui-view="content"></div>'
+      })
+      .state('home.index', {
+        url: '',
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/home-menu.html',
+            controller: 'MenuController'
+          },
+          'content': {
+            templateUrl: 'templates/pages/home.html',
+            controller: 'UserController'
+          }
+        }
       })
       .state('viewTournaments', {
         url: '/view-tournaments',

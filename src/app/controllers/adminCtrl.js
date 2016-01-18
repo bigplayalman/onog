@@ -24,7 +24,7 @@ angular.module('onog.controllers.admin', [])
       },
       {
         title: 'Back to Homepage',
-        icon: 'fa-home',
+        icon: 'fa-arrow-circle-o-left',
         name: 'home'
       }
     ];

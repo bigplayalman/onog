@@ -1,10 +1,8 @@
-angular.module('onog.controllers', ['onog.controllers.admin', 'onog.controllers.tournaments'])
-  .controller('MenuController', function($scope, $state) {
-      $scope.logout = function () {
-        Parse.User.logOut();
-        $state.go('login');
-      }
-  })
+angular.module('onog.controllers', [
+  'onog.controllers.admin',
+  'onog.controllers.tournaments',
+  'onog.controllers.menu'
+])
   .controller('ViewTournamentsController', function($scope, Parse, BracketList) {
 
     BracketList.getAvailableList().then(function (brackets) {
@@ -172,7 +170,7 @@ angular.module('onog.controllers', ['onog.controllers.admin', 'onog.controllers.
     $scope.login = function (user) {
       Parse.User.logIn(user.username, user.password, {
         success: function(user) {
-          $state.go('home');
+          $state.go('home.index');
         },
         error: function(user, error) {
           // The login failed. Check error to see why.

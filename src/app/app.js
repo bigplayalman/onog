@@ -1,6 +1,7 @@
 angular.module('onog', [
   'ngParse',
   'ui.router',
+  'ui.bootstrap',
   'onog.templates',
   'onog.routes',
   'onog.controllers',
