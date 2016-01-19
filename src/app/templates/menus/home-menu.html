@@ -16,32 +16,37 @@
     <ul class="nav navbar-nav">
         <li ng-repeat="item in menuItems" ng-class="{'active':active.path == item.name}">
             <a ui-sref="{{item.name}}">
-                <i class="fa fa-fw {{item.icon}}"></i>
+                <i class="fa fa-fw {{item.icon}} visible-xs-inline-block"></i>
                 {{item.title}}
             </a>
         </li>
-
     </ul>
 
     <ul class="nav navbar-nav navbar-right" ng-show="user">
-        <li>Hello, {{user.username}}</li>
-        <li ng-show="admin">
-            <a ui-sref="admin.dashboard">
-                <i class="fa fa-tachometer fa-fw"></i>
-                Admin
+        <li uib-dropdown on-toggle="toggled(open)">
+            <a href id="simple-dropdown" uib-dropdown-toggle>
+                Hello,&nbsp; {{user.username}} <b class="caret"></b>
             </a>
-        </li>
-        <li>
-            <a ui-sref="login" ng-click="logout()">
-                <i class="fa fa-sign-out fa-fw"></i>
-                Logout
-            </a>
+            <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
+                <li ng-show="admin">
+                    <a ui-sref="admin.dashboard">
+                        <i class="fa fa-tachometer fa-fw visible-xs-inline-block"></i>
+                        Admin
+                    </a>
+                </li>
+                <li>
+                    <a ui-sref="login" ng-click="logout()">
+                        <i class="fa fa-sign-out fa-fw visible-xs-inline-block"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
     <ul class="nav navbar-nav navbar-right" ng-hide="user">
         <li>
             <a ui-sref="login">
-                <i class="fa fa-sign-in fa-fw"></i>
+                <i class="fa fa-sign-in fa-fw visible-xs-inline-block"></i>
                 Login
             </a>
         </li>

@@ -32,7 +32,7 @@ gulp.task('copy', ['clean'], function() {
   return merge(fonts, lib, assets);
 });
 
-gulp.task('build-sass', ['clean'], function() {
+gulp.task('build-sass', [], function() {
   var scssVars = fs.readFileSync(config.src + config.paths.scssVars, 'utf8').toString();
   return gulp.src(config.globs.sass, {cwd: config.src})
     .pipe(concat('styles.scss'))
@@ -47,7 +47,7 @@ gulp.task('build-sass', ['clean'], function() {
     .pipe(gulp.dest(config.dest + 'css/'));
 });
 
-gulp.task('build-js', ['clean'], function() {
+gulp.task('build-js', [], function() {
   return gulp.src(config.globs.scripts, {cwd: config.src})
     .pipe(concat('app.js'))
     .pipe(gulpif(!argv.dev, uglify()))
@@ -55,7 +55,7 @@ gulp.task('build-js', ['clean'], function() {
     .pipe(gulp.dest(config.dest + 'js/'));
 });
 
-gulp.task('build-html', ['clean'], function() {
+gulp.task('build-html', [], function() {
   return gulp.src(config.globs.templates, {cwd: config.src})
     .pipe(templateCache({
       module: 'onog.templates',
@@ -72,5 +72,5 @@ gulp.task('connect', ['build'], function() {
 });
 
 gulp.task('build', ['build-sass', 'build-js', 'build-html', 'copy']);
-gulp.task('watch', ['build'], connect.reload);
+gulp.task('watch', ['clean','build'], connect.reload);
 gulp.task('default', ['connect', 'watch']);
