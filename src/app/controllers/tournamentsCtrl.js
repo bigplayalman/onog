@@ -79,6 +79,18 @@ angular.module('onog.controllers.tournaments', [])
         })
       })
     });
+    $scope.setWidth = function (length) {
+      var width = (100/length) + '%';
+      return width;
+    }
+    $scope.matchMargin = function (length) {
+      if(length === 1) {
+       return '10px'
+      }
+      var margin = (256/Math.pow(length, 2)) + 'px';
+      console.log(margin);
+      return margin;
+    }
 
     $scope.displayBracket = function (matches) {
       var rounds = [];

@@ -46,10 +46,11 @@
         <div class="tournament-bracket" ng-show="balance">
             <div class="round"
                  ng-repeat="round in balance"
-                 style="width: calc(100% / {{balance.length}});">
+                 ng-style="{width: setWidth(rounds.length)}">
 
                 <div class="matches">
                     <a class="single-match"
+                       ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
                        ng-repeat="match in round.matches"
                        ui-sref="single-match({id:match.id})" ng-show="hidden">
 
@@ -57,13 +58,14 @@
                         <span>{{match.player2.username || 'tbd'}}</span>
 
                     </a>
-                    <span class="single-match"
-                       ng-repeat="match in round.matches" ng-show="!hidden">
+                    <div class="single-match"
+                         ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
+                         ng-repeat="match in round.matches" ng-show="!hidden">
 
-                        <span>{{match.player1.username || 'tbd'}}</span><br>
-                        <span>{{match.player2.username || 'tbd'}}</span>
+                        <p>{{match.player1.username || '--'}}</p>
+                        <p>{{match.player2.username || '--'}}</p>
 
-                    </span>
+                    </div>
                 </div>
 
             </div>
@@ -73,7 +75,7 @@
             <h1 class="title">{{tourney.name}} -- Main Event</h1>
             <div class="round-name"
                  ng-repeat="round in rounds"
-                 style="width: calc(100% / {{rounds.length}});">
+                 ng-style="{width: setWidth(rounds.length)}">
                 <h3>{{round.name}}</h3>
             </div>
         </div>
@@ -81,24 +83,26 @@
         <div class="tournament-bracket">
             <div class="round"
                  ng-repeat="round in rounds"
-                 style="width: calc(100% / {{rounds.length}});">
+                 ng-style="{width: setWidth(rounds.length)}">
 
                 <div class="matches">
                     <a class="single-match"
+                       ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
                        ng-repeat="match in round.matches"
                        ng-click="updateMatch(match)"
                        ui-sref="single-match({id:match.id})"
                        ng-show="hidden">
-                        <p>{{match.player1.username || 'tbd'}}</p>
-                        <p>{{match.player2.username || 'tbd'}}</p>
+                        <p>{{match.player1.username || '--'}}</p>
+                        <p>{{match.player2.username || '--'}}</p>
                     </a>
-                    <span class="single-match"
-                       ng-repeat="match in round.matches"
-                       ng-click="updateMatch(match)"
-                       ng-show="!hidden">
-                        <p>{{match.player1.username || 'tbd'}}</p>
-                        <p>{{match.player2.username || 'tbd'}}</p>
-                    </span>
+                    <div class="single-match"
+                         ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
+                         ng-repeat="match in round.matches"
+                         ng-click="updateMatch(match)"
+                         ng-show="!hidden">
+                        <p>{{match.player1.username || '--'}}</p>
+                        <p>{{match.player2.username || '--'}}</p>
+                    </div>
                 </div>
 
             </div>

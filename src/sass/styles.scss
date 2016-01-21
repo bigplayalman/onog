@@ -106,14 +106,14 @@ body, .main, .container-fluid {
   text-align: center;
 }
 .round {
-  max-width: 50%;
   display: block;
   text-align: center;
+  float:left;
   .single-match {
-    border: 1px solid black;
-    border-radius: 25px;
+    border: 1px solid white;
     padding: 10px;
-    margin: 10px;
+    margin-right: 10px;
+    margin-left: 10px;
     display: block;
     text-decoration: none;
   }
@@ -126,6 +126,6 @@ body, .main, .container-fluid {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid white;
 }
 //bracket end
