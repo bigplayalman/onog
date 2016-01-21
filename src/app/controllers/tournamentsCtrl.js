@@ -88,11 +88,10 @@ angular.module('onog.controllers.tournaments', [])
        return '10px'
       }
       var margin = (256/Math.pow(length, 2)) + 'px';
-      console.log(margin);
       return margin;
     }
     $scope.setTourneyWidth = function (length) {
-      var width = 200*length + 'px';
+      var width = 220*length + 'px';
       return width;
     }
 

@@ -39,11 +39,12 @@
 </div>
 <div class="row">
     <div class="col-xs-12" style="overflow: scroll">
-        <div class="tournament-title" ng-show="balance">
-            <h1 class="title">{{tourney.name}} -- Balance Round</h1>
+        <hr ng-show="balance">
+        <div class="tournament-title" ng-show="balance" ng-style="{'min-width': setTourneyWidth(rounds.length)}">
+            <h4 class="title">{{tourney.name}} | Balance Round</h4>
         </div>
 
-        <div class="tournament-bracket" ng-show="balance">
+        <div style="display: inline-block; width: 100%" ng-show="balance">
             <div class="round"
                  ng-repeat="round in balance"
                  ng-style="{width: setWidth(rounds.length)}">
@@ -71,8 +72,10 @@
             </div>
         </div>
 
-        <div class="tournament-title">
-            <h1 class="title">{{tourney.name}} -- Main Event</h1>
+        <hr>
+
+        <div class="tournament-title" ng-style="{'width': setTourneyWidth(rounds.length)}">
+            <h4 class="title">{{tourney.name}} | Main Event</h4>
             <div class="round-name"
                  ng-repeat="round in rounds"
                  ng-style="{width: setWidth(rounds.length)}">
@@ -80,7 +83,7 @@
             </div>
         </div>
 
-        <div class="tournament-bracket" ng-style="{width: setTourneyWidth(rounds.length)}">
+        <div class="tournament-bracket" ng-style="{'width': setTourneyWidth(rounds.length)}">
             <div class="round"
                  ng-repeat="round in rounds"
                  ng-style="{width: setWidth(rounds.length)}">
