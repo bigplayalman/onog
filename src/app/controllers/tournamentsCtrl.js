@@ -91,6 +91,10 @@ angular.module('onog.controllers.tournaments', [])
       console.log(margin);
       return margin;
     }
+    $scope.setTourneyWidth = function (length) {
+      var width = 200*length + 'px';
+      return width;
+    }
 
     $scope.displayBracket = function (matches) {
       var rounds = [];

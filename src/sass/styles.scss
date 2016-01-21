@@ -106,8 +106,10 @@ body, .main, .container-fluid {
   text-align: center;
 }
 .round {
+  max-width: 200px;
   display: block;
   text-align: center;
+  margin: auto;
   float:left;
   .single-match {
     border: 1px solid white;
