@@ -14,7 +14,7 @@
 <div class="collapse navbar-collapse" ng-class="!navCollapsed && 'in'">
 
     <ul class="nav navbar-nav">
-        <li ng-repeat="item in menuItems" ng-class="{'active':active.path == item.name}">
+        <li ng-repeat="item in menuItems" ng-class="{'active':active.path == item.parent}">
             <a ui-sref="{{item.name}}">
                 <i class="fa fa-fw {{item.icon}} visible-xs-inline-block"></i>
                 {{item.title}}
@@ -30,13 +30,13 @@
             <ul uib-dropdown-menu aria-labelledby="simple-dropdown">
                 <li ng-show="admin">
                     <a ui-sref="admin.dashboard">
-                        <i class="fa fa-tachometer fa-fw visible-xs-inline-block"></i>
+                        <i class="fa fa-tachometer fa-fw"></i>
                         Admin
                     </a>
                 </li>
                 <li>
                     <a ui-sref="login" ng-click="logout()">
-                        <i class="fa fa-sign-out fa-fw visible-xs-inline-block"></i>
+                        <i class="fa fa-sign-out fa-fw"></i>
                         Logout
                     </a>
                 </li>

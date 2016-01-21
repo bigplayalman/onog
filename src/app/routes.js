@@ -2,7 +2,7 @@ angular.module('onog.routes', [])
 
   .config(function($stateProvider, $urlRouterProvider) {
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/home');
     $stateProvider
 
       .state('admin', {
@@ -10,7 +10,8 @@ angular.module('onog.routes', [])
         url: '/admin',
         data: {
           requireLogin: true,
-          requireAdmin: true
+          requireAdmin: true,
+          canEdit: true
         },
         template: '<div ui-view="menu" class="menu col-md-3"></div><div ui-view="content" class="content col-md-9"></div>',
       })
@@ -120,7 +121,7 @@ angular.module('onog.routes', [])
 
 
       .state('home', {
-        url: '/',
+        url: '/home',
         abstract: true,
         data: {
           requireLogin: false,
@@ -140,6 +141,45 @@ angular.module('onog.routes', [])
           }
         }
       })
+      .state('tournaments', {
+        url: '/tournaments',
+        abstract: true,
+        data: {
+          requireLogin: false,
+        },
+        template: '<div ui-view="menu" class="navbar navbar-inverse"></div><div ui-view="content" class="col-xs-12"></div>'
+      })
+      .state('tournaments.index', {
+        url: '',
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/home-menu.html',
+            controller: 'MenuController'
+          },
+          'content': {
+            templateUrl: 'templates/pages/tournaments.html',
+            controller: 'TournamentListController'
+          }
+        }
+      })
+
+      .state('tournaments.tournament', {
+        url: '/:id',
+        data: {
+          canEdit: false
+        },
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/home-menu.html',
+            controller: 'MenuController'
+          },
+          'content': {
+            templateUrl: 'templates/tournaments/tourney-details.html',
+            controller: 'TourneyDetailsController'
+          }
+        }
+      })
+
       .state('viewTournaments', {
         url: '/view-tournaments',
         data: {

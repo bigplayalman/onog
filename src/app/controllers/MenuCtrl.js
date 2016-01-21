@@ -2,14 +2,28 @@ angular.module('onog.controllers.menu', [])
   .controller('MenuController', function($scope, $state, Parse, Admin) {
     $scope.admin = false;
     $scope.user = Parse.User.current();
+    var currentState = $state.$current.name.split('.')[0];
     $scope.active = {
-      path: $state.$current.name
+      path: currentState
     }
     $scope.menuItems = [
       {
         title: 'Home',
         icon: 'fa-home',
-        name: 'home.index'
+        name: 'home.index',
+        parent: 'home'
+      },
+      {
+        title: 'Tournaments',
+        icon: 'fa-trophy',
+        name: 'tournaments.index',
+        parent: 'tournaments'
+      },
+      {
+        title: 'My Account',
+        icon: 'fa-user',
+        name: 'account.index',
+        parent: 'account'
       }
     ];
 
