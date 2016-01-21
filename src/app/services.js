@@ -35,11 +35,11 @@ angular.module('onog.services', []).run(function ($http) {
   })
   .factory('Round', ['Parse', function (Parse) {
     var Round = Parse.Object.extend('Round');
-    Parse.defineAttributes(Round, ['matches', 'name', 'parent', 'roundNum']);
+    Parse.defineAttributes(Round, ['matches', 'name', 'tournament', 'roundNum']);
 
-    var deleteRounds = function (bracket) {
+    var deleteRounds = function (tournament) {
       var query = new Parse.Query(Round);
-      query.equalTo('parent', bracket);
+      query.equalTo('tournament', tournament);
       return query.find({
         success: function (rounds) {
           Parse.Object.destroyAll(rounds);
@@ -47,14 +47,14 @@ angular.module('onog.services', []).run(function ($http) {
       });
     }
 
-    var createRounds = function(bracket, numGames, players) {
+    var createRounds = function(tournament, numGames, players) {
       var rounds =[];
       var roundCount = 0;
 
       while(players.length > Math.pow(2,roundCount)) {
         roundCount++;
         var round = new Round();
-        round.set('parent', bracket);
+        round.set('tournament', tournament);
         round.set('roundNum', roundCount);
         switch(roundCount) {
           case 1:
@@ -83,7 +83,7 @@ angular.module('onog.services', []).run(function ($http) {
   }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
-    var attributes = ['bracket', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason']
+    var attributes = ['tournament', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason']
     Parse.defineAttributes(Match, attributes);
 
     var getMatches = function (tourney) {
@@ -97,23 +97,23 @@ angular.module('onog.services', []).run(function ($http) {
       return query.find();
     }
 
-    var deleteMatches = function (bracket) {
+    var deleteMatches = function (tourney) {
       var query = new Parse.Query(Match);
-      query.equalTo('bracket', bracket);
+      query.equalTo('tournament', tourney);
       return query.find({
         success: function (matches) {
           Parse.Object.destroyAll(matches);
         }
       });
     }
-    var createMatches = function (numGames, bracket) {
+    var createMatches = function (numGames, tourney) {
       var gameCount = 0;
       var matches = [];
       while(gameCount < numGames) {
         var match = new Match();
         match.set('gameNum', gameCount);
         match.set('isValid', true);
-        match.set('bracket', bracket);
+        match.set('tournament', tourney);
         matches.push(match);
         gameCount++;
       }
@@ -145,7 +145,8 @@ angular.module('onog.services', []).run(function ($http) {
         }
         if (gamers.length > 0) {
           var player = gamers[0];
-          games[matchIndex].set('player2', player)
+          games[matchIndex].set('player2', player);
+          games[matchIndex].set('score2', 0);
           gamers.splice(0,1);
         }
 
@@ -165,7 +166,6 @@ angular.module('onog.services', []).run(function ($http) {
           roundIndex++
         }
         games[gamesIndex-1].set('round', rounds[roundIndex-1]);
-        console.log('game: ' + gamesIndex + 'round: ' + roundIndex);
         gamesIndex++;
       }
 
@@ -174,7 +174,6 @@ angular.module('onog.services', []).run(function ($http) {
         while(gamesIndex < roundGames) {
           games[gamesIndex].set('round', rounds[roundIndex]);
           gamesIndex++;
-          console.log('game: ' + gamesIndex + 'round: ' + roundIndex);
         }
         roundIndex++;
       }

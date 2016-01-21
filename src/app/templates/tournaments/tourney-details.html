@@ -33,9 +33,75 @@
             Cancel
         </button>
         <button class="btn btn-danger pull-right " ng-click="delete()" ng-show="hidden">Delete</button>
+        <button class="btn btn-primary pull-right" ng-click="activate(tourney.type)" ng-show="hidden">Activate</button>
         <button class="btn btn-primary pull-right" ng-click="edit()" ng-show="hidden">Edit</button>
     </div>
 </div>
 <div class="row">
+    <div class="col-xs-12">
+        <div class="tournament-title" ng-show="balance">
+            <h1 class="title">{{tourney.name}} -- Balance Round</h1>
+        </div>
 
+        <div class="tournament-bracket" ng-show="balance">
+            <div class="round"
+                 ng-repeat="round in balance"
+                 style="width: calc(100% / {{balance.length}});">
+
+                <div class="matches">
+                    <a class="single-match"
+                       ng-repeat="match in round.matches"
+                       ui-sref="single-match({id:match.id})" ng-show="hidden">
+
+                        <span>{{match.player1.username || 'tbd'}}</span><br>
+                        <span>{{match.player2.username || 'tbd'}}</span>
+
+                    </a>
+                    <span class="single-match"
+                       ng-repeat="match in round.matches" ng-show="!hidden">
+
+                        <span>{{match.player1.username || 'tbd'}}</span><br>
+                        <span>{{match.player2.username || 'tbd'}}</span>
+
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="tournament-title">
+            <h1 class="title">{{tourney.name}} -- Main Event</h1>
+            <div class="round-name"
+                 ng-repeat="round in rounds"
+                 style="width: calc(100% / {{rounds.length}});">
+                <h3>{{round.name}}</h3>
+            </div>
+        </div>
+
+        <div class="tournament-bracket">
+            <div class="round"
+                 ng-repeat="round in rounds"
+                 style="width: calc(100% / {{rounds.length}});">
+
+                <div class="matches">
+                    <a class="single-match"
+                       ng-repeat="match in round.matches"
+                       ng-click="updateMatch(match)"
+                       ui-sref="single-match({id:match.id})"
+                       ng-show="hidden">
+                        <p>{{match.player1.username || 'tbd'}}</p>
+                        <p>{{match.player2.username || 'tbd'}}</p>
+                    </a>
+                    <span class="single-match"
+                       ng-repeat="match in round.matches"
+                       ng-click="updateMatch(match)"
+                       ng-show="!hidden">
+                        <p>{{match.player1.username || 'tbd'}}</p>
+                        <p>{{match.player2.username || 'tbd'}}</p>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>

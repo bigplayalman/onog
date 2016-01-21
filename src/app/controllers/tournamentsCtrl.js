@@ -52,13 +52,15 @@ angular.module('onog.controllers.tournaments', [])
       })
     }
   })
-  .controller('TourneyDetailsController', function($scope, $state, $stateParams, $filter, Tournament, Match, Parse) {
+  .controller('TourneyDetailsController', function($scope, $state, $stateParams, $filter, Tournament, Match, Parse, Round) {
     $scope.players = [];
     $scope.signedUp = false;
     $scope.hidden = $state.current.data.canEdit;
     $scope.tourney = new Tournament.Model();
     $scope.tourney.id = $stateParams.id;
     $scope.user = Parse.User.current();
+    $scope.balance = [];
+    $scope.rounds = [];
 
     $scope.tourney.fetch().then(function (tournament) {
       $scope.tourney = tournament;
@@ -66,11 +68,13 @@ angular.module('onog.controllers.tournaments', [])
       query.descending('username');
       query.find().then(function (players) {
         $scope.players = players;
-        var player = $filter('filter')(players, {id: $scope.user.id});
-        if(player.length > 0) {
-          $scope.signedUp = true;
+        if($scope.user) {
+          var player = $filter('filter')(players, {id: $scope.user.id});
+          if(player.length > 0) {
+            $scope.signedUp = true;
+          }
         }
-        Match.getMatches().then(function (matches) {
+        Match.getMatches($scope.tourney).then(function (matches) {
           $scope.displayBracket(matches);
         })
       })
@@ -136,6 +140,33 @@ angular.module('onog.controllers.tournaments', [])
           Parse.User.current().increment('numOfTourneys');
           Parse.User.current().save().then(function(user) {
             $scope.user = user;
+          });
+        });
+      });
+    }
+
+    $scope.activate = function (type) {
+      switch (type) {
+        case 'Single Elimination Bracket': generateSingleBracket(); break;
+        default: break;
+      }
+    }
+    
+    var generateSingleBracket = function () {
+      Match.deleteMatches($scope.tourney).then(function () {
+        Match.createMatches($scope.players.length -1, $scope.tourney).then(function (matches) {
+          Match.setNextMatch(matches).then(function(matches) {
+            var games = $filter('orderBy')(matches, 'gameNum');
+            Match.setPlayers($scope.players, games).then(function (matches) {
+              var games = $filter('orderBy')(matches, 'gameNum');
+              Round.deleteRounds($scope.tourney).then(function () {
+                Round.createRounds($scope.tourney, games.length, $scope.players).then(function (rounds) {
+                  Match.setRounds(rounds, games). then(function(matches){
+                    $scope.displayBracket(matches);
+                  });
+                });
+              });
+            });
           });
         });
       });

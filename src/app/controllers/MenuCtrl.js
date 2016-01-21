@@ -18,16 +18,17 @@ angular.module('onog.controllers.menu', [])
         icon: 'fa-trophy',
         name: 'tournaments.index',
         parent: 'tournaments'
-      },
-      {
-        title: 'My Account',
-        icon: 'fa-user',
-        name: 'account.index',
-        parent: 'account'
       }
     ];
 
     if($scope.user) {
+      $scope.menuItems.push({
+        title: 'My Account',
+        icon: 'fa-user',
+        name: 'account.index',
+        parent: 'account'
+      });
+
       Admin.getRole($scope.user).then(function (role) {
         if(role){
           Admin.setRole(role);

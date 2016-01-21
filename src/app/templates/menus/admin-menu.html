@@ -2,7 +2,7 @@
     <h3>ONOG Admin</h3>
 </div>
 <ul class="nav nav-pills nav-stacked">
-    <li ng-repeat="item in menuItems" ng-class="{'active':active.path == item.name}">
+    <li ng-repeat="item in menuItems" ng-class="{'active':active.path == item.parent}">
         <a ui-sref="{{item.name}}">
             <i class="fa fa-fw {{item.icon}}"></i>
             {{item.title}}
