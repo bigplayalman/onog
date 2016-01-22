@@ -140,13 +140,13 @@ angular.module('onog.services', []).run(function ($http) {
         if(gamers.length > 0) {
           var player = gamers[0];
           games[matchIndex].set('player1', player);
-          games[matchIndex].set('score1', 0);
+          games[matchIndex].set('score1', {player1: 0, player2: 0});
           gamers.splice(0,1);
         }
         if (gamers.length > 0) {
           var player = gamers[0];
           games[matchIndex].set('player2', player);
-          games[matchIndex].set('score2', 0);
+          games[matchIndex].set('score2', {player1: 0, player2: 0});
           gamers.splice(0,1);
         }
 

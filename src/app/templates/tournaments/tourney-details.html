@@ -53,7 +53,7 @@
                     <a class="single-match"
                        ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
                        ng-repeat="match in round.matches"
-                       ui-sref="single-match({id:match.id})" ng-show="hidden">
+                       ui-sref="admin.tournament.id.match({matchId:match.id})" ng-show="hidden">
 
                         <span>{{match.player1.username || 'tbd'}}</span><br>
                         <span>{{match.player2.username || 'tbd'}}</span>
@@ -89,15 +89,15 @@
                  ng-style="{width: setWidth(rounds.length)}">
 
                 <div class="matches">
-                    <a class="single-match"
+                    <button class="single-match btn-info"
                        ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
                        ng-repeat="match in round.matches"
                        ng-click="updateMatch(match)"
-                       ui-sref="single-match({id:match.id})"
-                       ng-show="hidden">
-                        <p>{{match.player1.username || '--'}}</p>
-                        <p>{{match.player2.username || '--'}}</p>
-                    </a>
+                       ui-sref="admin.tournament.id.match({id:match.id})"
+                       ng-show="hidden" ng-disabled="!match.player1 || !match.player2">
+                        {{match.player1.username || '--'}}<br>
+                        {{match.player2.username || '--'}}
+                    </button>
                     <div class="single-match"
                          ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
                          ng-repeat="match in round.matches"

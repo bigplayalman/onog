@@ -69,6 +69,15 @@ angular.module('onog.routes', [])
           }
         }
       })
+      .state('admin.tournament.id.match', {
+        url: '/match/:matchId',
+        views: {
+          'tourney-info': {
+            templateUrl: 'templates/matches/admin-match.html',
+            controller: 'MatchController'
+          }
+        }
+      })
       .state('admin.tournament.create', {
         url: '/create',
         views: {
