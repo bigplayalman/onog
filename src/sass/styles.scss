@@ -113,12 +113,16 @@ body, .main, .container-fluid {
   float:left;
   .single-match {
     width: 100%;
-    border: 1px solid white;
     padding: 10px;
     margin-right: 10px;
     margin-left: 10px;
     display: block;
     text-decoration: none;
+    .player {
+      display: block;
+      border: 1px solid white;
+      padding: 10px;
+    }
   }
 }
 .tournament-title {
