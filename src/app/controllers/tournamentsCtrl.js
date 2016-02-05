@@ -52,7 +52,45 @@ angular.module('onog.controllers.tournaments', [])
       })
     }
   })
-  .controller('TourneyDetailsController', function($scope, $state, $stateParams, $filter, Tournament, Match, Parse, Round) {
+  .controller('TourneyPlayerController', function ($scope, $state, $stateParams, $filter, Tournament, Match, Parse,Player, Round) {
+    $scope.player = null;
+    $scope.players = [];
+    $scope.tourney = new Tournament.Model();
+    $scope.tourney.id = $stateParams.id;
+
+    $scope.user = Parse.User.current();
+    $scope.balance = [];
+    $scope.rounds = [];
+
+    $scope.tourney.fetch().then(function (tournament) {
+      $scope.tourney = tournament;
+      var query = tournament.relation('players').query();
+      query.descending('username');
+      query.find().then(function (players) {
+        $scope.players = players;
+        if($scope.user) {
+          var player = $filter('filter')(players, {id: $scope.user.id});
+          if(player.length > 0) {
+            $scope.signedUp = true;
+          }
+        }
+        Match.getMatches($scope.tourney).then(function (matches) {
+          $scope.displayBracket(matches);
+        })
+      });
+    })
+
+
+    var playerQuery = new Parse.Query(Player.Model);
+    playerQuery.include('user');
+    playerQuery.equalTo('user', Parse.User.current());
+    playerQuery.equalTo('game', fetched.game);
+    playerQuery.find().then(function (players) {
+      $scope.player = players[0];
+      fetched.relation('players').add(player);
+    });
+  })
+  .controller('TourneyDetailsController', function($scope, $state, $stateParams, $filter, Tournament, Match, Parse, Round, Player) {
     $scope.players = [];
     $scope.signedUp = false;
     $scope.hidden = $state.current.data.canEdit;
@@ -145,9 +183,11 @@ angular.module('onog.controllers.tournaments', [])
 
     $scope.signUp = function () {
       var tourney = new Tournament.Model();
+      var player = null;
       tourney.id = $scope.tourney.id;
       tourney.fetch().then(function(fetched) {
-        fetched.relation('players').add(Parse.User.current());
+
+        fetched.relation('players').add($scope.player);
         fetched.increment('current');
         fetched.save().then(function (saved) {
           $scope.tourney = saved;

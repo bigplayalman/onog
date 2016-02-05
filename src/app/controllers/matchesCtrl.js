@@ -40,10 +40,25 @@ angular.module('onog.controllers.matches', [])
           $scope.match.nextMatch.set('player1', winner);
         }
       }
-
+      $scope.match.nextMatch.set('active', true);
       $scope.match.save().then(function (match) {
         $scope.message = 'Match Updated';
       })
 
     }
+  })
+  .controller('matchListController', function ($scope, Parse, Match) {
+    var query = new Parse.Query(Match.Match);
+    query.equalTo('active', true);
+    query.include('nextMatch');
+    query.include('player1');
+    query.include('player2');
+    query.include('winner1');
+    query.include('winner2');
+    query.include('round');
+
+    query.find().then(function (matches) {
+      $scope.matches = matches;
+      console.log(matches);
+    });
   });

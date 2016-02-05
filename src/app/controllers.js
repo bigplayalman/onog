@@ -123,6 +123,7 @@ angular.module('onog.controllers', [
   })
 
   .controller('UserController', function($scope, $state, Parse) {
+    $scope.user = {};
 
     $scope.login = function (user) {
       Parse.User.logIn(user.username, user.password, {
@@ -135,19 +136,20 @@ angular.module('onog.controllers', [
       });
     }
     $scope.signUp = function (newUser) {
-      var user = new Parse.User();
-      user.set("username", newUser.username);
-      user.set("password", newUser.password);
-      user.set("email", newUser.email);
-
-      user.signUp(null, {
-        success: function(user) {
-          $state.go('login');
-        },
-        error: function(user, error) {
-          // Show the error message somewhere and let the user try again.
-          alert("Error: " + error.code + " " + error.message);
-        }
-      });
+      console.log($scope.user)
+      //var user = new Parse.User();
+      //user.set("username", newUser.username);
+      //user.set("password", newUser.password);
+      //user.set("email", newUser.email);
+      //
+      //user.signUp(null, {
+      //  success: function(user) {
+      //    $state.go('login');
+      //  },
+      //  error: function(user, error) {
+      //    // Show the error message somewhere and let the user try again.
+      //    alert("Error: " + error.code + " " + error.message);
+      //  }
+      //});
     }
   });

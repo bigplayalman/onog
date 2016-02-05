@@ -21,6 +21,12 @@ angular.module('onog.controllers.admin', [])
         parent: 'active'
       },
       {
+        title: 'Current Matches',
+        icon: 'fa-gamepad',
+        name: 'admin.matches.active',
+        parent: 'matches'
+      },
+      {
         title: 'Create a Tournament',
         icon: 'fa-fort-awesome',
         name: 'admin.tournament.create',

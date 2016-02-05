@@ -109,6 +109,28 @@ angular.module('onog.routes', [])
           }
         }
       })
+      .state('admin.matches', {
+        url: '/matches',
+        abstract: true,
+        views: {
+          'menu': {
+            templateUrl: 'templates/menus/admin-menu.html',
+            controller: 'AdminMenuController'
+          },
+          'content': {
+            template: '<div ui-view="matchList"></div>'
+          }
+        }
+      })
+      .state('admin.matches.active', {
+        url: '',
+        views: {
+          'matchList': {
+            templateUrl: 'templates/matches/admin-matches.html',
+            controller: 'matchListController'
+          }
+        }
+      })
 
 
       .state('login' , {

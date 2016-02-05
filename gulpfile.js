@@ -36,7 +36,7 @@ gulp.task('build-sass', [], function() {
   var scssVars = fs.readFileSync(config.src + config.paths.scssVars, 'utf8').toString();
   return gulp.src(config.globs.sass, {cwd: config.src})
     .pipe(concat('styles.scss'))
-    .pipe(insert.prepend(scssVars))
+    //.pipe(insert.prepend(scssVars))
     .pipe(sass())
     .on('error', sass.logError)
     .pipe(autoprefixer())

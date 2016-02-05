@@ -81,9 +81,18 @@ angular.module('onog.services', []).run(function ($http) {
       deleteRounds: deleteRounds
     };
   }])
+  .factory('Player', ['Parse', function (Parse) {
+    var Model = Parse.Object.extend('Player');
+    var attributes = ['game', 'user', 'tourneyCount', 'matches', 'status', 'statusReason', 'results'];
+    Parse.defineAttributes(Model, attributes);
+
+    return {
+      Model: Model
+    }
+  }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
-    var attributes = ['tournament', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason']
+    var attributes = ['tournament', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'active']
     Parse.defineAttributes(Match, attributes);
 
     var getMatches = function (tourney) {
@@ -114,6 +123,7 @@ angular.module('onog.services', []).run(function ($http) {
         match.set('gameNum', gameCount);
         match.set('isValid', true);
         match.set('tournament', tourney);
+        match.set('active', false);
         matches.push(match);
         gameCount++;
       }
@@ -149,6 +159,7 @@ angular.module('onog.services', []).run(function ($http) {
           games[matchIndex].set('score2', {player1: 0, player2: 0});
           gamers.splice(0,1);
         }
+        games[matchIndex].set('active', true);
 
         matchIndex--;
 
