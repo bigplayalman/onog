@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" >
     <head>
-        <title>ONOG</title>
+        <title>One Nation of Gamers</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="">
         <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+        <link rel='shortcut icon' href='images/favicon.png' type='image/x-icon'>
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="css/bootstrap.min.css"/>
         <link rel="stylesheet" href="css/styles.css"/>
+        <script src="js/jquery-2.2.0.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     </head>
 
@@ -16,7 +19,7 @@
         <div class="container">
             <div class="logo-box">
                 <div class="logo">
-                    <img src="images/templogo.png" class="img-responsive">
+                    <img src="images/logo.png" class="img-responsive center-block">
                 </div>
                 <div class="col-xs-6">
                     <div class="border-gradient-left"></div>
@@ -45,10 +48,49 @@
             <div class="arrow-down"></div>
 
             <div class="well well-lg">
+                <div class="geico">
+                    <div class="vertical-center">
+                        <div class="col-sm-6">
+                            <img src="images/geico.png" class="img-responsive pull-right">
+                        </div>
+                        <div class="col-sm-6">
+                            <img src="images/winAlienwareText.png" class="img-responsive pull-left">
+                        </div>
+                    </div>
+                </div>
+                <div class="row pc-specs">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-default" data-toggle="modal" data-target="#myModal">See Computer Specs</button>
+                        <button class="btn btn-default" href="http://bit.ly/ALienwareX51R3"> Get 10% off Alienware</button>
+                    </div>
+
+                </div>
                 <a class="e-widget generic-loader no-button" href="https://gleam.io/4m7ui/win-an-alienware-x51-r3" rel="nofollow">Win An Alienware X51 R3</a>
                 <script type="text/javascript" src="https://js.gleam.io/e.js" async="true"></script>
             </div>
 
+        </div>
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title text-center" id="myModalLabel">TSM PC Specifications</h4>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p>Processor Intel® Core™ i7-6700K (8MB Cache, Overclocked up to 4.4GHz)</p>
+                        <p>Memory 8GB Dual Channel DDR4 at 2133MHz</p>
+                        <p>Video Card NVIDIA® GeForce® GTX 960 with 2GB GDDR5</p>
+                        <p>Processor Cooling: Alienware SFF Advanced Liquid Cooling</p>
+                        <p>Primary Hard Drive 256GB PCIe SSD (Boot)</p>
+                        <p>Data Hard Drive 2TB (64MB Cache) 7200RPM SATA 6Gb/s</p>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </body>
