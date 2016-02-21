@@ -12,22 +12,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-xs-6">
-            <button class="btn btn-primary" ng-click="updateMatch(true)">Win</button>
-        </div>
-        <div class="col-xs-6">
-            <button class="btn btn-primary" ng-click="updateMatch(false)">Loss</button>
-        </div>
-    </div>
-    <div class="row">
 
-        <div class="col-xs-12">
-            Winner
-            <select ng-model="winner">
-                <option ng-value="match.player1.id">{{match.player1.username}}</option>
-                <option ng-value="match.player2.id">{{match.player2.username}}</option>
-            </select>
-        </div>
         <div class="col-xs-12">
             <button class="btn btn-primary" ng-click="submitMatch()">Update Match</button>
             <a ui-sref="bracket-detail({id:match.bracket.id})" class="btn btn-success">Back to Bracket</a>

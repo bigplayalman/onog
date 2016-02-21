@@ -1,4 +1,12 @@
 var Directives = angular.module('onog.directives', [])
+
+  .directive('onogMenu', function () {
+    return {
+      restrict: 'EA', //E = element, A = attribute, C = class, M = comment
+      templateUrl: 'templates/directives/menu.html'
+    }
+
+  })
   .directive('selectState', function () {
     return {
       restrict: 'EA', //E = element, A = attribute, C = class, M = comment

@@ -10,6 +10,11 @@ body, .main, .container-fluid {
 }
 .fa-fw {width: 2em;}
 
+.btn-group:hover{
+  .dropdown-menu {
+    display: block;
+  }
+}
 .inherit-height {
   height:inherit;
 }

@@ -13,18 +13,18 @@ angular.module('onog.routes', [])
           requireAdmin: true,
           canEdit: true
         },
-        template: '<div ui-view="menu" class="menu col-md-3"></div><div ui-view="content" class="content col-md-9"></div>',
+        templateUrl: 'templates/admin/admin.html'
       })
       .state('admin.dashboard', {
         url: '',
         views: {
           'menu': {
             templateUrl: 'templates/menus/admin-menu.html',
-            controller: 'AdminMenuController'
+            controller: 'admin.controllers.menu.ctrl'
           },
           'content': {
-            templateUrl: 'templates/admin/admin-home.html',
-            controller: 'AdminController'
+            templateUrl: 'templates/admin/dashboard.html',
+            controller: 'admin.controllers.dashboard.ctrl'
           }
         }
       })

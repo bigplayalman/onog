@@ -1,47 +1,49 @@
-angular.module('onog.controllers.admin', [])
-  .controller('AdminController', function($scope, Parse, Admin) {
+angular.module('admin.controllers', [])
+  .controller('admin.controllers.dashboard.ctrl', function($scope, Parse, Admin) {
 
   })
-  .controller('AdminMenuController', function($scope, $state) {
+  .controller('admin.controllers.tournament.list.ctrl', function($scope) {
+
+  })
+  .controller('admin.controllers.menu.ctrl', function($scope, $state) {
     var current = $state.$current.name.split('.');
     $scope.active = {
       path: current[current.length - 1]
     }
     $scope.menuItems = [
       {
-        title: 'Admin Home',
+        title: 'Dashboard',
         icon: 'fa-home',
         name: 'admin.dashboard',
-        parent: 'dashboard'
+        parent: 'dashboard',
+        children: []
       },
       {
-        title: 'Active Tournaments',
+        title: 'Tournaments',
         icon: 'fa-trophy',
-        name: 'admin.tournaments.active',
-        parent: 'active'
+        name: 'admin.tournaments',
+        parent: 'active',
+        children: [
+          {
+            title: 'Create a Tournament',
+            icon: 'fa-fort-awesome',
+            name: 'admin.create.tournament',
+            parent: 'create',
+          }
+        ]
       },
       {
-        title: 'Current Matches',
+        title: 'Matches',
         icon: 'fa-gamepad',
-        name: 'admin.matches.active',
-        parent: 'matches'
-      },
-      {
-        title: 'Create a Tournament',
-        icon: 'fa-fort-awesome',
-        name: 'admin.tournament.create',
-        parent: 'create'
-      },
-      {
-        title: 'Back to Homepage',
-        icon: 'fa-arrow-circle-o-left',
-        name: 'home.index',
-        parent: 'home'
+        name: 'admin.matches',
+        parent: 'matches',
+        children: []
       }
     ];
 
     $scope.logout = function () {
       Admin.setRole(null);
       Parse.User.logOut();
+      $state.go('home');
     }
   })
