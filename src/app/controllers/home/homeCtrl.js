@@ -1,5 +1,5 @@
-angular.module('onog.controllers.menu', [])
-  .controller('MenuController', function($scope, $state, Parse, Admin) {
+angular.module('home.controllers', [])
+  .controller('home.controllers.menu.ctrl', function($scope, $state, Parse, Admin) {
     $scope.admin = false;
     $scope.user = Parse.User.current();
     var currentState = $state.$current.name.split('.')[0];
@@ -33,6 +33,12 @@ angular.module('onog.controllers.menu', [])
         if(role){
           Admin.setRole(role);
           $scope.admin = true;
+          $scope.menuItems.push({
+            title: 'Admin',
+            icon: 'fa-dashboard',
+            name: 'admin.dashboard',
+            parent: 'admin'
+          });
         } else {
           $scope.admin = false;
         }

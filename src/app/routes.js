@@ -18,11 +18,7 @@ angular.module('onog.routes', [])
       .state('admin.dashboard', {
         url: '',
         views: {
-          'menu': {
-            templateUrl: 'templates/menus/admin-menu.html',
-            controller: 'admin.controllers.menu.ctrl'
-          },
-          'content': {
+          content: {
             templateUrl: 'templates/admin/dashboard.html',
             controller: 'admin.controllers.dashboard.ctrl'
           }
@@ -32,12 +28,17 @@ angular.module('onog.routes', [])
         url: '/tournament',
         abstract: true,
         views: {
-          'menu': {
-            templateUrl: 'templates/menus/admin-menu.html',
-            controller: 'AdminMenuController'
-          },
-          'content': {
+          content: {
             template: '<div ui-view="tourney"></div>'
+          }
+        }
+      })
+      .state('admin.tournament.list', {
+        url: '/list',
+        views: {
+          tourney: {
+            templateUrl: 'templates/admin/tournaments/list.html',
+            controller: 'admin.controllers.tournament.list.ctrl'
           }
         }
       })
@@ -50,6 +51,16 @@ angular.module('onog.routes', [])
           }
         }
       })
+      .state('admin.tournament.id.details', {
+        url: '/details',
+        views: {
+          'tourney-info': {
+            templateUrl: 'templates/admin/tournaments/details.html',
+            controller: 'admin.controllers.tournament.details.ctrl'
+          }
+        }
+      })
+
       .state('admin.tournament.id.edit', {
         url: '/edit',
         views: {
@@ -60,15 +71,6 @@ angular.module('onog.routes', [])
         }
       })
 
-      .state('admin.tournament.id.details', {
-        url: '/details',
-        views: {
-          'tourney-info': {
-            templateUrl: 'templates/tournaments/tourney-details.html',
-            controller: 'TourneyDetailsController'
-          }
-        }
-      })
       .state('admin.tournament.id.match', {
         url: '/match/:matchId',
         views: {
@@ -157,18 +159,13 @@ angular.module('onog.routes', [])
         data: {
           requireLogin: false,
         },
-        template: '<div ui-view="menu" class="navbar navbar-inverse"></div><div ui-view="content"></div>'
+        templateUrl: 'templates/home.html',
       })
       .state('home.index', {
         url: '',
         views: {
-          'menu': {
-            templateUrl: 'templates/menus/home-menu.html',
-            controller: 'MenuController'
-          },
           'content': {
-            templateUrl: 'templates/pages/home.html',
-            controller: 'UserController'
+            template: 'hello'
           }
         }
       })

@@ -1,8 +1,5 @@
-angular.module('admin.controllers', [])
+angular.module('admin.controllers', ['admin.controllers.tournament'])
   .controller('admin.controllers.dashboard.ctrl', function($scope, Parse, Admin) {
-
-  })
-  .controller('admin.controllers.tournament.list.ctrl', function($scope) {
 
   })
   .controller('admin.controllers.menu.ctrl', function($scope, $state) {
@@ -21,13 +18,13 @@ angular.module('admin.controllers', [])
       {
         title: 'Tournaments',
         icon: 'fa-trophy',
-        name: 'admin.tournaments',
+        name: 'admin.tournament.list',
         parent: 'active',
         children: [
           {
             title: 'Create a Tournament',
             icon: 'fa-fort-awesome',
-            name: 'admin.create.tournament',
+            name: 'admin.tournament.create',
             parent: 'create',
           }
         ]
@@ -37,6 +34,13 @@ angular.module('admin.controllers', [])
         icon: 'fa-gamepad',
         name: 'admin.matches',
         parent: 'matches',
+        children: []
+      },
+      {
+        title: 'Home',
+        icon: 'fa-home',
+        name: 'home.index',
+        parent: 'home',
         children: []
       }
     ];

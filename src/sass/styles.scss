@@ -9,7 +9,9 @@ body, .main, .container-fluid {
   overflow: scroll;
 }
 .fa-fw {width: 2em;}
-
+.clear-both {
+  clear: both
+}
 .btn-group:hover{
   .dropdown-menu {
     display: block;

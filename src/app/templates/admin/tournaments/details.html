@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="col-xs-6">
+        <h3>Tournament Details</h3>
+    </div>
+    <div class="col-xs-6">
+        <h3 class="text-right">Current Status:
+            <span class="text-capitalize"
+                  ng-class="{'text-success': tourney.status ==='active','text-warning': tourney.status ==='on hold','text-info': tourney.status ==='completed'}">
+                {{tourney.status}}
+            </span>
+        </h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <h4><strong>Tournament Name: </strong>{{tourney.name}}</h4>
+        <strong>Tournament Type: </strong>{{tourney.type}}
+        <br>
+        <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
+    </div>
+    <div class="col-xs-6">
+
+        <a class="btn btn-danger pull-right " ng-click="delete()">Delete</a>
+        <a class="btn btn-success pull-right" ng-click="edit()">Edit</a>
+
+        <a class="btn btn-info clear-both pull-right" ng-click="generateTournament(tourney.type)">Generate {{tourney.type}}</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12" style="overflow: scroll">
+        <hr ng-show="balance">
+        <div class="tournament-title" ng-show="balance" ng-style="{'min-width': setTourneyWidth(rounds.length)}">
+            <h4 class="title">{{tourney.name}} | Balance Round</h4>
+        </div>
+
+        <div style="display: inline-block; width: 100%" ng-show="balance">
+            <div class="round"
+                 ng-repeat="round in balance"
+                 ng-style="{width: setWidth(rounds.length)}">
+
+                <div class="matches">
+                    <button class="single-match btn-info btn"
+                       ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
+                       ng-repeat="match in round.matches"
+                       ui-sref="admin.tournament.id.match({matchId:match.id})" ng-show="hidden">
+
+                        <span class="player">{{match.player1.username || 'tbd'}}</span><br>
+                        <span class="player">{{match.player2.username || 'tbd'}}</span>
+
+                    </button>
+                    <div class="single-match"
+                         ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
+                         ng-repeat="match in round.matches" ng-show="!hidden">
+
+                        <p class="player"> {{match.player1.username || '--'}}</p>
+                        <p class="player">{{match.player2.username || '--'}}</p>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="tournament-title" ng-style="{'width': setTourneyWidth(rounds.length)}">
+            <h4 class="title">{{tourney.name}} | Main Event</h4>
+            <div class="round-name"
+                 ng-repeat="round in rounds"
+                 ng-style="{width: setWidth(rounds.length)}">
+                <h3>{{round.name}}</h3>
+            </div>
+        </div>
+
+        <div class="tournament-bracket" ng-style="{'width': setTourneyWidth(rounds.length)}">
+            <div class="round"
+                 ng-repeat="round in rounds"
+                 ng-style="{width: setWidth(rounds.length)}">
+
+                <div class="matches">
+                    <button class="single-match btn-info btn"
+                       ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
+                       ng-repeat="match in round.matches"
+                       ng-click="updateMatch(match)"
+                       ui-sref="admin.tournament.id.match({id:match.id})"
+                       ng-show="hidden" ng-disabled="!match.player1 || !match.player2">
+                        <span class="player">{{match.player1.username || '--'}}</span><br>
+                        <span class="player">{{match.player2.username || '--'}}</span>
+                    </button>
+                    <div class="single-match"
+                         ng-style="{'margin-top': matchMargin(round.matches.length), 'margin-bottom': matchMargin(round.matches.length)}"
+                         ng-repeat="match in round.matches"
+                         ng-click="updateMatch(match)"
+                         ng-show="!hidden">
+                        <p class="player">{{match.player1.username || '--'}}</p>
+                        <p class="player">{{match.player2.username || '--'}}</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
