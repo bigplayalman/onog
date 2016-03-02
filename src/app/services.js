@@ -95,7 +95,28 @@ angular.module('onog.services', []).run(function ($http) {
     var attributes = ['tournament', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'active']
     Parse.defineAttributes(Match, attributes);
 
-    var getMatches = function (tourney) {
+    return {
+      Match: Match,
+      getMatch: getMatch,
+      saveMatch: saveMatch,
+      deleteMatches: deleteMatches,
+      createMatches: createMatches,
+      setNextMatch: setNextMatch,
+      setPlayers: setPlayers,
+      setRounds: setRounds,
+      submitMatch: submitMatch,
+      getMatches: getMatches
+    };
+
+    function saveMatch (match) {
+      return match.save();
+    }
+    function getMatch(id) {
+      var match = new Match();
+      match.id = id;
+      return match.fetch();
+    }
+    function getMatches (tourney) {
       var query = new Parse.Query(Match);
       query.equalTo('tournament', tourney);
       query.include('nextMatch');
@@ -106,7 +127,7 @@ angular.module('onog.services', []).run(function ($http) {
       return query.find();
     }
 
-    var deleteMatches = function (tourney) {
+    function deleteMatches (tourney) {
       var query = new Parse.Query(Match);
       query.equalTo('tournament', tourney);
       return query.find({
@@ -115,7 +136,7 @@ angular.module('onog.services', []).run(function ($http) {
         }
       });
     }
-    var createMatches = function (numGames, tourney) {
+    function createMatches (numGames, tourney) {
       var gameCount = 0;
       var matches = [];
       while(gameCount < numGames) {
@@ -130,7 +151,7 @@ angular.module('onog.services', []).run(function ($http) {
       return Parse.Object.saveAll(matches);
     }
 
-    var setNextMatch = function (games) {
+    function setNextMatch (games) {
       var matches = games.slice(1, games.length);
       var gameCount = matches.length;//6
       while(gameCount > 0) {
@@ -142,7 +163,7 @@ angular.module('onog.services', []).run(function ($http) {
       return Parse.Object.saveAll(matches);
     }
 
-    var setPlayers = function (players, games) {
+    function setPlayers (players, games) {
       var gamers = players.slice();
       var matchIndex = games.length -1;
       var matches =[];
@@ -167,7 +188,7 @@ angular.module('onog.services', []).run(function ($http) {
       return Parse.Object.saveAll(games);
     }
 
-    var setRounds = function (rounds, games) {
+    function setRounds (rounds, games) {
       var matches = [];
       var roundIndex = 0;
       var gamesIndex = 1;
@@ -190,7 +211,7 @@ angular.module('onog.services', []).run(function ($http) {
       }
       return Parse.Object.saveAll(games);
     }
-    var submitMatch = function (match) {
+    function submitMatch (match) {
       if(match.score1 > match.score2) {
         match.set('winner', match.player1);
         match.set('loser', match.player2);
@@ -199,17 +220,6 @@ angular.module('onog.services', []).run(function ($http) {
         match.set('loser', match.player1);
       }
     }
-
-    return {
-      Match: Match,
-      deleteMatches: deleteMatches,
-      createMatches: createMatches,
-      setNextMatch: setNextMatch,
-      setPlayers: setPlayers,
-      setRounds: setRounds,
-      submitMatch: submitMatch,
-      getMatches: getMatches
-    };
   }])
   .factory('Tournament', ['Parse', function(Parse) {
     var Model = Parse.Object.extend('Tournament');

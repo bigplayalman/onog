@@ -62,11 +62,11 @@ angular.module('onog.routes', [])
       })
 
       .state('admin.tournament.id.edit', {
-        url: '/edit',
+        url: '/edit/:id',
         views: {
           'tourney-info': {
-            templateUrl: 'templates/tournaments/tourney.html',
-            controller: 'TourneyEditController'
+            templateUrl: 'templates/admin/tournaments/tourney.html',
+            controller: 'admin.controllers.tournament.ctrl'
           }
         }
       })
@@ -84,8 +84,8 @@ angular.module('onog.routes', [])
         url: '/create',
         views: {
           'tourney': {
-            templateUrl: 'templates/tournaments/tourney.html',
-            controller: 'TourneyController'
+            templateUrl: 'templates/admin/tournaments/tourney.html',
+            controller: 'admin.controllers.tournament.ctrl'
           }
         }
       })

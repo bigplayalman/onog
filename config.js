@@ -28,7 +28,7 @@ module.exports = {
       'angular-parse/angular-parse.js',
       'bootswatch/superhero/bootstrap.css',
       'font-awesome/css/font-awesome.min.css',
-      'angular-ui-bootstrap/dist/ui-bootstrap.js'
+      'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'
     ],
     prod: [
       'angular/angular.min.js',
@@ -38,7 +38,7 @@ module.exports = {
       'angular-parse/angular-parse.js',
       'bootswatch/superhero/bootstrap.min.css',
       'font-awesome/css/font-awesome.min.css',
-      'angular-ui-bootstrap/dist/ui-bootstrap.js'
+      'angular-ui-bootstrap/dist/ui-bootstrap-tpls.js'
     ]
   }
 };

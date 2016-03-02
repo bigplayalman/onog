@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <h3 class="modal-title text-center">Seed Players</h3>
+</div>
+<div class="modal-body">
+    <div class="row text-center">
+        <div class="col-xs-6">
+            <h3>{{currentMatch.player1.username || 'TDB'}}</h3>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="player1" ng-model="currentMatch.player1" ng-value="null"> None
+                </label>
+            </div>
+            <div class="radio" ng-repeat="player in players">
+                <label>
+                    <input type="radio" name="player1" ng-model="currentMatch.player1" ng-value="player" ng-disabled="player.id === currentMatch.player2.id"> {{player.username}}
+                </label>
+            </div>
+
+        </div>
+        <div class="col-xs-6">
+            <h3>{{currentMatch.player2.username || 'TDB'}}</h3>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="player2" ng-model="currentMatch.player2" ng-value="null"> None
+                </label>
+            </div>
+            <div class="radio" ng-repeat="player in players">
+                <label>
+                    <input type="radio" name="player2" ng-model="currentMatch.player2" ng-value="player" ng-disabled="player.id === currentMatch.player1.id"> {{player.username}}
+                </label>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
