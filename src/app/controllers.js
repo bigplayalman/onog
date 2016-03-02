@@ -1,6 +1,7 @@
 angular.module('onog.controllers', [
   'admin.controllers',
-  'home.controllers'
+  'home.controllers',
+  'onog.controllers.tournament'
 ])
   .controller('ViewTournamentsController', function($scope, Parse, BracketList) {
 

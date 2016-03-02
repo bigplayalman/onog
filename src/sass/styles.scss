@@ -68,24 +68,34 @@ body, .main, .container-fluid {
 .round-name {
   float: left;
   text-align: center;
+  padding: 10px;
+}
+.balance-round {
+  margin: 0;
+}
+.active {
+  background: orangered;
+}
+.active-next {
+  background: orange;
 }
 .round {
   max-width: 200px;
-  display: block;
-  text-align: center;
-  margin: auto;
-  float:left;
+  padding: 10px;
+  float: left;
+
   .single-match {
     width: 100%;
-    padding: 10px;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-bottom: 10px;
+    border: 1px solid white;
     display: block;
     text-decoration: none;
     .player {
       display: block;
-      border: 1px solid white;
       padding: 10px;
+    }
+    .player:first-child {
+      border-bottom: 1px solid white;
     }
   }
 }
@@ -94,8 +104,5 @@ body, .main, .container-fluid {
   width: 100%;
 }
 .tournament-bracket {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 //bracket end

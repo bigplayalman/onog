@@ -16,8 +16,8 @@ angular.module('home.controllers', [])
       {
         title: 'Tournaments',
         icon: 'fa-trophy',
-        name: 'tournaments.index',
-        parent: 'tournaments'
+        name: 'tournament.list',
+        parent: 'tournament'
       }
     ];
 

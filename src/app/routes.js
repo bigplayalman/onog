@@ -169,41 +169,33 @@ angular.module('onog.routes', [])
           }
         }
       })
-      .state('tournaments', {
-        url: '/tournaments',
+      .state('tournament', {
+        url: '/tournament',
         abstract: true,
         data: {
           requireLogin: false,
         },
-        template: '<div ui-view="menu" class="navbar navbar-inverse"></div><div ui-view="content" class="col-xs-12"></div>'
+        templateUrl: 'templates/tournament.html'
       })
-      .state('tournaments.index', {
-        url: '',
+      .state('tournament.list', {
+        url: '/list',
         views: {
-          'menu': {
-            templateUrl: 'templates/menus/home-menu.html',
-            controller: 'MenuController'
-          },
           'content': {
-            templateUrl: 'templates/pages/tournaments.html',
-            controller: 'TournamentListController'
+            templateUrl: 'templates/tournaments/tournaments-list.html',
+            controller: 'onog.controllers.tournament.list.ctrl'
           }
         }
       })
 
-      .state('tournaments.tournament', {
+      .state('tournament.details', {
         url: '/:id',
         data: {
           canEdit: false
         },
         views: {
-          'menu': {
-            templateUrl: 'templates/menus/home-menu.html',
-            controller: 'MenuController'
-          },
           'content': {
             templateUrl: 'templates/tournaments/tourney-details.html',
-            controller: 'TourneyDetailsController'
+            controller: 'onog.controllers.tournament.detail.ctrl'
           }
         }
       })

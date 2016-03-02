@@ -18,8 +18,8 @@
                    ng-repeat="match in round.matches"
                    ui-sref="single-match({id:match.id})">
 
-                    <p>{{match.player1.username || 'tbd'}}</p>
-                    <p>{{match.player2.username || 'tbd'}}</p>
+                    <div>{{match.player1.username || 'tbd'}}</div>
+                    <div>{{match.player2.username || 'tbd'}}</div>
 
                 </a>
             </div>

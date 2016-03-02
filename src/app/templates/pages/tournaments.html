@@ -1,7 +1,7 @@
 <div class="col-xs-12">
     <h3>Active Tournaments</h3>
 </div>
-<a class="col-sm-6" ng-repeat="tourney in tournaments" ui-sref="tournaments.tournament({id: tourney.id})">
+<a class="col-sm-6 tournament-link" ng-repeat="tourney in tournaments" ui-sref="tournament.details({id: tourney.id})">
     <div class="panel" ng-class="{
         'panel-danger': tourney.current <= (tourney.max/4),
         'panel-info': tourney.current <= (tourney.max/2),
