@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-sm-4" ng-repeat="match in matches" ng-click="showMatchDetails(match)">
+        <div class="panel panel-default">
+            <div class="panel-heading">{{match.tournament.attributes.name}} | {{match.tournament.attributes.game}}</div>
+            <div class="panel-body">
+
+                vs. <span ng-hide="user.id === match.player2.id"> {{match.player2.username}}</span>
+                <span ng-hide="user.id === match.player1.id"> {{match.player1.username}}</span>
+                <span ng-show="!match.player2 || !match.player1"> TDB</span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--active: false-->
+<!--createdAt: "2016-03-02T01:53:45.799Z"-->
+<!--gameNum: 7-->
+<!--isValid: true-->
+<!--nextMatch: Object-->
+<!--__type: "Object"-->
+<!--active: false-->
+<!--className: "Match"-->
+<!--createdAt: "2016-03-02T01:53:45.799Z"-->
+<!--gameNum: 3-->
+<!--isValid: true-->
+<!--nextMatch: Object-->
+<!--objectId: "xY1TWplRAf"-->
+<!--player1: Object-->
+<!--round: Object-->
+<!--tournament: Object-->
+<!--updatedAt: "2016-03-02T02:04:16.151Z"-->
+<!--__proto__: Object-->
+<!--objectId: "IpABsSLS0y"-->
+<!--player1: Object-->
+<!--__type: "Object"-->
+<!--className: "_User"-->
+<!--createdAt: "2015-12-31T18:20:18.711Z"-->
+<!--email: "almas@oomzie.com"-->
+<!--numOfTourneys: 1-->
+<!--objectId: "K3TYMcJHTY"-->
+<!--sessionToken: "r:rBp2KyGW4HUhrJACdBpOSGTUM"-->
+<!--updatedAt: "2016-01-21T19:41:33.649Z"-->
+<!--username: "almas1"-->
+<!--__proto__: Object-->
+<!--player2: Object-->
+<!--__type: "Object"-->
+<!--className: "_User"-->
+<!--createdAt: "2016-01-02T16:21:09.031Z"-->
+<!--email: "almasf@oomzie.com"-->
+<!--numOfTourneys: 1-->
+<!--objectId: "3WvV051Ng2"-->
+<!--updatedAt: "2016-01-21T20:38:32.693Z"-->
+<!--username: "almas5"-->
+<!--__proto__: Object-->
+<!--round: Object-->
+<!--__type: "Object"-->
+<!--className: "Round"-->
+<!--createdAt: "2016-03-02T01:53:45.972Z"-->
+<!--name: "Balance Round"-->
+<!--objectId: "vLizvmvyc5"-->
+<!--roundNum: 4-->
+<!--tournament: Object-->
+<!--updatedAt: "2016-03-02T01:53:45.972Z"-->
+<!--__proto__: Object-->
+<!--tournament: Object-->
+<!--__type: "Object"-->
+<!--className: "Tournament"-->
+<!--createdAt: "2016-01-21T19:07:51.436Z"-->
+<!--current: 9-->
+<!--game: "Hearthstone"-->
+<!--max: 25-->
+<!--name: "test"-->
+<!--objectId: "2KobFtq1ZO"-->
+<!--players: Object-->
+<!--status: "active"-->
+<!--type: "Single Elimination Bracket"-->
+<!--updatedAt: "2016-03-02T03:10:09.561Z"-->
+<!--__proto__: Object-->
+<!--updatedAt: "2016-03-02T03:10:03.995Z"-->

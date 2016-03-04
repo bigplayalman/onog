@@ -1,6 +1,8 @@
 angular.module('onog.controllers', [
+  'onog.controllers.menu',
   'admin.controllers',
   'home.controllers',
+  'account.controllers',
   'onog.controllers.tournament'
 ])
   .controller('ViewTournamentsController', function($scope, Parse, BracketList) {
@@ -136,19 +138,19 @@ angular.module('onog.controllers', [
     }
     $scope.signUp = function (newUser) {
       console.log($scope.user)
-      //var user = new Parse.User();
-      //user.set("username", newUser.username);
-      //user.set("password", newUser.password);
-      //user.set("email", newUser.email);
-      //
-      //user.signUp(null, {
-      //  success: function(user) {
-      //    $state.go('login');
-      //  },
-      //  error: function(user, error) {
-      //    // Show the error message somewhere and let the user try again.
-      //    alert("Error: " + error.code + " " + error.message);
-      //  }
-      //});
+      var user = new Parse.User();
+      user.set("username", newUser.username);
+      user.set("password", newUser.password);
+      user.set("email", newUser.email);
+
+      user.signUp(null, {
+        success: function(user) {
+          $state.go('login');
+        },
+        error: function(user, error) {
+          // Show the error message somewhere and let the user try again.
+          alert("Error: " + error.code + " " + error.message);
+        }
+      });
     }
   });

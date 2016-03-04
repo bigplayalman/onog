@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <h3 class="modal-title text-center">ONOG Login</h3>
+</div>
+<div class="modal-body">
+  <div class="alert alert-danger" ng-show="errorMessage">{{errorMessage.message}}</div>
+  <input type="text" class="form-control" placeholder="Username" autofocus ng-model="user.username" autocomplete="off">
+  <input type="password" class="form-control" placeholder="Password" ng-model="user.password" autocomplete="off">
+</div>
+<div class="modal-footer">
+
+  <div class="btn-group btn-group-justified">
+    <a class="btn btn-default" ng-click="cancel()">Cancel</a>
+    <a class="btn btn-success" ng-click="login()" ng-disabled="invalid()">Login</a>
+  </div>
+
+</div>

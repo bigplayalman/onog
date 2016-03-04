@@ -105,9 +105,26 @@ angular.module('onog.services', []).run(function ($http) {
       setPlayers: setPlayers,
       setRounds: setRounds,
       submitMatch: submitMatch,
-      getMatches: getMatches
+      getMatches: getMatches,
+      getUserMatches: getUserMatches
     };
 
+    function getUserMatches (user) {
+      var player1 = new Parse.Query(Match);
+      player1.equalTo("player1", user);
+
+      var player2 = new Parse.Query(Match);
+      player2.equalTo("player2", user);
+
+      var mainQuery = Parse.Query.or(player1, player2);
+      mainQuery.include('nextMatch');
+      mainQuery.include('player1');
+      mainQuery.include('player2');
+      mainQuery.include('round');
+      mainQuery.include('tournament');
+      return mainQuery.find();
+
+    }
     function saveMatch (match) {
       return match.save();
     }

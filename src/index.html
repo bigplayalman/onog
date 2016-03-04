@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" >
-    <head>
-        <title>ONOG</title>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="description" content="">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="lib/bootstrap.css"/>
-        <link rel="stylesheet" href="lib/font-awesome.min.css"/>
+  <head>
+    <title>ONOG</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="lib/bootstrap.css"/>
+    <link rel="stylesheet" href="lib/font-awesome.min.css"/>
 
-        <link rel="stylesheet" href="css/styles.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
 
-        <script type="text/javascript" src="lib/angular.js"></script>
-        <script type="text/javascript" src="lib/parse-latest.min.js"></script>
-        <script type="text/javascript" src="lib/angular-animate.js"></script>
-        <script type="text/javascript" src="lib/angular-ui-router.js"></script>
-        <script type="text/javascript" src="lib/angular-parse.js"></script>
-        <script type="text/javascript" src="lib/ui-bootstrap-tpls.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
-        <script type="text/javascript" src="js/templates.js"></script>
-    </head>
+    <script type="text/javascript" src="lib/angular.js"></script>
+    <script type="text/javascript" src="lib/parse-latest.min.js"></script>
+    <script type="text/javascript" src="lib/angular-animate.js"></script>
+    <script type="text/javascript" src="lib/angular-ui-router.js"></script>
+    <script type="text/javascript" src="lib/angular-parse.js"></script>
+    <script type="text/javascript" src="lib/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/templates.js"></script>
+  </head>
 
-    <body ng-app="onog">
-    <div ui-view class="inherit-height"></div>
-
-    </body>
+  <body ng-app="onog">
+    <nav ui-view name="menu" class="navbar navbar-inverse"></nav>
+    <div ui-view name="content"></div>
+  </body>
 </html>

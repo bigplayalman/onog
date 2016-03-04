@@ -4,7 +4,7 @@ angular.module('onog.controllers.tournament', [])
     $scope.tournaments = [];
     Tournament.getTournaments().then(function (tournaments) {
       $scope.tournaments = tournaments;
-    })
+    });
   })
   .controller('onog.controllers.tournament.detail.ctrl', function($scope, $state, $stateParams, $filter, Tournament, Match, Parse, Round, Player) {
 
