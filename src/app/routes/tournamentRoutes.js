@@ -11,10 +11,11 @@ angular.module('tournament.routes', [])
         },
         views: {
           menu: {
-            template: ''
+            template: '<div onog-menu class="container-fluid"></div>',
+            controller: 'onog.controllers.menu.default.ctrl'
           },
           content: {
-            templateUrl: 'templates/tournament.html'
+            template: '<div ui-view name="tournament" class="container-fluid"></div>',
           }
         }
       })
@@ -37,6 +38,14 @@ angular.module('tournament.routes', [])
           'tournament': {
             templateUrl: 'templates/tournaments/tourney-details.html',
             controller: 'onog.controllers.tournament.detail.ctrl'
+          }
+        },
+        resolve: {
+          tournament: function ($stateParams, Tournament) {
+            return Tournament.fetchTournament($stateParams.id);
+          },
+          players: function ($stateParams, playerServices) {
+            return playerServices.getPlayers($stateParams.id);
           }
         }
       })

@@ -1,6 +1,6 @@
 angular.module('onog.controllers.menu', [])
 
-  .controller('onog.controllers.menu.default.ctrl', function($scope, $state, $uibModal, Parse, Admin) {
+  .controller('onog.controllers.menu.default.ctrl', function($scope, $state, Parse, Admin, modalServices) {
 
     $scope.user = Parse.User.current();
 
@@ -49,27 +49,11 @@ angular.module('onog.controllers.menu', [])
     }
 
     $scope.login = function () {
-      showModal('templates/modals/login.html');
+      modalServices.showLogin();
     }
 
     $scope.register = function () {
-      showModal('templates/modals/register.html');
-    }
-
-    function showModal (templateUrl) {
-      var modalInstance = $uibModal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: templateUrl,
-        controller: 'onog.controllers.menu.modal.ctrl',
-        size: 'sm',
-        backdrop: 'static'
-      });
-
-      modalInstance.result.then(function (user) {
-        $scope.user = user;
-        console.log(user);
-        $state.reload();
-      });
+      modalServices.showRegister();
     }
 
     $scope.logout = function () {
@@ -79,45 +63,4 @@ angular.module('onog.controllers.menu', [])
         $state.reload();
       });
     }
-  })
-  .controller('onog.controllers.menu.modal.ctrl', function ($scope, $uibModalInstance, Parse) {
-    $scope.user = {
-      username: null,
-      password: null
-    }
-    $scope.register = function () {
-      $scope.errorMessage = null;
-      var user = new Parse.User();
-      user.set($scope.user)
-
-      user.signUp(null, {
-        success: function(user) {
-          $uibModalInstance.close(user);
-        },
-        error: function(user, error) {
-          $scope.errorMessage = error;
-          // The login failed. Check error to see why.
-        }
-      });
-    }
-    $scope.login = function () {
-      $scope.errorMessage = null;
-      Parse.User.logIn($scope.user.username, $scope.user.password, {
-        success: function(user) {
-          $uibModalInstance.close(user);
-        },
-        error: function(user, error) {
-          $scope.errorMessage = error;
-          // The login failed. Check error to see why.
-        }
-      });
-    };
-
-    $scope.invalid = function () {
-      return (!$scope.user.username || !$scope.user.password);
-    }
-
-    $scope.cancel = function () {
-      $uibModalInstance.close(null);
-    };
   })

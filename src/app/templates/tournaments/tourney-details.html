@@ -1,39 +1,56 @@
-
 <div class="row">
-    <div class="col-xs-12">
-        <h4><strong>Tournament Name: </strong>{{tourney.name}}</h4>
-        <h4 class="text-right">Current Status:
-            <span class="text-capitalize"
-                  ng-class="{'text-success': tourney.status ==='active','text-warning': tourney.status ==='on hold','text-info': tourney.status ==='completed'}">
-                {{tourney.status}}
-            </span>
-        </h4>
-        <strong>Tournament Type: </strong>{{tourney.type}}
-        <br>
-        <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
+
+  <div class="col-sm-6">
+    <h4>
+      <strong>Tournament Name: </strong>
+      {{tourney.name}}
+    </h4>
+
+    <div>
+      <strong>Tournament Type: </strong>{{tourney.type}}
     </div>
+    <div>
+      <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <h4 class="text-right">
+      Current Status:
+      <span
+        class="text-capitalize"
+        ng-class="{'text-success': tourney.status ==='active','text-warning': tourney.status ==='on hold','text-info': tourney.status ==='completed'}">
+        {{tourney.status}}
+      </span>
+    </h4>
+
+    <div class=" text-right">
+      <a class="btn btn-primary" ng-show="user && !registered && tourney.status === 'registration'" ng-click="register()">Register</a>
+      <a class="btn btn-primary" ng-show="user && registered && tourney.status === 'registration'" ng-click="cancelRegistration()">Cancel Registration</a>
+      <a class="btn btn-primary" ng-show="!user" ng-click="login()">Sign in to Register</a>
+    </div>
+  </div>
+
 </div>
 <div class="row">
-    <div class="col-xs-12">
-        <hr>
-
-        <div class="tournament-bracket">
-            <div class="round"
-                 ng-repeat="round in rounds"
-                 ng-style="{width: setWidth(rounds.length)}"
-                 ng-class="{'balance-round': round.name === 'Balance Round'}">
-                <h4 class="title">{{tourney.name}} | Main Event</h4>
-                <div class="matches" ng-style="{'margin-top': matchMargin($index)}">
-                    <div class="single-match"
-                         ng-repeat="match in round.matches"
-                         ng-class="{'active-next': match.id === nextId, 'active': match.nextMatch.id === nextId}"
-                         ng-click="showActive($event, match)">
-                        <div class="player">{{match.player1.username || 'TBD'}}</div>
-                        <div class="player">{{match.player2.username || 'TBD'}}</div>
-                    </div>
-                </div>
-
-            </div>
+  <div class="col-xs-12">
+    <hr>
+    <div class="tournament-bracket">
+      <div class="round"
+           ng-repeat="round in rounds"
+           ng-style="{width: setWidth(rounds.length)}">
+        <h4 class="title text-center">{{round.name}}</h4>
+        <div class="matches" ng-style="{'margin-top': matchMargin($index)}">
+          <div class="single-match"
+               ng-repeat="match in round.matches"
+               ng-class="{'active-next': match.id === nextId, 'active': match.nextMatch.id === nextId}"
+               ng-click="showActive($event, match)">
+            <div class="player">{{match.player1.username || 'TBD'}}</div>
+            <div class="player">{{match.player2.username || 'TBD'}}</div>
+          </div>
         </div>
+
+      </div>
     </div>
+  </div>
 </div>
