@@ -7,6 +7,13 @@ var Directives = angular.module('onog.directives', [])
     }
 
   })
+  .directive('onogSubMenu', function () {
+    return {
+      restrict: 'EA', //E = element, A = attribute, C = class, M = comment
+      templateUrl: 'templates/directives/sub-menu.html'
+    }
+
+  })
   .directive('selectState', function () {
     return {
       restrict: 'EA', //E = element, A = attribute, C = class, M = comment

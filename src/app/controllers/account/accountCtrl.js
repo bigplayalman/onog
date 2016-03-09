@@ -49,8 +49,11 @@ angular.module('account.controllers', [])
     };
   })
 
-  .controller('account.controllers.menu.ctrl', function($scope, $state) {
+  .controller('account.controllers.menu.ctrl', function($scope, $state, Parse) {
     var current = $state.$current.name.split('.');
+
+    $scope.user = Parse.User.current();
+
     $scope.active = {
       path: current[current.length - 1]
     }
@@ -63,7 +66,7 @@ angular.module('account.controllers', [])
         children: []
       },
       {
-        title: 'Tournaments',
+        title: 'My Tournaments',
         icon: 'fa-trophy',
         name: 'tournament.list',
         parent: 'tournament',
@@ -75,13 +78,6 @@ angular.module('account.controllers', [])
         name: 'account.matches',
         parent: 'matches',
         children: []
-      },
-      {
-        title: 'Home',
-        icon: 'fa-home',
-        name: 'home.index',
-        parent: 'home',
-        children: []
       }
     ];
 
@@ -90,4 +86,4 @@ angular.module('account.controllers', [])
       Parse.User.logOut();
       $state.go('home');
     }
-  })
+  });

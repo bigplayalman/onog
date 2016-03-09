@@ -11,16 +11,21 @@ angular.module('account.routes', [])
         },
         views: {
           menu: {
-            template: ''
+            template: '<div onog-menu class="container-fluid"></div>',
+            controller: 'onog.controllers.menu.default.ctrl'
           },
           content: {
-            templateUrl: 'templates/account.html'
+            template: '<div ui-view="menu"></div><div ui-view="account" class="content"></div>'
           }
         }
       })
       .state('account.dashboard', {
         url: '',
         views: {
+          menu: {
+            template: '<div class="navbar-inverse"><div onog-sub-menu class="container-fluid"></div></div>',
+            controller: 'account.controllers.menu.ctrl'
+          },
           'account': {
             templateUrl: 'templates/account/dashboard.html',
             controller: 'account.controllers.dashboard.ctrl'
