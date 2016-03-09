@@ -41,6 +41,10 @@
               <a class="btn btn-primary" ng-click="edit()">Edit</a>
               <a class="btn btn-primary" ng-click="cancelRegistration()">Cancel Registration</a>
             </span>
+            <span ng-show="tourney.status === 'check-in'">
+              <a class="btn btn-primary" ng-click="checkIn()" ng-show="!registered.checkin">Check-in</a>
+              <span ng-show="registered.checkin"><i class="fa fa-check"></i> Checked In</span>
+            </span>
           </span>
 
         </span>
