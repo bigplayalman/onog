@@ -7,14 +7,16 @@ angular.module('onog.services.player', [])
       getPlayers: getPlayers
     };
 
-    function getPlayers (tourneyId) {
-      var tournament = new Tournament.Model();
-      tournament.id = tourneyId;
+    function getPlayers (tourney) {
       var query = new Parse.Query(Player.Model);
-      query.equalTo('tournament', tournament);
+      query.equalTo('tournament', tourney);
+      query.include('user');
       return query.find();
     }
-    function  findPlayer (players) {
+    function  findPlayer (players, user) {
+      if(!user) {
+        return null;
+      }
       return $filter('filter')(players, Parse.User.current().id, true)[0] || null;
     }
 
@@ -23,10 +25,10 @@ angular.module('onog.services.player', [])
       player.set('tournament', tournament);
       player.set('heroClasses', heroes);
       player.set('status', 'registered');
+      player.set('checkin', false)
       player.set('user', Parse.User.current());
       return player.save();
     }
-
 
   })
   .factory('Player', ['Parse', function (Parse) {

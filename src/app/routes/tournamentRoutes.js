@@ -30,7 +30,10 @@ angular.module('tournament.routes', [])
       })
 
       .state('tournament.details', {
-        url: '/:id',
+        url: '/:name',
+        params: {
+          id: null
+        },
         data: {
           canEdit: false
         },
@@ -42,10 +45,10 @@ angular.module('tournament.routes', [])
         },
         resolve: {
           tournament: function ($stateParams, Tournament) {
-            return Tournament.fetchTournament($stateParams.id);
+            return Tournament.fetchTournament($stateParams.name);
           },
-          players: function ($stateParams, playerServices) {
-            return playerServices.getPlayers($stateParams.id);
+          players: function(tournament, playerServices) {
+            return playerServices.getPlayers(tournament[0]);
           }
         }
       })

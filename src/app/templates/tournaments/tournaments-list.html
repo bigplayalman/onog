@@ -1,5 +1,5 @@
 <div class="row top-margin-20">
-    <a class="col-sm-6" ng-repeat="tourney in tournaments" ui-sref="tournament.details({id: tourney.id})">
+    <a class="col-sm-6" ng-repeat="tourney in tournaments" ui-sref="tournament.details({id: tourney.id, name: tourney.name})">
         <div class="panel" ng-class="{
         'panel-danger': tourney.current <= (tourney.max/4),
         'panel-info': tourney.current <= (tourney.max/2),

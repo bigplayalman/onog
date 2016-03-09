@@ -9,11 +9,10 @@ angular.module('onog.controllers.tournament', [])
   .controller('onog.controllers.tournament.detail.ctrl',
     function($scope, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
 
-      $scope.tourney = tournament;
-      $scope.players = players;
-      $scope.registered = playerServices.findPlayer(players);
+      $scope.tourney = tournament[0];
       $scope.user = Parse.User.current();
-
+      $scope.players = players;
+      $scope.registered = playerServices.findPlayer($scope.players, $scope.user);
       $scope.nextId = null;
       $scope.currentId = null;
 
@@ -29,7 +28,7 @@ angular.module('onog.controllers.tournament', [])
       }
 
       $scope.cancelRegistration = function () {
-        modalServices.showCancelRegistration($scope.registered);
+        modalServices.showCancelRegistration($scope.registered, $scope.tourney);
       }
 
       $scope.login = function () {

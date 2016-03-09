@@ -25,14 +25,34 @@
     </h4>
 
     <div class=" text-right">
-      <a class="btn btn-primary" ng-show="user && !registered && tourney.status === 'registration'" ng-click="register()">Register</a>
-      <a class="btn btn-primary" ng-show="user && registered && tourney.status === 'registration'" ng-click="cancelRegistration()">Cancel Registration</a>
-      <a class="btn btn-primary" ng-show="!user" ng-click="login()">Sign in to Register</a>
+
+      <span ng-show="user">
+        <span ng-show="!registered">
+          <a class="btn btn-primary" ng-show="tourney.status === 'registration'" ng-click="register()">Register</a>
+        </span>
+        <span ng-show="registered">
+          <a class="btn btn-primary" ng-show="tourney.status === 'registration'" ng-click="cancelRegistration()">Cancel Registration</a>
+        </span>
+      </span>
+      <span ng-show="!user">
+        <a class="btn btn-primary" ng-click="login()">Sign in to Register</a>
+      </span>
+
     </div>
   </div>
 
 </div>
-<div class="row">
+
+<div class="row" ng-show="tourney.status === 'registration'">
+  <div class="col-xs-12">
+    <hr>
+    <div class="player" ng-repeat="player in players">
+      <div>{{player.user.username}} | Rank: {{player.attributes.rank}}</div>
+      <span ng-repeat="hero in player.attributes.heroClasses">{{hero}} </span>
+    </div>
+  </div>
+</div>
+<div class="row" ng-show="tourney.status === 'active'">
   <div class="col-xs-12">
     <hr>
     <div class="tournament-bracket">

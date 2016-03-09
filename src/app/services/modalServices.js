@@ -40,7 +40,7 @@ angular.module('onog.services.modal', [])
       });
     }
 
-    function showCancelRegistration (player) {
+    function showCancelRegistration (player, tourney) {
       return $uibModal.open({
         templateUrl: 'templates/modals/tournament-cancel.html',
         controller: 'onog.controllers.modal.tournament.cancel.ctrl',
@@ -49,6 +49,9 @@ angular.module('onog.services.modal', [])
         resolve: {
           player: function () {
             return player;
+          },
+          tourney: function () {
+            return tourney;
           }
         }
       });

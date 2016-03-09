@@ -58,7 +58,7 @@ angular.module('onog.controllers.modal', [])
     };
   })
 
-  .controller('onog.controllers.modal.tournament.registration.ctrl', function ($scope, $state, $uibModalInstance, playerServices, tourney) {
+  .controller('onog.controllers.modal.tournament.registration.ctrl', function ($scope, $state, $uibModalInstance, playerServices, Tournament, tourney) {
     $scope.checkResults = [];
 
     $scope.heroClass =
@@ -123,8 +123,10 @@ angular.module('onog.controllers.modal', [])
       $scope.errorMessage = null;
 
       playerServices.createPlayer($scope.player, $scope.checkResults, tourney).then(function (data) {
-        $uibModalInstance.close(data);
-        $state.reload();
+        Tournament.increaseCount(tourney).then(function () {
+          $uibModalInstance.close(data);
+          $state.reload();
+        });
       }, function (err) {
         $scope.errorMessage = err.message;
       });
@@ -136,12 +138,14 @@ angular.module('onog.controllers.modal', [])
     };
 
   })
-  .controller('onog.controllers.modal.tournament.cancel.ctrl', function ($scope, $state, $uibModalInstance, playerServices, player) {
+  .controller('onog.controllers.modal.tournament.cancel.ctrl', function ($scope, $state, $uibModalInstance, playerServices, Tournament, player, tourney) {
     $scope.player = player;
     $scope.cancelRegistration = function () {
       $scope.player.destroy().then(function (data) {
-        $uibModalInstance.close(data);
-        $state.reload();
+        Tournament.decreaseCount(tourney).then(function () {
+          $uibModalInstance.close(data);
+          $state.reload();
+        })
       })
     }
     $scope.cancel = function () {
