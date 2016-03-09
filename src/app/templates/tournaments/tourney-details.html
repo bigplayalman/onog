@@ -27,13 +27,26 @@
     <div class=" text-right">
 
       <span ng-show="user">
-        <span ng-show="!registered">
-          <a class="btn btn-primary" ng-show="tourney.status === 'registration'" ng-click="register()">Register</a>
+
+        <span ng-show="tourney.current <= tourney.max">
+
+          <span ng-show="!registered">
+            <span ng-show="tourney.status === 'registration'">
+              <a class="btn btn-primary" ng-click="register()">Register</a>
+            </span>
+          </span>
+
+          <span ng-show="registered">
+            <span ng-show="tourney.status === 'registration'">
+              <a class="btn btn-primary" ng-click="edit()">Edit</a>
+              <a class="btn btn-primary" ng-click="cancelRegistration()">Cancel Registration</a>
+            </span>
+          </span>
+
         </span>
-        <span ng-show="registered">
-          <a class="btn btn-primary" ng-show="tourney.status === 'registration'" ng-click="cancelRegistration()">Cancel Registration</a>
-        </span>
+
       </span>
+
       <span ng-show="!user">
         <a class="btn btn-primary" ng-click="login()">Sign in to Register</a>
       </span>

@@ -23,6 +23,10 @@ angular.module('onog.controllers.tournament', [])
         $scope.displayBracket(matches);
       });
 
+      $scope.edit = function () {
+        modalServices.showEditRegistration($scope.registered);
+      }
+
       $scope.register = function () {
         modalServices.showTourneyRegistration($scope.tourney);
       }

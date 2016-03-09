@@ -9,7 +9,8 @@ angular.module('onog.services.tournament', [])
       decreaseCount: decreaseCount,
       fetchTournament: fetchTournament,
       getTournaments: getTournaments,
-      setTournament: setTournament
+      setTournament: setTournament,
+      getHeroClasses: getHeroClasses
     };
 
     function increaseCount (tourney) {
@@ -42,6 +43,43 @@ angular.module('onog.services.tournament', [])
     function getTournaments () {
       var query = new Parse.Query(Model);
       return query.find();
+    }
+
+    function getHeroClasses () {
+      return [
+        {
+          name: 'Druid',
+          value: false,
+        },
+        {
+          name: 'Hunter',
+          value: false
+        },
+        {
+          name: 'Mage',
+          value: false
+        },
+        {
+          name: 'Paladin',
+          value: false
+        },
+        {
+          name: 'Priest',
+          value: false
+        },
+        {
+          name: 'Rogue',
+          value: false
+        },
+        {
+          name: 'Shaman',
+          value: false
+        },
+        {
+          name: 'Warrior',
+          value: false
+        }
+      ]
     }
 
 

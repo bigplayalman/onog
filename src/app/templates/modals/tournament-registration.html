@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h3 class="modal-title text-center">{{player.tournament.name}} registration</h3>
+  <h3 class="modal-title text-center">{{title}}</h3>
 </div>
 <div class="modal-body">
   <div class="alert alert-danger" ng-show="errorMessage">{{errorMessage.message}}</div>
@@ -20,7 +20,7 @@
 
   <div class="btn-group btn-group-justified">
     <a class="btn btn-default" ng-click="cancel()">Cancel</a>
-    <a class="btn btn-success" ng-click="register()" ng-disabled="invalid()">Register</a>
+    <a class="btn btn-success" ng-click="register()" ng-disabled="invalid()">Save</a>
   </div>
 
 </div>

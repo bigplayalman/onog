@@ -58,44 +58,60 @@ angular.module('onog.controllers.modal', [])
     };
   })
 
+  .controller('onog.controllers.modal.tournament.registration.edit.ctrl', function ($scope, $state, $uibModalInstance, $filter, playerServices, Tournament, player) {
+    $scope.title = 'Edit Registration';
+
+    $scope.heroClass = Tournament.getHeroClasses();
+
+    $scope.player = player;
+    $scope.checkResults = player.get('heroClasses');
+
+    angular.forEach($scope.checkResults, function (hero) {
+      var found = $filter('filter')($scope.heroClass, hero, true);
+      found[0].value = true;
+    });
+
+    $scope.disableCheckbox = function (item) {
+      var disable = false;
+      if($scope.checkResults.length >= 3 && !item.value) {
+        disable = true;
+        return disable;
+      }
+      return disable;
+    }
+
+    $scope.$watch('heroClass', function(newValues, oldValues, scope) {
+      $scope.checkResults = [];
+      angular.forEach($scope.heroClass, function (model) {
+        if (model.value) {
+          $scope.checkResults.push(model.name);
+        }
+      });
+    }, true);
+
+    $scope.register = function () {
+      $scope.errorMessage = null;
+
+      playerServices.updatePlayer($scope.player, $scope.checkResults).then(function (data) {
+        $uibModalInstance.close(data);
+        $state.reload();
+      }, function (err) {
+        $scope.errorMessage = err.message;
+      });
+
+    }
+
+    $scope.cancel = function () {
+      $uibModalInstance.close(null);
+    };
+
+  })
+
   .controller('onog.controllers.modal.tournament.registration.ctrl', function ($scope, $state, $uibModalInstance, playerServices, Tournament, tourney) {
     $scope.checkResults = [];
+    $scope.title = 'Register for ' + tourney.name;
 
-    $scope.heroClass =
-      [
-        {
-          name: 'Druid',
-          value: false,
-        },
-        {
-          name: 'Hunter',
-          value: false
-        },
-        {
-          name: 'Mage',
-          value: false
-        },
-        {
-          name: 'Paladin',
-          value: false
-        },
-        {
-          name: 'Priest',
-          value: false
-        },
-        {
-          name: 'Rogue',
-          value: false
-        },
-        {
-          name: 'Shaman',
-          value: false
-        },
-        {
-          name: 'Warrior',
-          value: false
-        }
-      ];
+    $scope.heroClass = Tournament.getHeroClasses();
 
     $scope.player = {
       seed: 999,

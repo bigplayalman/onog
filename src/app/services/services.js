@@ -85,15 +85,6 @@ angular.module('onog.services',
       deleteRounds: deleteRounds
     };
   }])
-  .factory('Player', ['Parse', function (Parse) {
-    var Model = Parse.Object.extend('Player');
-    var attributes = ['game', 'user', 'tourneyCount', 'matches', 'status', 'statusReason', 'results'];
-    Parse.defineAttributes(Model, attributes);
-
-    return {
-      Model: Model
-    }
-  }])
   .factory('Match', ['Parse', function (Parse) {
     var Match = Parse.Object.extend('Match');
     var attributes = ['tournament', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'active']
