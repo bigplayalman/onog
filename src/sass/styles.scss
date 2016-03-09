@@ -73,6 +73,12 @@ body, .main, .container-fluid {
 .balance-round {
   margin: 0;
 }
+.no-padding {
+  padding: 0;
+}
+.padding {
+  padding: 5px;
+}
 .active {
   background: orangered;
 }

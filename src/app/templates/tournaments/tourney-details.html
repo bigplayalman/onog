@@ -60,12 +60,23 @@
 
 </div>
 
-<div class="row" ng-show="tourney.status === 'registration'">
+<div class="row" ng-show="tourney.status === 'registration' || tourney.status === 'check-in'">
   <div class="col-xs-12">
     <hr>
-    <div class="player" ng-repeat="player in players">
-      <div>{{player.user.username}} | Rank: {{player.attributes.rank}}</div>
-      <span ng-repeat="hero in player.attributes.heroClasses">{{hero}} </span>
+    <div class="player row no-padding" ng-repeat="player in players">
+      <div class="pull-left padding">
+        {{player.user.username}}
+      </div>
+      <div class="pull-left padding">Rank: {{player.attributes.rank}}
+      </div>
+      <div class="pull-left padding">
+        <span ng-repeat="hero in player.attributes.heroClasses">
+          {{hero}}
+        </span>
+        <span ng-show=" tourney.status === 'check-in'">
+          <i class="fa fa-check-circle-o" ng-show="player.checkin"></i>
+        </span>
+      </div>
     </div>
   </div>
 </div>
