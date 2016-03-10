@@ -12,10 +12,12 @@ angular.module('admin.routes', [])
         },
         views: {
           menu: {
-            template: ''
+            template: '<div onog-menu class="container-fluid"></div>',
+            controller: 'onog.controllers.menu.default.ctrl'
           },
           content: {
-            templateUrl: 'templates/admin/admin.html'
+            template: '<div class="navbar-inverse"><div onog-sub-menu class="container-fluid"></div></div><div ui-view="admin" class="container-fluid"></div>',
+            controller: 'admin.controllers.menu.ctrl'
           }
         }
 
@@ -23,7 +25,7 @@ angular.module('admin.routes', [])
       .state('admin.dashboard', {
         url: '',
         views: {
-          content: {
+          admin: {
             templateUrl: 'templates/admin/dashboard.html',
             controller: 'admin.controllers.dashboard.ctrl'
           }
@@ -33,7 +35,7 @@ angular.module('admin.routes', [])
         url: '/tournament',
         abstract: true,
         views: {
-          content: {
+          admin: {
             template: '<div ui-view="tourney"></div>'
           }
         }
@@ -42,97 +44,51 @@ angular.module('admin.routes', [])
         url: '/list',
         views: {
           tourney: {
-            templateUrl: 'templates/admin/tournaments/list.html',
+            templateUrl: 'templates/tournaments/tournaments-list.html',
             controller: 'admin.controllers.tournament.list.ctrl'
           }
         }
       })
-      .state('admin.tournament.id', {
-        url: '/:id',
-        abstract: true,
+      .state('admin.tournament.details', {
+        url: '/:name',
         views: {
-          'tourney': {
-            template: '<div ui-view="tourney-info"></div>'
-          }
-        }
-      })
-      .state('admin.tournament.id.details', {
-        url: '/details',
-        views: {
-          'tourney-info': {
-            templateUrl: 'templates/admin/tournaments/details.html',
+          tourney: {
+            templateUrl: 'templates/admin/tournaments/admin-tournament-details.html',
             controller: 'admin.controllers.tournament.details.ctrl'
           }
-        }
-      })
-
-      .state('admin.tournament.id.edit', {
-        url: '/edit/:id',
-        views: {
-          'tourney-info': {
-            templateUrl: 'templates/admin/tournaments/tourney.html',
-            controller: 'admin.controllers.tournament.ctrl'
+        },
+        resolve: {
+          tournament: function ($stateParams, Tournament) {
+            return Tournament.fetchTournament($stateParams.name);
+          },
+          players: function(tournament, playerServices) {
+            return playerServices.getPlayers(tournament[0]);
           }
         }
       })
 
-      .state('admin.tournament.id.match', {
-        url: '/match/:matchId',
+      .state('admin.match', {
+        url: '/match',
+        abstract: true,
         views: {
-          'tourney-info': {
+          content: {
+            template: '<div ui-view="matches"></div>'
+          }
+        }
+      })
+      .state('admin.match.details', {
+        url: '/:matchId',
+        views: {
+          matches: {
             templateUrl: 'templates/matches/admin-match.html',
             controller: 'MatchController'
           }
         }
       })
-      .state('admin.tournament.create', {
-        url: '/create',
+      .state('admin.match.list', {
+        url: '/list',
         views: {
-          'tourney': {
-            templateUrl: 'templates/admin/tournaments/tourney.html',
-            controller: 'admin.controllers.tournament.ctrl'
-          }
-        }
-      })
-      .state('admin.tournaments', {
-        url: '/tournaments',
-        abstract: true,
-        views: {
-          'menu': {
-            templateUrl: 'templates/menus/admin-menu.html',
-            controller: 'AdminMenuController'
-          },
-          'content': {
-            template: '<div ui-view="tourneyList"></div>'
-          }
-        }
-      })
-      .state('admin.tournaments.active', {
-        url: '/active',
-        views: {
-          'tourneyList': {
-            templateUrl: 'templates/tournaments/active-tournaments.html',
-            controller: 'ActiveTourneysController'
-          }
-        }
-      })
-      .state('admin.matches', {
-        url: '/matches',
-        abstract: true,
-        views: {
-          'menu': {
-            templateUrl: 'templates/menus/admin-menu.html',
-            controller: 'AdminMenuController'
-          },
-          'content': {
-            template: '<div ui-view="matchList"></div>'
-          }
-        }
-      })
-      .state('admin.matches.active', {
-        url: '',
-        views: {
-          'matchList': {
+          matches: {
             templateUrl: 'templates/matches/admin-matches.html',
             controller: 'matchListController'
           }

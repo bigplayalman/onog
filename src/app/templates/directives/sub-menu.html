@@ -1,18 +1,8 @@
 <ul class="nav navbar-nav">
-  <li ng-repeat="item in menuItems"
-      ng-class="{active:active.path == item.parent, 'btn-group': item.children.length > 0}">
-    <a ui-sref="{{item.name}}">
+  <li ng-repeat="item in menuItems">
+    <a ng-click="goTo(item.name)">
       <i class="fa fa-fw {{item.icon}} visible-xs-inline-block"></i>
-      {{item.title}} <b ng-class="{carat: item.children.length > 0}"></b>
+      {{item.title}}
     </a>
-    <ul class="dropdown-menu" role="menu" ng-show="item.children.length > 0">
-      <li ng-repeat="child in item.children"
-          ng-class="{'active':active.path == child.parent}">
-        <a ui-sref="{{child.name}}">
-          <i class="fa fa-fw {{child.icon}} visible-xs-inline-block"></i>
-          {{child.title}}
-        </a>
-      </li>
-    </ul>
   </li>
 </ul>

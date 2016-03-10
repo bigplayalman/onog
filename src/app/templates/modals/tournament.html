@@ -1,0 +1,40 @@
+<div class="modal-header">
+  <h3 class="modal-title text-center">{{title}}</h3>
+</div>
+<div class="modal-body">
+
+  <div class="row capitalize" ng-show="!status">
+
+    <label
+      class="btn btn-primary col-xs-3"
+      ng-repeat="mode in modes"
+      ng-model="tourney.status"
+      ng-class="{'btn-success': tourney.status == mode, 'btn-primary': tourney.statys != mode}"
+      uib-btn-radio="mode">
+      {{mode}}
+    </label>
+
+  </div>
+
+  <div class="row">
+    <input type="text" class="form-control" placeholder="Tournament Name *required" ng-model="tourney.name">
+  </div>
+
+
+  <div class="row">
+    <label
+      class="btn col-xs-3"
+      ng-model="tourney.maxPlayers"
+      name="players"
+      ng-class="{'btn-success': tourney.maxPlayers == size, 'btn-primary': tourney.maxPlayers != size}"
+      ng-repeat="size in tourneySizes"
+      uib-btn-radio="size">
+      {{size}} Players
+    </label>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">{{title}}</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

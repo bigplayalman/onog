@@ -12,6 +12,9 @@ body, .main, .container-fluid {
 .clear-both {
   clear: both
 }
+.capitalize {
+  text-transform: capitalize;
+}
 .btn-group:hover{
   .dropdown-menu {
     display: block;

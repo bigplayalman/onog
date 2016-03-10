@@ -2,11 +2,8 @@ angular.module('admin.controllers', ['admin.controllers.tournament'])
   .controller('admin.controllers.dashboard.ctrl', function($scope, Parse, Admin) {
 
   })
-  .controller('admin.controllers.menu.ctrl', function($scope, $state) {
-    var current = $state.$current.name.split('.');
-    $scope.active = {
-      path: current[current.length - 1]
-    }
+  .controller('admin.controllers.menu.ctrl', function($scope, $state, Parse, modalServices, Admin) {
+
     $scope.menuItems = [
       {
         title: 'Dashboard',
@@ -19,31 +16,29 @@ angular.module('admin.controllers', ['admin.controllers.tournament'])
         title: 'Tournaments',
         icon: 'fa-trophy',
         name: 'admin.tournament.list',
-        parent: 'active',
-        children: [
-          {
-            title: 'Create a Tournament',
-            icon: 'fa-fort-awesome',
-            name: 'admin.tournament.create',
-            parent: 'create',
-          }
-        ]
+        parent: 'tournament',
+        children: []
       },
       {
         title: 'Matches',
         icon: 'fa-gamepad',
-        name: 'admin.matches',
-        parent: 'matches',
+        name: 'admin.match.list',
+        parent: 'match',
         children: []
       },
       {
-        title: 'Home',
-        icon: 'fa-home',
-        name: 'home.index',
-        parent: 'home',
-        children: []
-      }
+        title: 'Create Tournament',
+        icon: 'fa-plus-circle',
+        name: 'createTournament'
+      },
     ];
+
+    $scope.goTo = function (path) {
+      switch (path) {
+        case 'createTournament': modalServices.createTournament(); break;
+        default: $state.go(path); break;
+      }
+    }
 
     $scope.logout = function () {
       Admin.setRole(null);

@@ -105,6 +105,10 @@ angular.module('account.controllers', [])
       }
     ];
 
+    $scope.goTo = function (path) {
+      $state.go(path);
+    }
+
     $scope.logout = function () {
       Admin.setRole(null);
       Parse.User.logOut();

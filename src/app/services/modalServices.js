@@ -6,8 +6,23 @@ angular.module('onog.services.modal', [])
       showRegister: showRegister,
       showTourneyRegistration: showTourneyRegistration,
       showCancelRegistration: showCancelRegistration,
-      showEditRegistration: showEditRegistration
+      showEditRegistration: showEditRegistration,
+      createTournament: createTournament
     };
+
+    function createTournament (tourney) {
+      return $uibModal.open({
+        templateUrl: 'templates/modals/tournament.html',
+        controller: 'onog.controllers.modal.tournament.create.ctrl',
+        size: 'lg',
+        backdrop: 'static',
+        resolve: {
+          tournament: function () {
+            return tourney;
+          }
+        }
+      });
+    }
 
     function showEditRegistration (player) {
       return $uibModal.open({

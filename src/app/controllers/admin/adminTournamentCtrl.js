@@ -1,31 +1,30 @@
 angular.module('admin.controllers.tournament', [])
 
-  .controller('admin.controllers.tournament.list.ctrl', function($scope, Tournament) {
+  .controller('admin.controllers.tournament.list.ctrl', function($scope, $state, Tournament) {
     $scope.tournaments = [];
     Tournament.getTournaments().then(function (tournaments) {
       $scope.tournaments = tournaments;
     });
+
+    $scope.tournamentDetails = function (tourney) {
+      $state.go('admin.tournament.details', {id: tourney.id, name: tourney.name});
+    }
   })
 
-  .controller('admin.controllers.tournament.details.ctrl', function ($scope, $stateParams, $filter, $state, Match, Tournament, Round, Parse, $uibModal) {
-    $scope.players = [];
+  .controller('admin.controllers.tournament.details.ctrl', function ($scope, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
+
+    $scope.tourney = tournament[0];
     $scope.user = Parse.User.current();
+    $scope.players = players;
+
+    $scope.nextId = null;
+    $scope.currentId = null;
+
     $scope.balance = [];
     $scope.rounds = [];
-    $scope.tourney = {};
 
-    Tournament.fetchTournament($stateParams.id).then(function (tournament) {
-      $scope.tourney = tournament;
-      var query = tournament.relation('players').query();
-      query.descending('username');
-      query.find().then(function (players) {
-        $scope.players = players;
-        Match.getMatches($scope.tourney).then(function (matches) {
-          $scope.displayBracket(matches);
-        });
-      });
-    }, function (err) {
-      console.log(err);
+    Match.getMatches($scope.tourney).then(function (matches) {
+      $scope.displayBracket(matches);
     });
 
     $scope.matchMargin = function (length) {
@@ -82,7 +81,7 @@ angular.module('admin.controllers.tournament', [])
       var currentMatch = match;
       var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
-        templateUrl: 'templates/admin/modals/matchResults.html',
+        templateUrl: 'templates/modals/match-results.html',
         controller: 'admin.controllers.tournament.match.modal.results.ctrl',
         resolve: {
           match: function () {
@@ -102,7 +101,7 @@ angular.module('admin.controllers.tournament', [])
       var currentMatch = match;
       var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
-        templateUrl: 'templates/admin/modals/seedPlayers.html',
+        templateUrl: 'templates/modals/tournament-seed.html',
         controller: 'admin.controllers.tournament.match.modal.seed.ctrl',
         resolve: {
           match: function () {
@@ -143,7 +142,7 @@ angular.module('admin.controllers.tournament', [])
     }
   })
 
-  .controller('admin.controllers.tournament.match.modal.results.ctrl', function ($scope, $uibModalInstance, match) {
+  .controller('admin.modal.controllers.tournament.match.results.ctrl', function ($scope, $uibModalInstance, match) {
     $scope.currentMatch = match;
 
     $scope.ok = function () {
@@ -155,7 +154,7 @@ angular.module('admin.controllers.tournament', [])
     };
   })
 
-  .controller('admin.controllers.tournament.match.modal.seed.ctrl', function ($scope, $uibModalInstance, match, players) {
+  .controller('admin.modal.controllers.tournament.match.seed.ctrl', function ($scope, $uibModalInstance, match, players) {
     $scope.currentMatch = match;
     $scope.players = players;
 
@@ -168,50 +167,7 @@ angular.module('admin.controllers.tournament', [])
     };
   })
 
-  .controller('admin.controllers.tournament.ctrl', function ($scope, $state, $stateParams, Tournament) {
-
-    var path = 'admin.tournaments.active';
-
-    $scope.options = [
-      {
-        name: 'Active',
-        value: 'active'
-      },
-      {
-        name: 'Check in',
-        value: 'check-in'
-      },
-      {
-        name: 'Completed',
-        value: 'completed'
-      }
-    ];
-
-    if($stateParams.id) {
-      path = 'admin.tournament.id.details'
-      Tournament.fetchTournament($stateParams.id).then(function (tournament) {
-        $scope.tourney = tournament;
-        $scope.status = tournament.status;
-      });
-    } else {
-      $scope.status = $scope.options[0].value;
-    }
-
-    $scope.reset = function () {
-      $scope.tourney = {};
-    }
-
-    $scope.submitTourney = function () {
-      if(typeof $scope.tourney.id === 'undefined') {
-        $scope.tourney.status = 'active';
-        $scope.tourney.current = 0;
-      };
-      Tournament.setTournament($scope.tourney).then(function (tournament) {
-        $state.go(path);
-      });
-    }
-  })
-  .controller('TourneyPlayerController', function ($scope, $state, $stateParams, $filter, Tournament, Match, Parse,Player, Round) {
+  .controller('TourneyPlayerController', function ($scope, $state, $stateParams, $filter, Tournament, Match, Parse, Player, Round) {
     $scope.player = null;
     $scope.players = [];
     $scope.tourney = new Tournament.Model();

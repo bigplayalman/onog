@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col-xs-6">
+        <h3>Tournament Details</h3>
+    </div>
+    <div class="col-xs-6">
+        <h3 class="text-right">Current Status:
+            <span class="text-capitalize"
+                  ng-class="{'text-success': tourney.status ==='active','text-warning': tourney.status ==='check-in','text-info': tourney.status ==='completed'}">
+                {{tourney.status}}
+            </span>
+        </h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-6">
+        <h4><strong>Tournament Name: </strong>{{tourney.name}}</h4>
+        <strong>Tournament Type: </strong>{{tourney.type}}
+        <br>
+        <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
+    </div>
+    <div class="col-xs-6">
+        <a class="btn btn-danger pull-right " ng-click="delete()">Delete</a>
+        <a class="btn btn-success pull-right" ng-click="edit()">Edit</a>
+        <a class="btn btn-info pull-right" ng-click="resetTourney(tourney.type)">Reset</a>
+    </div>
+</div>
+
+
+<div class="row" ng-show="tourney.status === 'registration' || tourney.status === 'check-in'">
+  <hr>
+  <div class="player col-xs-12" ng-repeat="player in players">
+    <div class="pull-left padding">
+      {{player.user.username}}
+    </div>
+    <div class="pull-left padding">Rank: {{player.attributes.rank}}
+    </div>
+    <div class="pull-left padding">
+        <span ng-repeat="hero in player.attributes.heroClasses">
+          {{hero}}
+        </span>
+        <span ng-show=" tourney.status === 'check-in'">
+          <i class="fa fa-check-circle-o" ng-show="player.checkin"></i>
+        </span>
+    </div>
+  </div>
+</div>
+<div class="row" ng-show="tourney.status === 'active'">
+  <div class="col-xs-12">
+    <hr>
+    <div class="tournament-bracket">
+      <div class="round"
+           ng-repeat="round in rounds"
+           ng-style="{width: setWidth(rounds.length)}">
+        <h4 class="title text-center">{{round.name}}</h4>
+        <div class="matches" ng-style="{'margin-top': matchMargin($index)}">
+          <div class="single-match"
+               ng-repeat="match in round.matches"
+               ng-class="{'active-next': match.id === nextId, 'active': match.nextMatch.id === nextId}"
+               ng-click="showActive($event, match)">
+            <div class="player">{{match.player1.username || 'TBD'}}</div>
+            <div class="player">{{match.player2.username || 'TBD'}}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
