@@ -1,13 +1,22 @@
 angular.module('onog.services.player', [])
   .service('playerServices', function (Player, Parse, Tournament, $filter) {
+    var user = Parse.User.current ();
 
     return {
       findPlayer: findPlayer,
       createPlayer: createPlayer,
       getPlayers: getPlayers,
       updatePlayer: updatePlayer,
-      checkIn: checkIn
+      checkIn: checkIn,
+      getMyTournaments: getMyTournaments
     };
+
+    function getMyTournaments () {
+      var query = new Parse.Query(Player.Model);
+      query.equalTo('user', user);
+      query.include('tournament');
+      return query.find();
+    }
 
     function checkIn (current) {
       var player = new Player.Model();

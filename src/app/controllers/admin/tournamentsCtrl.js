@@ -28,7 +28,6 @@ angular.module('admin.controllers.tournament', [])
       console.log(err);
     });
 
-
     $scope.matchMargin = function (length) {
       var margin = 0;
       return margin;

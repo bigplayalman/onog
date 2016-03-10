@@ -5,10 +5,18 @@ angular.module('account.controllers', [])
   .controller('account.controllers.matches.ctrl', function($scope, Parse, Match, $uibModal) {
     $scope.user = Parse.User.current();
     $scope.matches = {};
-    Match.getUserMatches($scope.user).then(function(matches) {
-      $scope.matches = matches;
 
+    Match.getUserMatches($scope.user, 'active').then(function(matches) {
+      $scope.currentMatches = matches;
     });
+
+    Match.getUserMatches($scope.user, 'finished').then(function(matches) {
+      $scope.finishedMatches = matches;
+    });
+
+    $scope.getRoundName = function (match) {
+      return match.round.get('name');
+    }
 
     $scope.showMatchDetails = function (match) {
       showMatchResults(match);
@@ -29,8 +37,9 @@ angular.module('account.controllers', [])
       });
 
       modalInstance.result.then(function (match) {
-        Match.saveMatch(match).then(function (results) {
-        });
+        if(match) {
+          Match.saveMatch(match);
+        }
       });
     }
   })
@@ -38,7 +47,6 @@ angular.module('account.controllers', [])
   .controller('account.controllers.match.modal.results.ctrl', function ($scope, $uibModalInstance, Parse, match) {
     $scope.currentMatch = match;
     $scope.user = Parse.User.current();
-    console.log($scope.user);
 
     $scope.ok = function () {
       $uibModalInstance.close($scope.currentMatch);
@@ -47,6 +55,22 @@ angular.module('account.controllers', [])
     $scope.cancel = function () {
       $uibModalInstance.close(false);
     };
+
+  })
+  .controller('account.controllers.tournament.list.ctrl', function($scope, $state, playerServices) {
+
+    $scope.tournaments = [];
+    playerServices.getMyTournaments().then(function (mytourneys) {
+      var tournaments = [];
+      angular.forEach(mytourneys, function (tourney) {
+        tournaments.push(tourney.tournament);
+      })
+      $scope.tournaments = tournaments;
+    });
+
+    $scope.tournamentDetails = function (tourney) {
+      $state.go('account.tournament.details', {id: tourney.id, name: tourney.name});
+    }
   })
 
   .controller('account.controllers.menu.ctrl', function($scope, $state, Parse) {
@@ -62,21 +86,21 @@ angular.module('account.controllers', [])
         title: 'Dashboard',
         icon: 'fa-home',
         name: 'account.dashboard',
-        parent: 'dashboard',
+        parent: 'account.dashboard',
         children: []
       },
       {
         title: 'My Tournaments',
         icon: 'fa-trophy',
-        name: 'tournament.list',
-        parent: 'tournament',
+        name: 'account.tournament.list',
+        parent: 'account.tournament.list',
         children: []
       },
       {
         title: 'My Matches',
         icon: 'fa-gamepad',
         name: 'account.matches',
-        parent: 'matches',
+        parent: 'account.matches',
         children: []
       }
     ];

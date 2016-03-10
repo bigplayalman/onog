@@ -5,6 +5,10 @@ angular.module('onog.controllers.tournament', [])
     Tournament.getTournaments().then(function (tournaments) {
       $scope.tournaments = tournaments;
     });
+
+    $scope.tournamentDetails = function (tourney) {
+      $state.go('tournament.details', {id: tourney.id, name: tourney.name});
+    }
   })
   .controller('onog.controllers.tournament.detail.ctrl',
     function($scope, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
