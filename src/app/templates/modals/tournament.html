@@ -8,8 +8,9 @@
     <label
       class="btn btn-primary col-xs-3"
       ng-repeat="mode in modes"
+      ng-show="tourney.id"
       ng-model="tourney.status"
-      ng-class="{'btn-success': tourney.status == mode, 'btn-primary': tourney.statys != mode}"
+      ng-class="{'btn-success': tourney.status == mode, 'btn-primary': tourney.status != mode}"
       uib-btn-radio="mode">
       {{mode}}
     </label>
@@ -20,11 +21,15 @@
     <input type="text" class="form-control" placeholder="Tournament Name *required" ng-model="tourney.name">
   </div>
 
+  <div class="row">
+    <input type="datetime-local" class="form-control" placeholder="Tournament Start Time" ng-model="tourney.date">
+  </div>
+
 
   <div class="row">
     <label
       class="btn col-xs-3"
-      ng-model="tourney.maxPlayers"
+      ng-model="tourney.max"
       name="players"
       ng-class="{'btn-success': tourney.maxPlayers == size, 'btn-primary': tourney.maxPlayers != size}"
       ng-repeat="size in tourneySizes"
@@ -35,6 +40,6 @@
 
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" type="button" ng-click="ok()">{{title}}</button>
+  <button class="btn btn-primary" type="button" ng-click="submitTourney()">{{title}}</button>
   <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>

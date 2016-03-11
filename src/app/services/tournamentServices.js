@@ -1,7 +1,7 @@
 angular.module('onog.services.tournament', [])
   .factory('Tournament', ['Parse', function(Parse) {
     var Model = Parse.Object.extend('Tournament');
-    Parse.defineAttributes(Model, ['name', 'type', 'game', 'max', 'current', 'status', 'details']);
+    Parse.defineAttributes(Model, ['name', 'date', 'type', 'game', 'max', 'current', 'status', 'details']);
 
     return {
       Model:Model,
