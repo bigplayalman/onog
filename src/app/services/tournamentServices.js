@@ -1,7 +1,7 @@
 angular.module('onog.services.tournament', [])
   .factory('Tournament', ['Parse', function(Parse) {
     var Model = Parse.Object.extend('Tournament');
-    Parse.defineAttributes(Model, ['name', 'date', 'type', 'game', 'max', 'current', 'status', 'details']);
+    Parse.defineAttributes(Model, ['name', 'date', 'type', 'game', 'max', 'current', 'status', 'details', 'objectId']);
 
     return {
       Model:Model,
@@ -31,13 +31,16 @@ angular.module('onog.services.tournament', [])
     }
 
     function fetchTournament (name) {
-      var query = new Parse.Query(Model);
+      var query = new Parse.Query('Tournament');
       query.equalTo('name', name)
       return query.find();
     }
 
-    function setTournament (attributes) {
+    function setTournament (attributes, id) {
       var tourney = new Model();
+      if(id) {
+        tourney.id = id;
+      }
       tourney.set(attributes);
       return tourney.save();
     }

@@ -11,9 +11,12 @@ angular.module('admin.controllers.tournament', [])
     }
   })
 
-  .controller('admin.controllers.tournament.details.ctrl', function ($scope, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
+  .controller('admin.controllers.tournament.details.ctrl', function ($scope, $state,$timeout, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
+
+    $scope.tourney = {};
 
     $scope.tourney = tournament[0];
+    console.log($scope.tourney.status);
     $scope.user = Parse.User.current();
     $scope.players = players;
 
@@ -52,7 +55,12 @@ angular.module('admin.controllers.tournament', [])
     };
 
     $scope.edit = function () {
-      $state.go('admin.tournament.id.edit', {id: $scope.tourney.id});
+      var tourney = {};
+      angular.copy($scope.tourney.attributes, tourney);
+
+      modalServices.showTournament(tourney, $scope.tourney.id).result.then(function (data) {
+        console.log(data);
+      });
     };
     $scope.delete = function () {
       $scope.tourney.destroy().then(function () {
