@@ -6,7 +6,6 @@ angular.module('onog.services.modal', [])
       showRegister: showRegister,
       showTourneyRegistration: showTourneyRegistration,
       showCancelRegistration: showCancelRegistration,
-      showEditRegistration: showEditRegistration,
       showTournament: showTournament
     };
 
@@ -33,20 +32,6 @@ angular.module('onog.services.modal', [])
       });
     }
 
-    function showEditRegistration (player) {
-      return $uibModal.open({
-        templateUrl: 'templates/modals/tournament-registration.html',
-        controller: 'onog.controllers.modal.tournament.registration.edit.ctrl',
-        size: 'md',
-        backdrop: 'static',
-        resolve: {
-          player: function () {
-            return player;
-          }
-        }
-      });
-    }
-
     function showLogin () {
       var modalInstance = $uibModal.open({
         templateUrl: 'templates/modals/login.html',
@@ -65,7 +50,7 @@ angular.module('onog.services.modal', [])
       });
     }
 
-    function showTourneyRegistration (tourney) {
+    function showTourneyRegistration (tourney, player) {
       return $uibModal.open({
         templateUrl: 'templates/modals/tournament-registration.html',
         controller: 'onog.controllers.modal.tournament.registration.ctrl',
@@ -74,6 +59,9 @@ angular.module('onog.services.modal', [])
         resolve: {
           tourney: function () {
             return tourney;
+          },
+          player: function () {
+            return player;
           }
         }
       });

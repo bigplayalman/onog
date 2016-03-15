@@ -4,7 +4,6 @@ angular.module('onog.services.player', [])
 
     return {
       findPlayer: findPlayer,
-      createPlayer: createPlayer,
       getPlayers: getPlayers,
       updatePlayer: updatePlayer,
       checkIn: checkIn,
@@ -25,9 +24,17 @@ angular.module('onog.services.player', [])
       return player.save();
     }
 
-    function updatePlayer (current, heroes) {
+    function updatePlayer (current, heroes, tournament) {
       var player = new Player.Model();
-      player.id = current.id;
+      if(current.id) {
+        player.id = current.id;
+      } else {
+        player.set('status', 'registered');
+        player.set('user', Parse.User.current());
+        player.set('checkin', false);
+        player.set('tournament', tournament);
+        player.set('seed', current.seed);
+      }
       player.set('heroClasses', heroes);
       player.set('rank', current.rank);
       return player.save();
@@ -44,17 +51,6 @@ angular.module('onog.services.player', [])
         return null;
       }
       return $filter('filter')(players, Parse.User.current().id, true)[0] || null;
-    }
-
-
-    function createPlayer (current, heroes, tournament) {
-      var player = new Player.Model(current);
-      player.set('tournament', tournament);
-      player.set('heroClasses', heroes);
-      player.set('status', 'registered');
-      player.set('checkin', false)
-      player.set('user', Parse.User.current());
-      return player.save();
     }
 
   })

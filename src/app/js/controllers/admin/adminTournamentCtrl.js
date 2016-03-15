@@ -54,6 +54,16 @@ angular.module('admin.controllers.tournament', [])
       $scope.rounds = rounds.reverse();
     };
 
+    //$scope.playerConfig = {
+    //  group: 'sorted',
+    //  animation: 150,
+    //  onSort: function (/** ngSortEvent */evt){
+    //    // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
+    //    console.log(evt);
+    //  }
+    //};
+    
+
     $scope.edit = function () {
       var tourney = {};
       angular.copy($scope.tourney.attributes, tourney);

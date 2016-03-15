@@ -28,21 +28,21 @@
 
 <div class="row" ng-show="tourney.status === 'registration' || tourney.status === 'check-in'">
   <hr>
-  <div class="player col-xs-12" ng-repeat="player in players">
-    <div class="pull-left padding">
+  <a class="player col-xs-12" ng-repeat="player in players">
+    <span class="pull-left padding">
       {{player.user.username}}
-    </div>
-    <div class="pull-left padding">Rank: {{player.attributes.rank}}
-    </div>
-    <div class="pull-left padding">
-        <span ng-repeat="hero in player.attributes.heroClasses">
+    </span>
+    <span class="pull-left padding">Rank: {{player.rank}}
+    </span>
+    <span class="pull-left padding">
+        <span ng-repeat="hero in player.heroClasses">
           {{hero}}
         </span>
-        <span ng-show=" tourney.status === 'check-in'">
+        <span ng-show="tourney.status === 'check-in'">
           <i class="fa fa-check-circle-o" ng-show="player.checkin"></i>
         </span>
-    </div>
-  </div>
+    </span>
+  </a>
 </div>
 <div class="row" ng-show="tourney.status === 'active'">
   <div class="col-xs-12">

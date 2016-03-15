@@ -1,6 +1,7 @@
 angular.module('onog', [
   'ngParse',
   'ui.router',
+  'ng-sortable',
   'ui.bootstrap',
   'onog.templates',
   'onog.routes',
@@ -21,13 +22,13 @@ angular.module('onog', [
 
       if (requireLogin && Parse.User.current() === null) {
         event.preventDefault();
-        $state.go('login');
+        $state.go('home.index');
       } else if(requireAdmin && !Admin.returnRole()) {
         Admin.getRole(Parse.User.current()).then(function (role) {
           if(role){
             Admin.setRole(role);
           } else {
-            $state.go('home');
+            $state.go('home.index');
           }
         });
       }

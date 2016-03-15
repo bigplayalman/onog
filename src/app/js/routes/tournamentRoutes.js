@@ -48,6 +48,7 @@ angular.module('tournament.routes', [])
             return Tournament.fetchTournament($stateParams.name);
           },
           players: function(tournament, playerServices) {
+            console.log(tournament[0]);
             return playerServices.getPlayers(tournament[0]);
           }
         }

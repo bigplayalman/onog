@@ -58,55 +58,6 @@ angular.module('onog.controllers.modal', [])
     };
   })
 
-  .controller('onog.controllers.modal.tournament.registration.edit.ctrl', function ($scope, $state, $uibModalInstance, $filter, playerServices, Tournament, player) {
-    $scope.title = 'Edit Registration';
-
-    $scope.heroClass = Tournament.getHeroClasses();
-
-    $scope.player = player;
-    $scope.checkResults = player.get('heroClasses');
-
-    angular.forEach($scope.checkResults, function (hero) {
-      var found = $filter('filter')($scope.heroClass, hero, true);
-      found[0].value = true;
-    });
-
-    $scope.disableCheckbox = function (item) {
-      var disable = false;
-      if($scope.checkResults.length >= 3 && !item.value) {
-        disable = true;
-        return disable;
-      }
-      return disable;
-    }
-
-    $scope.$watch('heroClass', function(newValues, oldValues, scope) {
-      $scope.checkResults = [];
-      angular.forEach($scope.heroClass, function (model) {
-        if (model.value) {
-          $scope.checkResults.push(model.name);
-        }
-      });
-    }, true);
-
-    $scope.register = function () {
-      $scope.errorMessage = null;
-
-      playerServices.updatePlayer($scope.player, $scope.checkResults).then(function (data) {
-        $uibModalInstance.close(data);
-        $state.reload();
-      }, function (err) {
-        $scope.errorMessage = err.message;
-      });
-
-    }
-
-    $scope.cancel = function () {
-      $uibModalInstance.close(null);
-    };
-
-  })
-
   .controller('onog.controllers.modal.tournament.create.ctrl', function ($scope, $state, $uibModalInstance, Tournament, tournament, id, title) {
 
     $scope.title = title;
@@ -142,15 +93,28 @@ angular.module('onog.controllers.modal', [])
 
   })
 
-  .controller('onog.controllers.modal.tournament.registration.ctrl', function ($scope, $state, $uibModalInstance, playerServices, Tournament, tourney) {
+  .controller('onog.controllers.modal.tournament.registration.ctrl', function ($scope, $filter, $state, $uibModalInstance, playerServices, Tournament, tourney, player) {
     $scope.checkResults = [];
     $scope.title = 'Register for ' + tourney.name;
-
-    $scope.heroClass = Tournament.getHeroClasses();
 
     $scope.player = {
       seed: 999,
     };
+
+    if(player) {
+      $scope.title = 'Edit Registration';
+      $scope.player = player;
+      $scope.checkResults = player.get('heroClasses');
+    }
+
+    $scope.heroClass = Tournament.getHeroClasses();
+
+    $scope.ranks = Tournament.getRank();
+
+    angular.forEach($scope.checkResults, function (hero) {
+      var found = $filter('filter')($scope.heroClass, hero, true);
+      found[0].value = true;
+    });
 
     $scope.disableCheckbox = function (item) {
       var disable = false;
@@ -173,13 +137,16 @@ angular.module('onog.controllers.modal', [])
     $scope.register = function () {
       $scope.errorMessage = null;
 
-      playerServices.createPlayer($scope.player, $scope.checkResults, tourney).then(function (data) {
-        Tournament.increaseCount(tourney).then(function () {
+      playerServices.updatePlayer($scope.player, $scope.checkResults, tourney).then(function (data) {
+        if($scope.player.id) {
           $uibModalInstance.close(data);
           $state.reload();
-        });
-      }, function (err) {
-        $scope.errorMessage = err.message;
+        } else {
+          Tournament.increaseCount(tourney).then(function () {
+            $uibModalInstance.close(data);
+            $state.reload();
+          });
+        }
       });
 
     }

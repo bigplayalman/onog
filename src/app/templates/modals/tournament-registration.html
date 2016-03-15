@@ -1,19 +1,38 @@
 <div class="modal-header">
   <h3 class="modal-title text-center">{{title}}</h3>
 </div>
-<div class="modal-body">
+<div class="modal-body col-xs-12">
   <div class="alert alert-danger" ng-show="errorMessage">{{errorMessage.message}}</div>
-  <input type="text" class="form-control" placeholder="Highest Rank" autofocus ng-model="player.rank" autocomplete="off">
 
-  <label
-    ng-repeat="hero in heroClass"
-    class="btn col-sm-3"
-    ng-disabled = disableCheckbox(hero)
-    ng-class="{'btn-success': hero.value, 'btn-primary': !hero.value}"
-    ng-model="hero.value"
-    uib-btn-checkbox name="heroClasses">
-    {{hero.name}}
-  </label>
+  <div class="row">
+    <h3 class="col-xs-12">
+      Select Current Rank
+    </h3>
+    <label
+      class="btn btn-primary col-xs-3"
+      ng-repeat="rank in ranks"
+      ng-model="player.rank"
+      ng-class="{'btn-success': player.rank == rank, 'btn-primary': player.rank != rank}"
+      uib-btn-radio="rank">
+      {{rank}}
+    </label>
+  </div>
+
+  <div class="row">
+    <h3 class="col-xs-12">
+      Select 3 Hero Classes
+    </h3>
+    <label
+      ng-repeat="hero in heroClass"
+      class="btn col-sm-3"
+      ng-disabled = disableCheckbox(hero)
+      ng-class="{'btn-success': hero.value, 'btn-primary': !hero.value}"
+      ng-model="hero.value"
+      uib-btn-checkbox name="heroClasses">
+      {{hero.name}}
+    </label>
+  </div>
+
 
 </div>
 <div class="modal-footer">

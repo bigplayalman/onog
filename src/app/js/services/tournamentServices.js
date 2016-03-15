@@ -12,7 +12,8 @@ angular.module('onog.services.tournament', [])
       setTournament: setTournament,
       getHeroClasses: getHeroClasses,
       getModes: getModes,
-      getSizes: getSizes
+      getSizes: getSizes,
+      getRank: getRank
     };
 
     function increaseCount (tourney) {
@@ -51,6 +52,9 @@ angular.module('onog.services.tournament', [])
     }
     function getSizes () {
       return [8,16,32,64,128,256,512,1024];
+    }
+    function getRank () {
+      return ['25','24','23','22','21','20','19','18','17','16','15','14','13','12','11','10','9','8','7','6','5','4','3','2','1', 'Legend'];
     }
 
     function getModes () {

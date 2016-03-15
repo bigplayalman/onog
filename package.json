@@ -10,7 +10,8 @@
     "angular-ui-router": "^0.2.15",
     "bootswatch": "^3.3.6",
     "font-awesome": "^4.5.0",
-    "parse": "^1.6.14"
+    "parse": "^1.6.14",
+    "sortablejs": "^1.4.2"
   },
   "devDependencies": {
     "del": "2.2.0",

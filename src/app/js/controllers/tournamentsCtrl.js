@@ -34,11 +34,11 @@ angular.module('onog.controllers.tournament', [])
         });
       }
       $scope.edit = function () {
-        modalServices.showEditRegistration($scope.registered);
+        modalServices.showTourneyRegistration($scope.tourney, $scope.registered);
       }
 
       $scope.register = function () {
-        modalServices.showTourneyRegistration($scope.tourney);
+        modalServices.showTourneyRegistration($scope.tourney, $scope.registered);
       }
 
       $scope.cancelRegistration = function () {
