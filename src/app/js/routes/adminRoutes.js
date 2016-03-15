@@ -62,7 +62,21 @@ angular.module('admin.routes', [])
             return Tournament.fetchTournament($stateParams.name);
           },
           players: function(tournament, playerServices) {
-            return playerServices.getPlayers(tournament[0]);
+            return playerServices.getPlayers(tournament[0].id);
+          }
+        }
+      })
+      .state('admin.tournament.seed', {
+        url: '/seed/:tourney',
+        views: {
+          tourney: {
+            templateUrl: 'templates/admin/tournaments/tournament-seed.html',
+            controller: 'admin.controllers.tournament.seed.ctrl'
+          }
+        },
+        resolve: {
+          players: function($stateParams, playerServices) {
+            return playerServices.getPlayers($stateParams.tourney);
           }
         }
       })

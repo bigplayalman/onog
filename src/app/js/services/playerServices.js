@@ -41,8 +41,10 @@ angular.module('onog.services.player', [])
     }
 
     function getPlayers (tourney) {
+      var tournament = new Tournament.Model();
+      tournament.id = tourney;
       var query = new Parse.Query(Player.Model);
-      query.equalTo('tournament', tourney);
+      query.equalTo('tournament', tournament);
       query.include('user');
       return query.find();
     }

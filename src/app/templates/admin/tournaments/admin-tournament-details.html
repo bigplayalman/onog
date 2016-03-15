@@ -1,28 +1,29 @@
 <div class="row">
-    <div class="col-xs-6">
-        <h3>Tournament Details</h3>
-    </div>
-    <div class="col-xs-6">
-        <h3 class="text-right">Current Status:
+  <div class="col-xs-6">
+    <h3>Tournament Details</h3>
+  </div>
+  <div class="col-xs-6">
+    <h3 class="text-right">Current Status:
             <span class="text-capitalize"
                   ng-class="{'text-success': tourney.status ==='active','text-warning': tourney.status ==='check-in','text-info': tourney.status ==='completed'}">
                 {{tourney.status}}
             </span>
-        </h3>
-    </div>
+    </h3>
+  </div>
 </div>
 <div class="row">
-    <div class="col-xs-6">
-        <h4><strong>Tournament Name: </strong>{{tourney.name}}</h4>
-        <strong>Tournament Type: </strong>{{tourney.type}}
-        <br>
-        <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
-    </div>
-    <div class="col-xs-6">
-        <a class="btn btn-danger pull-right " ng-click="delete()">Delete</a>
-        <a class="btn btn-success pull-right" ng-click="edit()">Edit</a>
-        <a class="btn btn-info pull-right" ng-click="resetTourney(tourney.type)">Reset</a>
-    </div>
+  <div class="col-xs-6">
+    <h4><strong>Tournament Name: </strong>{{tourney.name}}</h4>
+    <strong>Tournament Type: </strong>{{tourney.type}}
+    <br>
+    <strong>Registered Slots: </strong>{{tourney.current}}/{{tourney.max}}
+  </div>
+  <div class="col-xs-6">
+    <a class="btn btn-danger pull-right " ng-click="delete()">Delete</a>
+    <a class="btn btn-success pull-right" ng-click="edit()">Edit</a>
+    <a class="btn btn-default pull-right" ui-sref="admin.tournament.seed({tourney: tourney.id})">Seed</a>
+    <a class="btn btn-info pull-right" ng-click="resetTourney(tourney.type)">Reset</a>
+  </div>
 </div>
 
 

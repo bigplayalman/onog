@@ -10,6 +10,11 @@ angular.module('admin.controllers.tournament', [])
       $state.go('admin.tournament.details', {id: tourney.id, name: tourney.name});
     }
   })
+  .controller('admin.controllers.tournament.seed.ctrl', function ($scope, $state, $filter, playerServices, players) {
+    $scope.players = players;
+    console.log($scope.players);
+  })
+
 
   .controller('admin.controllers.tournament.details.ctrl', function ($scope, $state,$timeout, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
 
@@ -62,7 +67,7 @@ angular.module('admin.controllers.tournament', [])
     //    console.log(evt);
     //  }
     //};
-    
+
 
     $scope.edit = function () {
       var tourney = {};

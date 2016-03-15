@@ -93,69 +93,70 @@ angular.module('onog.controllers.modal', [])
 
   })
 
-  .controller('onog.controllers.modal.tournament.registration.ctrl', function ($scope, $filter, $state, $uibModalInstance, playerServices, Tournament, tourney, player) {
-    $scope.checkResults = [];
-    $scope.title = 'Register for ' + tourney.name;
+  .controller('onog.controllers.modal.tournament.registration.ctrl',
+    function ($scope, $filter, $state, $uibModalInstance, playerServices, Tournament, tourney, player) {
+      $scope.checkResults = [];
+      $scope.title = 'Register for ' + tourney.name;
 
-    $scope.player = {
-      seed: 999,
-    };
+      $scope.player = {
+        seed: 999,
+      };
 
-    if(player) {
-      $scope.title = 'Edit Registration';
-      $scope.player = player;
-      $scope.checkResults = player.get('heroClasses');
-    }
+      if(player) {
+        $scope.title = 'Edit Registration';
+        $scope.player = player;
+        $scope.checkResults = player.get('heroClasses');
+      }
 
-    $scope.heroClass = Tournament.getHeroClasses();
+      $scope.heroClass = Tournament.getHeroClasses();
 
-    $scope.ranks = Tournament.getRank();
+      $scope.ranks = Tournament.getRank();
 
-    angular.forEach($scope.checkResults, function (hero) {
-      var found = $filter('filter')($scope.heroClass, hero, true);
-      found[0].value = true;
-    });
+      angular.forEach($scope.checkResults, function (hero) {
+        var found = $filter('filter')($scope.heroClass, hero, true);
+        found[0].value = true;
+      });
 
-    $scope.disableCheckbox = function (item) {
-      var disable = false;
-      if($scope.checkResults.length >= 3 && !item.value) {
-        disable = true;
+      $scope.disableCheckbox = function (item) {
+        var disable = false;
+        if($scope.checkResults.length >= 3 && !item.value) {
+          disable = true;
+          return disable;
+        }
         return disable;
       }
-      return disable;
-    }
 
-    $scope.$watch('heroClass', function(newValues, oldValues, scope) {
-      $scope.checkResults = [];
-      angular.forEach($scope.heroClass, function (model) {
-        if (model.value) {
-          $scope.checkResults.push(model.name);
-        }
-      });
-    }, true);
+      $scope.$watch('heroClass', function(newValues, oldValues, scope) {
+        $scope.checkResults = [];
+        angular.forEach($scope.heroClass, function (model) {
+          if (model.value) {
+            $scope.checkResults.push(model.name);
+          }
+        });
+      }, true);
 
-    $scope.register = function () {
-      $scope.errorMessage = null;
+      $scope.register = function () {
+        $scope.errorMessage = null;
 
-      playerServices.updatePlayer($scope.player, $scope.checkResults, tourney).then(function (data) {
-        if($scope.player.id) {
-          $uibModalInstance.close(data);
-          $state.reload();
-        } else {
-          Tournament.increaseCount(tourney).then(function () {
+        playerServices.updatePlayer($scope.player, $scope.checkResults, tourney).then(function (data) {
+          if($scope.player.id) {
             $uibModalInstance.close(data);
             $state.reload();
-          });
-        }
-      });
+          } else {
+            Tournament.increaseCount(tourney).then(function () {
+              $uibModalInstance.close(data);
+              $state.reload();
+            });
+          }
+        });
 
-    }
+      }
 
-    $scope.cancel = function () {
-      $uibModalInstance.close(null);
-    };
+      $scope.cancel = function () {
+        $uibModalInstance.close(null);
+      };
 
-  })
+    })
   .controller('onog.controllers.modal.tournament.cancel.ctrl', function ($scope, $state, $uibModalInstance, playerServices, Tournament, player, tourney) {
     $scope.player = player;
     $scope.cancelRegistration = function () {
