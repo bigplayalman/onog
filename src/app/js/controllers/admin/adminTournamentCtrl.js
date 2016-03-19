@@ -10,9 +10,19 @@ angular.module('admin.controllers.tournament', [])
       $state.go('admin.tournament.details', {id: tourney.id, name: tourney.name});
     }
   })
-  .controller('admin.controllers.tournament.seed.ctrl', function ($scope, $state, $filter, playerServices, players) {
+  .controller('admin.controllers.tournament.seed.ctrl', function ($scope, $state, $stateParams, playerServices, players) {
     $scope.players = players;
-    console.log($scope.players);
+
+    $scope.saveOrder = function () {
+      playerServices.saveSeeding($scope.players).then(function (data) {
+        $state.go('admin.tournament.details', {name: $stateParams.name});
+      });
+    }
+
+    $scope.cancel = function () {
+      console.log($stateParams);
+      $state.go('admin.tournament.details', {name: $stateParams.name});
+    }
   })
 
 
@@ -58,16 +68,6 @@ angular.module('admin.controllers.tournament', [])
       }
       $scope.rounds = rounds.reverse();
     };
-
-    //$scope.playerConfig = {
-    //  group: 'sorted',
-    //  animation: 150,
-    //  onSort: function (/** ngSortEvent */evt){
-    //    // @see https://github.com/RubaXa/Sortable/blob/master/ng-sortable.js#L18-L24
-    //    console.log(evt);
-    //  }
-    //};
-
 
     $scope.edit = function () {
       var tourney = {};
@@ -116,34 +116,6 @@ angular.module('admin.controllers.tournament', [])
       modalInstance.result.then(function (match) {
         Match.saveMatch(match).then(function (results) {
         });
-      });
-    }
-
-    function showSeeding (match) {
-      var pastVariables = match.toJSON();
-      var currentMatch = match;
-      var modalInstance = $uibModal.open({
-        animation: $scope.animationsEnabled,
-        templateUrl: 'templates/modals/tournament-seed.html',
-        controller: 'admin.controllers.tournament.match.modal.seed.ctrl',
-        resolve: {
-          match: function () {
-            return currentMatch;
-          },
-          players: function () {
-            return $scope.players;
-          }
-        }
-      });
-
-      modalInstance.result.then(function (match) {
-        if(match) {
-          Match.saveMatch(match).then(function (results) {
-          });
-        } else {
-          Match.getMatch(pastVariables.objectId);
-        }
-
       });
     }
 

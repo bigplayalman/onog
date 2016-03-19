@@ -67,7 +67,7 @@ angular.module('admin.routes', [])
         }
       })
       .state('admin.tournament.seed', {
-        url: '/seed/:tourney',
+        url: '/seed/:name/:tourney',
         views: {
           tourney: {
             templateUrl: 'templates/admin/tournaments/tournament-seed.html',

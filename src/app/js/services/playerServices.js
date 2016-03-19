@@ -7,8 +7,13 @@ angular.module('onog.services.player', [])
       getPlayers: getPlayers,
       updatePlayer: updatePlayer,
       checkIn: checkIn,
-      getMyTournaments: getMyTournaments
+      getMyTournaments: getMyTournaments,
+      saveSeeding: saveSeeding
     };
+
+    function saveSeeding (players) {
+      return Parse.Object.saveAll(players);
+    }
 
     function getMyTournaments () {
       var query = new Parse.Query(Player.Model);
