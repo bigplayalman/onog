@@ -58,41 +58,6 @@ angular.module('onog.controllers.modal', [])
     };
   })
 
-  .controller('onog.controllers.modal.tournament.create.ctrl', function ($scope, $state, $uibModalInstance, Tournament, tournament, id, title) {
-
-    $scope.title = title;
-    $scope.id = id;
-
-    if(tournament) {
-      $scope.tournament = tournament;
-    } else {
-      $scope.tournament = {
-        status: 'pending',
-        type: 'single',
-        game: 'Hearthstone',
-        current: 0,
-        max: null,
-        name: null
-      }
-    }
-
-    $scope.modes = Tournament.getModes();
-
-    $scope.tourneySizes = Tournament.getSizes();
-
-
-    $scope.submitTourney = function () {
-      Tournament.setTournament($scope.tournament, id).then(function (tournament) {
-        $uibModalInstance.close(tournament);
-      });
-    }
-
-    $scope.cancel = function () {
-      $uibModalInstance.close(null);
-    };
-
-  })
-
   .controller('onog.controllers.modal.tournament.registration.ctrl',
     function ($scope, $filter, $state, $uibModalInstance, playerServices, Tournament, tourney, player) {
       $scope.checkResults = [];

@@ -1,6 +1,6 @@
 angular.module('onog.services.match', ['onog.services.tournament'])
 
-  .factory('Match', ['Parse', 'Tournament', function (Parse) {
+  .factory('Match', ['Parse', 'Tournament', '$filter', function (Parse, Tournament, $filter) {
     var Match = Parse.Object.extend('Match');
     var attributes = ['tournament', 'gameNum', 'player1', 'player2', 'score1', 'score2', 'round', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'status']
     Parse.defineAttributes(Match, attributes);
@@ -12,12 +12,82 @@ angular.module('onog.services.match', ['onog.services.tournament'])
       deleteMatches: deleteMatches,
       createMatches: createMatches,
       setNextMatch: setNextMatch,
-      setPlayers: setPlayers,
       setRounds: setRounds,
       submitMatch: submitMatch,
       getMatches: getMatches,
-      getUserMatches: getUserMatches
+      getUserMatches: getUserMatches,
+      seedPlayers: seedPlayers,
+      randomPlayer: randomPlayer
     };
+
+    function seedPlayers (matches, players) {
+      var unseeded = $filter('filter')( players, {seed:999});
+      var seeded = $filter('filter')( players, {seed: '!' + 999});
+      var sortedSeeded = $filter('orderBy')(seeded, 'seed');
+      var balanceMatches = $filter('filter')(matches, 'Balance Round');
+      var normalMatches = $filter('filter')(matches, '!' + 'Balance Round');
+      var matchIndex = matches.length - 1;
+      var games = [];
+
+      angular.forEach(balanceMatches, function (match) {
+        if(unseeded.length > 0) {
+          var random = randomPlayer(unseeded);
+          match.set('player1', unseeded[random]);
+          match.set('score1', {player1: 0, player2: 0});
+          unseeded.splice(random, 1);
+        } else {
+          var lastSeed = sortedSeeded.length - 1;
+          match.set('player1', sortedSeeded[lastSeed]);
+          match.set('score1', {player1: 0, player2: 0});
+          sortedSeeded.splice(lastSeed, 1);
+        }
+        
+        if(unseeded.length > 0) {
+          var random = randomPlayer(unseeded);
+          match.set('player2', unseeded[random]);
+          match.set('score2', {player1: 0, player2: 0});
+          unseeded.splice(random, 1);
+        } else {
+          var lastSeed = sortedSeeded.length - 1;
+          match.set('player2', sortedSeeded[lastSeed]);
+          match.set('score2', {player1: 0, player2: 0});
+          sortedSeeded.splice(lastSeed, 1);
+        }
+        games.push(match);
+      })
+      
+      return Parse.Object.saveAll(games);
+      
+
+      // function setPlayers (players, games) {
+      //   var gamers = players.slice();
+      //   var matchIndex = games.length -1;
+      //   var matches =[];
+      //   while(gamers.length > 0){
+      //     if(gamers.length > 0) {
+      //       var player = gamers[0];
+      //       games[matchIndex].set('player1', player);
+      //       games[matchIndex].set('score1', {player1: 0, player2: 0});
+      //       gamers.splice(0,1);
+      //     }
+      //     if (gamers.length > 0) {
+      //       var player = gamers[0];
+      //       games[matchIndex].set('player2', player);
+      //       games[matchIndex].set('score2', {player1: 0, player2: 0});
+      //       gamers.splice(0,1);
+      //     }
+      //     games[matchIndex].set('status', 'active');
+      //
+      //     matchIndex--;
+      //
+      //   }
+      //   return Parse.Object.saveAll(games);
+      // }
+    }
+
+    function randomPlayer (array) {
+      return Math.floor(Math.random()*array.length);
+    }
 
     function getUserMatches (user, status) {
       var player1 = new Parse.Query(Match);
@@ -89,31 +159,6 @@ angular.module('onog.services.match', ['onog.services.tournament'])
       }
       matches.push(games.slice(0,1)[0]);
       return Parse.Object.saveAll(matches);
-    }
-
-    function setPlayers (players, games) {
-      var gamers = players.slice();
-      var matchIndex = games.length -1;
-      var matches =[];
-      while(gamers.length > 0){
-        if(gamers.length > 0) {
-          var player = gamers[0];
-          games[matchIndex].set('player1', player);
-          games[matchIndex].set('score1', {player1: 0, player2: 0});
-          gamers.splice(0,1);
-        }
-        if (gamers.length > 0) {
-          var player = gamers[0];
-          games[matchIndex].set('player2', player);
-          games[matchIndex].set('score2', {player1: 0, player2: 0});
-          gamers.splice(0,1);
-        }
-        games[matchIndex].set('status', 'active');
-
-        matchIndex--;
-
-      }
-      return Parse.Object.saveAll(games);
     }
 
     function setRounds (rounds, games) {

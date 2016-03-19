@@ -29,13 +29,12 @@ angular.module('admin.controllers', ['admin.controllers.tournament'])
       {
         title: 'Create Tournament',
         icon: 'fa-plus-circle',
-        name: 'createTournament'
+        name: 'admin.tournament.create'
       },
     ];
 
     $scope.goTo = function (path) {
       switch (path) {
-        case 'createTournament': modalServices.showTournament(null); break;
         default: $state.go(path); break;
       }
     }

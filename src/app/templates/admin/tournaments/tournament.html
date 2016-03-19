@@ -1,0 +1,36 @@
+<div class="row capitalize top-margin-20">
+
+  <label
+    class="btn btn-primary col-xs-3"
+    ng-repeat="mode in modes"
+    ng-model="tournament.status"
+    ng-class="{'btn-success': tourney.status == mode, 'btn-primary': tourney.status != mode}"
+    uib-btn-radio="mode">
+    {{mode}}
+  </label>
+
+</div>
+
+<div class="row">
+  <input type="text" class="form-control" placeholder="Tournament Name *required" ng-model="tournament.name">
+</div>
+
+<div class="row">
+  <input type="datetime-local" class="form-control" placeholder="Tournament Start Time" ng-model="tournament.date">
+</div>
+
+
+<div class="row">
+  <label
+    class="btn col-xs-3"
+    ng-model="tournament.max"
+    name="players"
+    ng-class="{'btn-success': tourney.max == size, 'btn-primary': tourney.max != size}"
+    ng-repeat="size in tourneySizes"
+    uib-btn-radio="size">
+    {{size}} Players
+  </label>
+</div>
+
+<button class="btn btn-primary" type="button" ng-click="submitTourney()">Save</button>
+<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
