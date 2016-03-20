@@ -19,8 +19,41 @@ angular.module('onog.services.tournament', [])
       createMatches: createMatches,
       connectMatches: connectMatches,
       seedMatches: seedMatches,
-      getMatches: getMatches
+      getMatches: getMatches,
+      evaluateMatches: evaluateMatches
     };
+
+    function evaluateMatches (matches) {
+      //['tournament', 'round', 'matchNum', 'slot', 'player1', 'player2', 'score1', 'score2', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'status', 'roundNum']
+      var lastRound = matches[matches.length - 1].roundNum;
+      var lastRoundMatches = $filter('filter')(matches, {roundNum: lastRound});
+
+      angular.forEach(lastRoundMatches, function (match) {
+        
+        var players = [];
+        if(match.player1) {
+          players.push(match.player1);
+          console.log(players[0], '1');
+        }
+        if(match.player2) {
+          players.push(match.player2);
+          console.log(players[0], '2');
+        }
+
+        if(players.length === 1) {
+          match.set('winner', players[0]);
+          match.set('defWin', true);
+          match.set('status', 'completed');
+          if(match.slot) {
+            match.nextMatch.set('player1', players[0]);
+          } else {
+            match.nextMatch.set('player2', players[0]);
+          }
+        }
+      });
+
+      return Parse.Object.saveAll(matches);
+    }
 
     function getMatches (tournament) {
       var query = new Parse.Query(Match.Model);
@@ -29,6 +62,7 @@ angular.module('onog.services.tournament', [])
       query.include('player1');
       query.include('player2');
       query.include('round');
+      query.ascending('matchNum');
       return query.find();
     }
 
@@ -41,14 +75,16 @@ angular.module('onog.services.tournament', [])
       var sortedSeeded = $filter('orderBy')(players, 'seed');
 
       for(var i = 0; i < sortedSeeded.length; i++) {
-        var match = null;
         if(i%2) {
           firstRoundMatches[firstRoundCount].set('player2', sortedSeeded[i]);
+          console.log(firstRoundMatches[firstRoundCount].matchNum);
           firstRoundCount--;
         } else {
           firstRoundMatches[firstRoundIndex].set('player1', sortedSeeded[i]);
+          console.log(firstRoundMatches[firstRoundIndex].matchNum);
           firstRoundIndex++;
         }
+        
       }
       return Parse.Object.saveAll(connectedMatches);
     }
@@ -58,7 +94,7 @@ angular.module('onog.services.tournament', [])
 
       while (matchCount) {
         var currentMatch = matchCount - 1;
-        var nextMatch = Math.floor(currentMatch/2);
+        var nextMatch = Math.floor(matchCount/2) - 1;
         if(matchCount !== 1) {
           matches[currentMatch].set('slot', slot);
           matches[currentMatch].set('nextMatch', matches[nextMatch]);
@@ -86,6 +122,7 @@ angular.module('onog.services.tournament', [])
           match.set('tournament', tournament);
           match.set('status', 'pending');
           match.set('isValid', true);
+          match.set('defWin', false);
           match.set('roundNum', rounds[numOfRounds - 1].roundNum)
           match.set('round', rounds[numOfRounds - 1]);
           numOfMatches--;

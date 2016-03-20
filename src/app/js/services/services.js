@@ -90,7 +90,7 @@ angular.module('onog.services',
       return adminRoleQuery.first();
     }
     var setRole = function (roles) {
-      admin = roles
+      admin = roles;
     }
     return {
       returnRole: returnRole,

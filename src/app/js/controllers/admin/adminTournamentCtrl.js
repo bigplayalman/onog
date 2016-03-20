@@ -134,7 +134,6 @@ angular.module('admin.controllers.tournament', [])
         var roundCount = 0;
 
         var numRounds = $filter('unique')(matches, 'roundNum').length;
-        console.log(numRounds);
         
         while(numRounds) {
           var round = {};
@@ -154,12 +153,15 @@ angular.module('admin.controllers.tournament', [])
             Tournament.createMatches(rounds).then(function (matches) {
               Tournament.connectMatches(matches).then(function (connectedMatches) {
                 Tournament.seedMatches(connectedMatches, $scope.players).then(function (seededMatches) {
-                  displayBracket(seededMatches);
+                  //displayBracket(seededMatches);
+                  Tournament.evaluateMatches(seededMatches).then(function (evalMatches) {
+                    displayBracket(evalMatches);
+                  });
                 });
-              })
+              });
             });
-          })
-        })
+          });
+        });
       }
     })
 
