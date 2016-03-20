@@ -24,20 +24,18 @@ angular.module('onog.services.tournament', [])
     };
 
     function evaluateMatches (matches) {
-      //['tournament', 'round', 'matchNum', 'slot', 'player1', 'player2', 'score1', 'score2', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'status', 'roundNum']
+
       var lastRound = matches[matches.length - 1].roundNum;
       var lastRoundMatches = $filter('filter')(matches, {roundNum: lastRound});
 
       angular.forEach(lastRoundMatches, function (match) {
-        
+
         var players = [];
         if(match.player1) {
           players.push(match.player1);
-          console.log(players[0], '1');
         }
         if(match.player2) {
           players.push(match.player2);
-          console.log(players[0], '2');
         }
 
         if(players.length === 1) {
@@ -46,8 +44,12 @@ angular.module('onog.services.tournament', [])
           match.set('status', 'completed');
           if(match.slot) {
             match.nextMatch.set('player1', players[0]);
+            match.nextMatch.set('status', 'active');
+            match.nextMatch.set('user1', players[0].user);
           } else {
             match.nextMatch.set('player2', players[0]);
+            match.nextMatch.set('status', 'active');
+            match.nextMatch.set('user2', players[0].user);
           }
         }
       });
@@ -77,14 +79,16 @@ angular.module('onog.services.tournament', [])
       for(var i = 0; i < sortedSeeded.length; i++) {
         if(i%2) {
           firstRoundMatches[firstRoundCount].set('player2', sortedSeeded[i]);
-          console.log(firstRoundMatches[firstRoundCount].matchNum);
+          firstRoundMatches[firstRoundCount].set('status', 'active');
+          firstRoundMatches[firstRoundCount].set('user2', sortedSeeded[i].user);
           firstRoundCount--;
         } else {
           firstRoundMatches[firstRoundIndex].set('player1', sortedSeeded[i]);
-          console.log(firstRoundMatches[firstRoundIndex].matchNum);
+          firstRoundMatches[firstRoundIndex].set('status', 'active');
+          firstRoundMatches[firstRoundIndex].set('user1', sortedSeeded[i].user);
           firstRoundIndex++;
         }
-        
+
       }
       return Parse.Object.saveAll(connectedMatches);
     }

@@ -10,7 +10,7 @@ angular.module('account.controllers', [])
       $scope.currentMatches = matches;
     });
 
-    Match.getUserMatches($scope.user, 'finished').then(function(matches) {
+    Match.getUserMatches($scope.user, 'completed').then(function(matches) {
       $scope.finishedMatches = matches;
     });
 

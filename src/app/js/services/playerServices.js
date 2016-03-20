@@ -10,7 +10,7 @@ angular.module('onog.services.player', [])
       getMyTournaments: getMyTournaments,
       saveSeeding: saveSeeding
     };
-
+    
     function saveSeeding (players) {
       return Parse.Object.saveAll(players);
     }

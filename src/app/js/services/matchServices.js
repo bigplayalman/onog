@@ -2,7 +2,26 @@ angular.module('onog.services.match', ['onog.services.tournament'])
 
   .factory('Match', ['Parse', '$filter', function (Parse, $filter) {
     var Model = Parse.Object.extend('Match');
-    var attributes = ['tournament', 'round', 'matchNum', 'slot', 'defWin', 'player1', 'player2', 'score1', 'score2', 'winner', 'nextMatch', 'isValid', 'inValidReason', 'status', 'roundNum']
+    var attributes = 
+      [
+        'tournament', 
+        'round', 
+        'matchNum', 
+        'slot', 
+        'defWin', 
+        'player1', 
+        'player2', 
+        'score1', 
+        'score2', 
+        'winner', 
+        'nextMatch', 
+        'isValid', 
+        'inValidReason', 
+        'status', 
+        'roundNum',
+        'user1',
+        'user2'
+      ]
     Parse.defineAttributes(Model, attributes);
 
     return {
@@ -21,10 +40,10 @@ angular.module('onog.services.match', ['onog.services.tournament'])
 
     function getUserMatches (user, status) {
       var player1 = new Parse.Query(Model);
-      player1.equalTo("player1", user);
+      player1.equalTo("user1", user);
 
       var player2 = new Parse.Query(Model);
-      player2.equalTo("player2", user);
+      player2.equalTo("user2", user);
 
       var mainQuery = Parse.Query.or(player1, player2);
       mainQuery.equalTo('status', status);
