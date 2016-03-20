@@ -2,18 +2,17 @@ angular.module('admin.controllers.tournament', [])
 
   .controller('admin.controllers.tournament.ctrl', function ($scope, $state, Tournament, tournament, title) {
 
-    console.log('entered');
     $scope.title = title;
 
-    if(tournament) {
-      $scope.tournament = tournament;
+    if(tournament[0]) {
+      $scope.tournament = tournament[0];
     } else {
       $scope.tournament = {
         status: 'pending',
         type: 'single',
         game: 'Hearthstone',
         current: 0,
-        max: null,
+        max: 0,
         name: null
       }
     }
@@ -23,15 +22,22 @@ angular.module('admin.controllers.tournament', [])
     $scope.tourneySizes = Tournament.getSizes();
 
     $scope.submitTourney = function () {
-      Tournament.setTournament($scope.tournament).then(function (tournament) {
-        $state.go('admin.tournament.list');
-      });
+      if($scope.tournament.id) {
+        $scope.tournament.save().then(function (tournament) {
+          $state.go('admin.tournament.details', {id: tournament.id, name: tournament.name});
+        });
+      } else {
+        Tournament.saveTournament($scope.tournament).then(function (tournament) {
+          $state.go('admin.tournament.list');
+        });
+      }
     }
 
   })
 
   .controller('admin.controllers.tournament.list.ctrl', function($scope, $state, Tournament) {
     $scope.tournaments = [];
+
     Tournament.getTournaments().then(function (tournaments) {
       $scope.tournaments = tournaments;
     });
@@ -50,57 +56,24 @@ angular.module('admin.controllers.tournament', [])
     }
 
     $scope.cancel = function () {
-      console.log($stateParams);
       $state.go('admin.tournament.details', {name: $stateParams.name});
     }
   })
 
   .controller('admin.controllers.tournament.details.ctrl',
-    function ($scope, $state,$timeout, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
+    function ($scope, $state, $filter, Parse, Tournament, modalServices, tournament, players, $uibModal) {
 
       $scope.tourney = {};
 
       $scope.tourney = tournament[0];
-      console.log($scope.tourney.status);
       $scope.user = Parse.User.current();
       $scope.players = players;
 
-      $scope.nextId = null;
-      $scope.currentId = null;
-
-      $scope.balance = [];
       $scope.rounds = [];
-
-      Match.getMatches($scope.tourney).then(function (matches) {
-        $scope.displayBracket(matches);
-      });
-
-      $scope.matchMargin = function (length) {
-        var margin = 0;
-        return margin;
-      }
-
-      $scope.setTourneyWidth = function (length) {
-        var width = 220*length + 'px';
-        return width;
-      }
-
-      $scope.displayBracket = function (matches) {
-        var rounds = [];
-        var roundCount = 0;
-
-        var numRounds = $filter('unique')(matches, 'round').length;
-        console.log(numRounds);
-        // while($filter('filter')(matches, {round:{roundNum:roundCount}}).length > 0) {
-        //   var round = {};
-        //   var games = $filter('filter')(matches, {round:{roundNum:roundCount}});
-        //   round.name = games[0].round.name;
-        //   round.matches = games;
-        //   roundCount++;
-        //   rounds.push(round);
-        // }
-        // $scope.rounds = rounds.reverse();
-      };
+      
+      Tournament.getMatches($scope.tourney).then(function (matches) {
+        displayBracket(matches);
+      })
 
       $scope.edit = function () {
         $state.go('admin.tournament.edit', {name: $scope.tourney.name});
@@ -112,9 +85,7 @@ angular.module('admin.controllers.tournament', [])
       }
 
       $scope.resetTourney = function (type) {
-        resetSingleBracket().then(function(matches){
-          $scope.displayBracket(matches);
-        });
+        resetSingleBracket();
       }
 
       $scope.showMatchDetail = function (status, match) {
@@ -129,6 +100,13 @@ angular.module('admin.controllers.tournament', [])
         player.save().then(function (data) {
           player = data;
         });
+      }
+      $scope.playerSeeding = function (seeding) {
+        if(seeding < 99) {
+          return seeding + '.'
+        } else {
+          return '-.'
+        }
       }
 
       function showMatchResults(match) {
@@ -150,26 +128,38 @@ angular.module('admin.controllers.tournament', [])
           });
         });
       }
+      
+      function displayBracket (matches) {
+        var rounds = [];
+        var roundCount = 0;
+
+        var numRounds = $filter('unique')(matches, 'roundNum').length;
+        console.log(numRounds);
+        
+        while(numRounds) {
+          var round = {};
+          var games = $filter('filter')(matches, {round:{roundNum:numRounds}});
+          round.name = games[0].round.name;
+          round.matches = games;
+          rounds.push(round);
+          numRounds--;
+        }
+        $scope.rounds = rounds;
+      }
 
 
       function resetSingleBracket () {
-        Match.deleteMatches($scope.tourney).then(function () {
-          Match.createMatches($scope.players.length -1, $scope.tourney).then(function (matches) {
-            Match.setNextMatch(matches).then(function(matches) {
-              var games = $filter('orderBy')(matches, 'gameNum');
-              Round.deleteRounds($scope.tourney).then(function () {
-                Round.createRounds($scope.tourney, games.length, $scope.players).then(function (rounds) {
-                  Match.setRounds(rounds, games).then(function (matches) {
-                    var players = $filter('filter')($scope.players, {checkin: true});
-                    Match.seedPlayers(matches, players).then(function (matches) {
-                      $scope.displayBracket(matches);
-                    });
-                  });
+        Tournament.deleteData($scope.tourney).then(function () {
+          Tournament.createRounds($scope.tourney).then(function (rounds) {
+            Tournament.createMatches(rounds).then(function (matches) {
+              Tournament.connectMatches(matches).then(function (connectedMatches) {
+                Tournament.seedMatches(connectedMatches, $scope.players).then(function (seededMatches) {
+                  displayBracket(seededMatches);
                 });
-              });
+              })
             });
-          });
-        });
+          })
+        })
       }
     })
 
@@ -196,43 +186,4 @@ angular.module('admin.controllers.tournament', [])
     $scope.cancel = function () {
       $uibModalInstance.close(false);
     };
-  })
-
-  .controller('TourneyPlayerController', function ($scope, $state, $stateParams, $filter, Tournament, Match, Parse, Player, Round) {
-    $scope.player = null;
-    $scope.players = [];
-    $scope.tourney = new Tournament.Model();
-    $scope.tourney.id = $stateParams.id;
-
-    $scope.user = Parse.User.current();
-    $scope.balance = [];
-    $scope.rounds = [];
-
-    $scope.tourney.fetch().then(function (tournament) {
-      $scope.tourney = tournament;
-      var query = tournament.relation('players').query();
-      query.descending('username');
-      query.find().then(function (players) {
-        $scope.players = players;
-        if($scope.user) {
-          var player = $filter('filter')(players, {id: $scope.user.id});
-          if(player.length > 0) {
-            $scope.signedUp = true;
-          }
-        }
-        Match.getMatches($scope.tourney).then(function (matches) {
-          $scope.displayBracket(matches);
-        })
-      });
-    })
-
-
-    var playerQuery = new Parse.Query(Player.Model);
-    playerQuery.include('user');
-    playerQuery.equalTo('user', Parse.User.current());
-    playerQuery.equalTo('game', fetched.game);
-    playerQuery.find().then(function (players) {
-      $scope.player = players[0];
-      fetched.relation('players').add(player);
-    });
   });
