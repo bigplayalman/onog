@@ -1,17 +1,24 @@
 <div class="modal-header">
-    <h3 class="modal-title text-center">Match Result</h3>
+  <h3 class="modal-title text-center">Match Result</h3>
 </div>
 <div class="modal-body">
-    <div class="row text-center">
-        <div class="col-xs-6">
-            <h3>{{currentMatch.player1.username}}</h3>
-        </div>
-        <div class="col-xs-6">
-            <h3>{{currentMatch.player2.username}}</h3>
-        </div>
+  <div class="row text-center">
+    <div class="col-xs-12">
+      Best of {{getMaxGames()}}
     </div>
+    <label class="col-xs-6">
+      <span class="h3">{{currentMatch.player1.user.username}}</span>
+      <input class="form-control" type="number" ng-model="currentMatch.score.player1" max="{{getMaxGames()}}" min="0">
+      <i class="fa fa-5x top-margin-20" ng-class="{'fa-checkbox': currentMatch.confirm.player1, 'fa-ban': !currentMatch.confirm.player1}"></i>
+    </label>
+    <label class="col-xs-6">
+      <span class="h3">{{currentMatch.player2.user.username}}</span>
+      <input class="form-control" type="number" ng-model="currentMatch.score.player2" max="{{getMaxGames()}}" min="0">
+      <i class="fa fa-5x top-margin-20" ng-class="{'fa-checkbox': currentMatch.confirm.player2, 'fa-ban': !currentMatch.confirm.player2}"></i>
+    </label>
+  </div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>

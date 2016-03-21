@@ -54,12 +54,12 @@
            ng-repeat="round in rounds">
         <h4 class="title text-center">{{round.name}}</h4>
         <div class="matches">
-          <div class="single-match"
-               ng-repeat="match in round.matches">
+          <a class="single-match"
+               ng-repeat="match in round.matches" ng-click="showMatchDetail(match)">
             <div>Match Num: {{match.matchNum}}</div>
-            <div class="player"><span ng-if="match.player1.seed < 99")>{{match.player1.seed }}. </span> {{match.player1.user.username || 'TBD'}}</div>
-            <div class="player"><span ng-if="match.player2.seed < 99")>{{match.player2.seed }}. </span> {{match.player2.user.username || 'TBD'}}</div>
-          </div>
+            <div class="player"><span ng-if="match.player1.seed < 99")>{{match.player1.seed }}. </span> {{match.player1.user.username || '-'}}</div>
+            <div class="player"><span ng-if="match.player2.seed < 99")>{{match.player2.seed }}. </span> {{match.player2.user.username || '-'}}</div>
+          </a>
         </div>
       </div>
     </div>

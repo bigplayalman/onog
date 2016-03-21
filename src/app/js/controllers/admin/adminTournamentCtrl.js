@@ -61,7 +61,7 @@ angular.module('admin.controllers.tournament', [])
   })
 
   .controller('admin.controllers.tournament.details.ctrl',
-    function ($scope, $state, $filter, Parse, Tournament, modalServices, tournament, players, $uibModal) {
+    function ($scope, $state, $filter, Parse, Tournament, Match, modalServices, tournament, players, $uibModal) {
 
       $scope.tourney = {};
 
@@ -70,7 +70,7 @@ angular.module('admin.controllers.tournament', [])
       $scope.players = players;
 
       $scope.rounds = [];
-      
+
       Tournament.getMatches($scope.tourney).then(function (matches) {
         displayBracket(matches);
       })
@@ -88,7 +88,7 @@ angular.module('admin.controllers.tournament', [])
         resetSingleBracket();
       }
 
-      $scope.showMatchDetail = function (status, match) {
+      $scope.showMatchDetail = function (match) {
         showMatchResults(match);
       };
 
@@ -110,12 +110,11 @@ angular.module('admin.controllers.tournament', [])
       }
 
       function showMatchResults(match) {
-        var pastVariables = match.toJSON();
-        var currentMatch = match;
+        var currentMatch = angular.copy(match);
         var modalInstance = $uibModal.open({
           animation: $scope.animationsEnabled,
-          templateUrl: 'templates/modals/match-results.html',
-          controller: 'admin.controllers.tournament.match.modal.results.ctrl',
+          templateUrl: 'templates/modals/match-result.html',
+          controller: 'admin.modal.controllers.tournament.match.results.ctrl',
           resolve: {
             match: function () {
               return currentMatch;
@@ -124,17 +123,19 @@ angular.module('admin.controllers.tournament', [])
         });
 
         modalInstance.result.then(function (match) {
-          Match.saveMatch(match).then(function (results) {
-          });
+          if(match) {
+            Match.saveMatch(match).then(function (results) {
+            });
+          }
         });
       }
-      
+
       function displayBracket (matches) {
         var rounds = [];
         var roundCount = 0;
 
         var numRounds = $filter('unique')(matches, 'roundNum').length;
-        
+
         while(numRounds) {
           var round = {};
           var games = $filter('filter')(matches, {round:{roundNum:numRounds}});
@@ -153,7 +154,6 @@ angular.module('admin.controllers.tournament', [])
             Tournament.createMatches(rounds).then(function (matches) {
               Tournament.connectMatches(matches).then(function (connectedMatches) {
                 Tournament.seedMatches(connectedMatches, $scope.players).then(function (seededMatches) {
-                  //displayBracket(seededMatches);
                   Tournament.evaluateMatches(seededMatches).then(function (evalMatches) {
                     displayBracket(evalMatches);
                   });
@@ -168,6 +168,13 @@ angular.module('admin.controllers.tournament', [])
   .controller('admin.modal.controllers.tournament.match.results.ctrl', function ($scope, $uibModalInstance, match) {
     $scope.currentMatch = match;
 
+    $scope.getMaxGames = function () {
+      if($scope.currentMatch.matchNum != 1) {
+        return $scope.currentMatch.tournament.gameCount;
+      } else {
+        return $scope.currentMatch.tournament.finalsCount;
+      }
+    }
     $scope.ok = function () {
       $uibModalInstance.close($scope.currentMatch);
     };

@@ -10,17 +10,17 @@ angular.module('onog.services.match', ['onog.services.tournament'])
         'slot', 
         'defWin', 
         'player1', 
-        'player2', 
-        'score1', 
-        'score2', 
+        'player2',
+        'confirm',
+        'user1',
+        'user2',
+        'score',
         'winner', 
         'nextMatch', 
         'isValid', 
         'inValidReason', 
         'status', 
         'roundNum',
-        'user1',
-        'user2'
       ]
     Parse.defineAttributes(Model, attributes);
 

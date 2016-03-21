@@ -30,9 +30,11 @@
         </div>
         <div class="panel-body">
 
-          vs. <span ng-hide="user.id === match.player2.user.id"> {{match.player2.user.username}}</span>
-          <span ng-hide="user.id === match.player1.user.id"> {{match.player1.user.username}}</span>
-          <span ng-show="!match.player2 || !match.player1"> TDB</span>
+          <span ng-if="!match.defWin">
+            vs. <span ng-hide="user.id === match.player2.user.id"> {{match.player2.user.username}}</span>
+            <span ng-hide="user.id === match.player1.user.id"> {{match.player1.user.username}}</span>
+            <span ng-show="!match.player2 || !match.player1"> TDB</span>
+          </span>
           <span ng-if="match.defWin" class="text-right">DefWin</span>
         </div>
       </div>
