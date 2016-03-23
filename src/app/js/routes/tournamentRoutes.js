@@ -31,9 +31,6 @@ angular.module('tournament.routes', [])
 
       .state('tournament.details', {
         url: '/:name',
-        params: {
-          id: null
-        },
         data: {
           canEdit: false
         },

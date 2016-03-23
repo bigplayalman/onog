@@ -11,76 +11,73 @@ angular.module('onog.controllers.tournament', [])
     }
   })
   .controller('onog.controllers.tournament.detail.ctrl',
-    function($scope, $filter, Parse, Match, Round, modalServices, playerServices, tournament, players) {
+    function ($scope, $state, $filter, Parse, Tournament, Match, modalServices, tournament, players, $uibModal) {
+
+      $scope.tourney = {};
 
       $scope.tourney = tournament[0];
       $scope.user = Parse.User.current();
       $scope.players = players;
-      $scope.registered = playerServices.findPlayer($scope.players, $scope.user);
-      $scope.nextId = null;
-      $scope.currentId = null;
 
-      $scope.balance = [];
+      $scope.winner = $scope.tourney.winner.toJSON();
+      console.log($scope.winner);
+
       $scope.rounds = [];
 
-      Match.getMatches($scope.tourney).then(function (matches) {
-        $scope.displayBracket(matches);
+      Tournament.getMatches($scope.tourney).then(function (matches) {
+        displayBracket(matches);
       });
 
-      $scope.checkIn = function () {
-        playerServices.checkIn($scope.registered).then(function (data) {
-          console.log(data);
-          $scope.registered = data;
+      $scope.showMatchDetail = function (match) {
+        showMatchResults(match);
+      };
+      $scope.checkinPlayer = function (player) {
+        player.checkin = !player.checkin;
+        player.save().then(function (data) {
+          player = data;
         });
       }
-      $scope.edit = function () {
-        modalServices.showTourneyRegistration($scope.tourney, $scope.registered);
+      $scope.playerSeeding = function (seeding) {
+        if(seeding < 99) {
+          return seeding + '.'
+        } else {
+          return '-.'
+        }
       }
 
-      $scope.register = function () {
-        modalServices.showTourneyRegistration($scope.tourney, $scope.registered);
+      function showMatchResults(match) {
+        var currentMatch = angular.copy(match);
+        var modalInstance = $uibModal.open({
+          animation: $scope.animationsEnabled,
+          templateUrl: 'templates/modals/match-result.html',
+          controller: 'admin.modal.controllers.tournament.match.results.ctrl',
+          resolve: {
+            match: function () {
+              return currentMatch;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (match) {
+          
+        });
       }
 
-      $scope.cancelRegistration = function () {
-        modalServices.showCancelRegistration($scope.registered, $scope.tourney);
-      }
-
-      $scope.login = function () {
-        modalServices.showLogin();
-      }
-
-      $scope.setWidth = function (length) {
-        var width = (100/length) + '%';
-        return width;
-      }
-
-      $scope.matchMargin = function (index) {
-        var margin = '10px;'
-        return margin;
-      }
-
-      $scope.displayBracket = function (matches) {
+      function displayBracket (matches) {
         var rounds = [];
-        var roundCount = 1;
-        while($filter('filter')(matches, {round:{roundNum:roundCount}}).length > 0) {
+        var roundCount = 0;
+
+        var numRounds = $filter('unique')(matches, 'roundNum').length;
+
+        while(numRounds) {
           var round = {};
-          var games = $filter('filter')(matches, {round:{roundNum:roundCount}});
+          var games = $filter('filter')(matches, {round:{roundNum:numRounds}});
           round.name = games[0].round.name;
           round.matches = games;
-          roundCount++;
           rounds.push(round);
+          numRounds--;
         }
-        $scope.rounds = rounds.reverse();
-      };
-
-      $scope.showActive = function ($event,match) {
-        $scope.currentId = match.id;
-        if(match.nextMatch){
-          $scope.nextId = match.nextMatch.id;
-        } else {
-          $scope.nextId = match.id;
-        }
-        console.log($scope.nextId);
+        $scope.rounds = rounds;
       }
 
     });

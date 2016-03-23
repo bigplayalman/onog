@@ -64,7 +64,7 @@ angular.module('account.routes', [])
             return Tournament.fetchTournament($stateParams.name);
           },
           players: function(tournament, playerServices) {
-            return playerServices.getPlayers(tournament[0]);
+            return playerServices.getPlayers(tournament[0].id);
           }
         }
       })
