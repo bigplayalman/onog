@@ -4,21 +4,21 @@
 <div class="modal-body">
   <div class="row text-center">
     <div class="col-xs-12">
-      Best of {{getMaxGames()}}
+      Best of {{currentMatch.round.numOfGames}}
     </div>
     <label class="col-xs-6">
       <span class="h3">{{currentMatch.player1.user.username}}</span>
-      <input class="form-control" type="number" ng-model="currentMatch.score.player1" max="{{getMaxGames()}}" min="0">
+      <input class="form-control" type="number" ng-model="currentMatch.score.player1" max="{{currentMatch.round.numOfGames}}" min="0">
       <i class="fa fa-5x top-margin-20" ng-class="{'fa-checkbox': currentMatch.confirm.player1, 'fa-ban': !currentMatch.confirm.player1}"></i>
     </label>
     <label class="col-xs-6">
       <span class="h3">{{currentMatch.player2.user.username}}</span>
-      <input class="form-control" type="number" ng-model="currentMatch.score.player2" max="{{getMaxGames()}}" min="0">
+      <input class="form-control" type="number" ng-model="currentMatch.score.player2" max="{{currentMatch.round.numOfGames}}" min="0">
       <i class="fa fa-5x top-margin-20" ng-class="{'fa-checkbox': currentMatch.confirm.player2, 'fa-ban': !currentMatch.confirm.player2}"></i>
     </label>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+  <a class="btn btn-primary" ng-click="ok()" ng-disabled="invalid()">OK</a>
+  <a class="btn btn-warning" ng-click="cancel()">Cancel</a>
 </div>

@@ -60,6 +60,7 @@ angular.module('account.controllers', [])
   .controller('account.controllers.tournament.list.ctrl', function($scope, $state, playerServices) {
 
     $scope.tournaments = [];
+    
     playerServices.getMyTournaments().then(function (mytourneys) {
       var tournaments = [];
       angular.forEach(mytourneys, function (tourney) {

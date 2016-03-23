@@ -68,6 +68,9 @@ angular.module('admin.controllers.tournament', [])
       $scope.tourney = tournament[0];
       $scope.user = Parse.User.current();
       $scope.players = players;
+      
+      $scope.winner = $scope.tourney.winner.toJSON();
+      console.log($scope.winner);
 
       $scope.rounds = [];
 
@@ -125,6 +128,9 @@ angular.module('admin.controllers.tournament', [])
         modalInstance.result.then(function (match) {
           if(match) {
             Match.saveMatch(match).then(function (results) {
+              if(results.tournament.winner) {
+                $scope.winner = results.tournament.winner;
+              }
             });
           }
         });
@@ -167,17 +173,40 @@ angular.module('admin.controllers.tournament', [])
 
   .controller('admin.modal.controllers.tournament.match.results.ctrl', function ($scope, $uibModalInstance, match) {
     $scope.currentMatch = match;
-
-    $scope.getMaxGames = function () {
-      if($scope.currentMatch.matchNum != 1) {
-        return $scope.currentMatch.tournament.gameCount;
-      } else {
-        return $scope.currentMatch.tournament.finalsCount;
-      }
+    if(!$scope.currentMatch.score) {
+      $scope.currentMatch.score = {player1 : 0, player2: 0}
     }
+
     $scope.ok = function () {
+      if($scope.currentMatch.score.player1 === $scope.currentMatch.round.numOfGames) {
+        $scope.currentMatch.winner = $scope.currentMatch.player1;
+        
+        switch ($scope.currentMatch.slot) {
+          case 1 : $scope.currentMatch.nextMatch.player1 = $scope.currentMatch.player1; break;
+          case 0 : $scope.currentMatch.nextMatch.player2 = $scope.currentMatch.player1; break;
+          default: $scope.currentMatch.tournament.winner = $scope.currentMatch.player1; break;
+        }
+      }
+
+      if($scope.currentMatch.score.player2 === $scope.currentMatch.round.numOfGames) {
+        $scope.currentMatch.winner = $scope.currentMatch.player2;
+
+        switch ($scope.currentMatch.slot) {
+          case 1 : $scope.currentMatch.nextMatch.player1 = $scope.currentMatch.player2; break;
+          case 0 : $scope.currentMatch.nextMatch.player2 = $scope.currentMatch.player2; break;
+          default: $scope.currentMatch.tournament.winner = $scope.currentMatch.player2; break;
+        }
+      }
+      
       $uibModalInstance.close($scope.currentMatch);
     };
+
+    $scope.invalid = function () {
+      if($scope.currentMatch.score.player1 === $scope.currentMatch.score.player2) {
+        return true;
+      }
+      return false;
+    }
 
     $scope.cancel = function () {
       $uibModalInstance.close(false);

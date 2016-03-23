@@ -46,6 +46,13 @@
     </span>
   </a>
 </div>
+<div class="row" ng-if="winner">
+  <div class="col-xs-12 text-center">
+    <hr>
+    <h3>Winner: {{winner.user.username}}</h3>
+    <h5>Hero Classes: <span ng-repeat="hero in winner.heroClasses">{{hero}} </span></h5>
+  </div>
+</div>
 <div class="row" ng-show="tourney.status === 'active'">
   <div class="col-xs-12">
     <hr>
@@ -57,11 +64,21 @@
           <a class="single-match"
                ng-repeat="match in round.matches" ng-click="showMatchDetail(match)">
             <div>Match Num: {{match.matchNum}}</div>
-            <div class="player"><span ng-if="match.player1.seed < 99")>{{match.player1.seed }}. </span> {{match.player1.user.username || '-'}}</div>
-            <div class="player"><span ng-if="match.player2.seed < 99")>{{match.player2.seed }}. </span> {{match.player2.user.username || '-'}}</div>
+            <div class="player">
+              <span ng-if="match.player1.seed < 99">{{match.player1.seed }}. </span>
+              {{match.player1.user.username || '-'}}
+              <span ng-if="match.score" class="pull-right">{{match.score.player1}}</span>
+            </div>
+            <div class="player">
+              <span ng-if="match.player2.seed < 99">{{match.player2.seed }}. </span>
+              {{match.player2.user.username || '-'}}
+              <span ng-if="match.score" class="pull-right">{{match.score.player2}}</span>
+              <span ng-if="match.defWin" class="pull-right">DefWin</span>
+            </div>
           </a>
         </div>
       </div>
     </div>
   </div>
 </div>
+
