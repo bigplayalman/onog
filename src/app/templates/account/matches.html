@@ -10,10 +10,20 @@
           <div>Round: {{getRoundName(match)}}</div>
         </div>
         <div class="panel-body">
+          <div ng-if="user.id === match.user1.id">
+            vs. {{match.user2.username}}
+            <div>
+              {{match.score.player1}} : {{match.score.player1}}
+            </div>
+          </div>
+          <div ng-if="user.id === match.user2.id">
+            vs. {{match.user1.username}}
+            <div>
+              {{match.score.player2}} : {{match.score.player1}}
+            </div>
+          </div>
+          <div ng-if="!match.player2 || !match.player1"> TDB</div>
 
-          vs. <span ng-hide="user.id === match.player2.user.id"> {{match.player2.user.username}}</span>
-          <span ng-hide="user.id === match.player1.user.id"> {{match.player1.user.username}}</span>
-          <span ng-show="!match.player2 || !match.player1"> TDB</span>
         </div>
       </div>
     </div>
@@ -31,9 +41,9 @@
         <div class="panel-body">
 
           <span ng-if="!match.defWin">
-            vs. <span ng-hide="user.id === match.player2.user.id"> {{match.player2.user.username}}</span>
-            <span ng-hide="user.id === match.player1.user.id"> {{match.player1.user.username}}</span>
-            <span ng-show="!match.player2 || !match.player1"> TDB</span>
+            vs. <span ng-if="user.id === match.user1.id"> {{match.user2.username}}</span>
+            <span ng-if="user.id === match.user2.id"> {{match.user1.username}}</span>
+            <span ng-if="!match.player2 || !match.player1"> TDB</span>
           </span>
           <span ng-if="match.defWin" class="text-right">DefWin</span>
         </div>

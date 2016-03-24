@@ -50,6 +50,8 @@ angular.module('onog.services.match', ['onog.services.tournament'])
       mainQuery.include('nextMatch');
       mainQuery.include('player1');
       mainQuery.include('player2');
+      mainQuery.include('user1');
+      mainQuery.include('user2');
       mainQuery.include('round');
       mainQuery.include('tournament');
       return mainQuery.find();
@@ -61,6 +63,13 @@ angular.module('onog.services.match', ['onog.services.tournament'])
     function getMatch(id) {
       var match = new Model();
       match.id = id;
+      match.include('nextMatch');
+      match.include('player1');
+      match.include('player2');
+      match.include('user1');
+      match.include('user2');
+      match.include('round');
+      match.include('tournament');
       return match.fetch();
     }
     function getMatches (tourney) {

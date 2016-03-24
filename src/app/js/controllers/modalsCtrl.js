@@ -116,6 +116,15 @@ angular.module('onog.controllers.modal', [])
         });
 
       }
+      $scope.invalid = function () {
+        if($scope.checkResults.length < 3) {
+          return true;
+        }
+        if(!$scope.player.rank) {
+          return true;
+        }
+        return false;
+      }
 
       $scope.cancel = function () {
         $uibModalInstance.close(null);

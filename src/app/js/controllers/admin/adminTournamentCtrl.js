@@ -32,6 +32,9 @@ angular.module('admin.controllers.tournament', [])
         });
       }
     }
+    $scope.cancel = function () {
+      $state.go('admin.tournament.details', {name: $scope.tournament.name});
+    }
 
   })
 
@@ -68,9 +71,10 @@ angular.module('admin.controllers.tournament', [])
       $scope.tourney = tournament[0];
       $scope.user = Parse.User.current();
       $scope.players = players;
-      
-      $scope.winner = $scope.tourney.winner.toJSON();
-      console.log($scope.winner);
+
+      if($scope.tourney.status === 'finished') {
+        $scope.winner = $scope.tourney.winner.toJSON();
+      }
 
       $scope.rounds = [];
 
@@ -180,24 +184,34 @@ angular.module('admin.controllers.tournament', [])
     $scope.ok = function () {
       if($scope.currentMatch.score.player1 === $scope.currentMatch.round.numOfGames) {
         $scope.currentMatch.winner = $scope.currentMatch.player1;
-        
+        $scope.currentMatch.status = 'completed';
         switch ($scope.currentMatch.slot) {
           case 1 : $scope.currentMatch.nextMatch.player1 = $scope.currentMatch.player1; break;
           case 0 : $scope.currentMatch.nextMatch.player2 = $scope.currentMatch.player1; break;
-          default: $scope.currentMatch.tournament.winner = $scope.currentMatch.player1; break;
+          default: 
+            $scope.currentMatch.tournament.winner = $scope.currentMatch.player1;
+            $scope.currentMatch.tournament.status = 'completed';
+            break;
         }
       }
 
       if($scope.currentMatch.score.player2 === $scope.currentMatch.round.numOfGames) {
         $scope.currentMatch.winner = $scope.currentMatch.player2;
-
+        $scope.currentMatch.status = 'completed';
         switch ($scope.currentMatch.slot) {
           case 1 : $scope.currentMatch.nextMatch.player1 = $scope.currentMatch.player2; break;
           case 0 : $scope.currentMatch.nextMatch.player2 = $scope.currentMatch.player2; break;
-          default: $scope.currentMatch.tournament.winner = $scope.currentMatch.player2; break;
+          default: 
+            $scope.currentMatch.tournament.winner = $scope.currentMatch.player2;
+            $scope.currentMatch.tournament.status = 'completed';
+            break;
         }
       }
-      
+
+      if($scope.currentMatch.score.player1 < $scope.currentMatch.round.numOfGames && $scope.currentMatch.score.player2 < $scope.currentMatch.round.numOfGames) {
+        $scope.currentMatch.status = 'active';
+      }
+
       $uibModalInstance.close($scope.currentMatch);
     };
 

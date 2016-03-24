@@ -67,12 +67,12 @@
             <div class="player">
               <span ng-if="match.player1.seed < 99">{{match.player1.seed }}. </span>
               {{match.player1.user.username || '-'}}
-              <span ng-if="match.score" class="pull-right">{{match.score.player1}}</span>
+              <span ng-if="match.score && match.player1 && match.player2" class="pull-right">{{match.score.player1}}</span>
             </div>
             <div class="player">
               <span ng-if="match.player2.seed < 99">{{match.player2.seed }}. </span>
               {{match.player2.user.username || '-'}}
-              <span ng-if="match.score" class="pull-right">{{match.score.player2}}</span>
+              <span ng-if="match.score && match.player1 && match.player2" class="pull-right">{{match.score.player2}}</span>
               <span ng-if="match.defWin" class="pull-right">DefWin</span>
             </div>
           </a>

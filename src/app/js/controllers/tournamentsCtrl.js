@@ -11,22 +11,45 @@ angular.module('onog.controllers.tournament', [])
     }
   })
   .controller('onog.controllers.tournament.detail.ctrl',
-    function ($scope, $state, $filter, Parse, Tournament, Match, modalServices, tournament, players, $uibModal) {
+    function ($scope, $state, $filter, Parse, Tournament, Match, modalServices, tournament, players, registered, $uibModal, playerServices) {
 
       $scope.tourney = {};
 
       $scope.tourney = tournament[0];
       $scope.user = Parse.User.current();
       $scope.players = players;
+      $scope.registered = registered;
 
-      $scope.winner = $scope.tourney.winner.toJSON();
-      console.log($scope.winner);
+      if($scope.tourney.status === 'finished') {
+        $scope.winner = $scope.tourney.winner.toJSON();
+      }
 
       $scope.rounds = [];
 
       Tournament.getMatches($scope.tourney).then(function (matches) {
         displayBracket(matches);
       });
+
+      $scope.checkIn = function () {
+        playerServices.checkIn($scope.registered).then(function (data) {
+          $scope.registered = data;
+        });
+      }
+      $scope.edit = function () {
+        modalServices.showTourneyRegistration($scope.tourney, $scope.registered);
+      }
+
+      $scope.register = function () {
+        modalServices.showTourneyRegistration($scope.tourney, $scope.registered);
+      }
+
+      $scope.cancelRegistration = function () {
+        modalServices.showCancelRegistration($scope.registered, $scope.tourney);
+      }
+
+      $scope.login = function () {
+        modalServices.showLogin();
+      }
 
       $scope.showMatchDetail = function (match) {
         showMatchResults(match);

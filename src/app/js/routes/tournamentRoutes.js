@@ -46,6 +46,10 @@ angular.module('tournament.routes', [])
           },
           players: function(tournament, playerServices) {
             return playerServices.getPlayers(tournament[0].id);
+          },
+          registered: function (players, playerServices, Parse) {
+            var user = Parse.User.current();
+            return playerServices.findPlayer(players, user);
           }
         }
       })

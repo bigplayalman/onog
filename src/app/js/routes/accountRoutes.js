@@ -30,44 +30,6 @@ angular.module('account.routes', [])
           }
         }
       })
-      .state('account.tournament', {
-        url: '/tournament',
-        abstract: true,
-        data: {
-          requireLogin: false,
-        },
-        views: {
-          account: {
-            template: '<div ui-view name="tournament" class="container-fluid"></div>',
-          }
-        }
-      })
-      .state('account.tournament.list', {
-        url: '/list',
-        views: {
-          'tournament': {
-            templateUrl: 'templates/tournaments/tournaments-list.html',
-            controller: 'account.controllers.tournament.list.ctrl'
-          }
-        }
-      })
-      .state('account.tournament.details', {
-        url: '/:name',
-        views: {
-          'tournament': {
-            templateUrl: 'templates/tournaments/tourney-details.html',
-            controller: 'onog.controllers.tournament.detail.ctrl'
-          }
-        },
-        resolve: {
-          tournament: function ($stateParams, Tournament) {
-            return Tournament.fetchTournament($stateParams.name);
-          },
-          players: function(tournament, playerServices) {
-            return playerServices.getPlayers(tournament[0].id);
-          }
-        }
-      })
 
       .state('account.matches', {
         url: '/matches',

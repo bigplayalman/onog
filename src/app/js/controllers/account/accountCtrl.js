@@ -23,8 +23,9 @@ angular.module('account.controllers', [])
     }
 
     function showMatchResults(match) {
-      var pastVariables = match.toJSON();
       var currentMatch = match;
+      var pastVariables = match.toJSON();
+
       var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
         templateUrl: 'templates/account/modals/matchResults.html',
@@ -38,7 +39,9 @@ angular.module('account.controllers', [])
 
       modalInstance.result.then(function (match) {
         if(match) {
-          Match.saveMatch(match);
+          Match.saveMatch(match).then(function (result) {
+            currentMatch = result;
+          })
         }
       });
     }
@@ -47,31 +50,44 @@ angular.module('account.controllers', [])
   .controller('account.controllers.match.modal.results.ctrl', function ($scope, $uibModalInstance, Parse, match) {
     $scope.currentMatch = match;
     $scope.user = Parse.User.current();
+    $scope.max = $scope.currentMatch.round.get('numOfGames');
+    $scope.score = 0;
+
+    if($scope.currentMatch.user1.id === $scope.user.id) {
+      $scope.opponent = $scope.currentMatch.player2;
+      $scope.opponent.user = $scope.currentMatch.user2;
+      $scope.score = $scope.currentMatch.score.player1;
+    } else {
+      $scope.opponent = $scope.currentMatch.player1;
+      $scope.opponent.user = $scope.currentMatch.user1;
+      $scope.score = $scope.currentMatch.score.player2;
+    }
 
     $scope.ok = function () {
+      if($scope.currentMatch.user1.id === $scope.user.id) {
+        $scope.currentMatch.score.player1 = $scope.score;
+      } else {
+        $scope.currentMatch.score.player2 = $scope.score;
+      }
       $uibModalInstance.close($scope.currentMatch);
     };
 
-    $scope.cancel = function () {
-      $uibModalInstance.close(false);
+    $scope.cancel = function (e) {
+      $uibModalInstance.dismiss(e);
     };
 
-  })
-  .controller('account.controllers.tournament.list.ctrl', function($scope, $state, playerServices) {
-
-    $scope.tournaments = [];
-    
-    playerServices.getMyTournaments().then(function (mytourneys) {
-      var tournaments = [];
-      angular.forEach(mytourneys, function (tourney) {
-        tournaments.push(tourney.tournament);
-      })
-      $scope.tournaments = tournaments;
-    });
-
-    $scope.tournamentDetails = function (tourney) {
-      $state.go('account.tournament.details', {id: tourney.id, name: tourney.name});
+    $scope.invalid = function () {
+      if($scope.score > $scope.max) {
+        console.log($scope.score);
+        return true;
+      }
+      if($scope.score < 0) {
+        console.log($scope.score);
+        return true;
+      }
+      return false;
     }
+
   })
 
   .controller('account.controllers.menu.ctrl', function($scope, $state, Parse) {
@@ -88,13 +104,6 @@ angular.module('account.controllers', [])
         icon: 'fa-home',
         name: 'account.dashboard',
         parent: 'account.dashboard',
-        children: []
-      },
-      {
-        title: 'My Tournaments',
-        icon: 'fa-trophy',
-        name: 'account.tournament.list',
-        parent: 'account.tournament.list',
         children: []
       },
       {

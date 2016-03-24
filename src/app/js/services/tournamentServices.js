@@ -127,6 +127,7 @@ angular.module('onog.services.tournament', [])
           match.set('status', 'pending');
           match.set('isValid', true);
           match.set('defWin', false);
+          match.set('score', {player1: 0, player2:0 });
           match.set('roundNum', rounds[numOfRounds - 1].roundNum)
           match.set('round', rounds[numOfRounds - 1]);
           numOfMatches--;
@@ -161,7 +162,6 @@ angular.module('onog.services.tournament', [])
         rounds.push(round);
         numOfRounds--;
       }
-      console.log(rounds);
       return Parse.Object.saveAll(rounds);
     }
 
@@ -176,9 +176,13 @@ angular.module('onog.services.tournament', [])
         query.find({
           success: function (rounds) {
             data = rounds.concat(matches);
-            Parse.Object.destroyAll(data).then(function () {
-              cb.resolve();
-            })
+            tourney.winner = null;
+            tourney.save().then(function () {
+              Parse.Object.destroyAll(data).then(function () {
+                cb.resolve();
+              });
+            });
+            
           }
         });
       });
